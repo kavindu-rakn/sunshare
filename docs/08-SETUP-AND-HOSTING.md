@@ -6,8 +6,8 @@ Items marked **(YOU)** are manual — Claude Code can't click through Windows in
 
 | Tool | Status | What / why |
 |---|---|---|
-| **Visual Studio 2026 Community** | ⏳ **(YOU) install** | visualstudio.microsoft.com → Community → workload **"ASP.NET and web development"**. Brings the **.NET 10 SDK**. Used to open/debug the API (Claude Code can also build with `dotnet` CLI). |
-| .NET 10 SDK | ⏳ comes with VS 2026 | Check: `dotnet --list-sdks` shows `10.x`. If not: dotnet.microsoft.com/download/dotnet/10.0 → SDK. |
+| **Visual Studio 2026 Community** | Optional | visualstudio.microsoft.com → Community → workload **"ASP.NET and web development"**. Nice for opening/debugging the API; not needed to build (the `dotnet` CLI does that). |
+| .NET 10 SDK | ✅ installed (10.0.401) | Installed on 27 Sep with Microsoft's `dotnet-install.ps1` into `C:\Users\User\.dotnet` (next to .NET 8). Check: `dotnet --list-sdks` shows `10.0.401`. See `12-CHALLENGES.md` C1. |
 | **IIS** (Windows web server) | ⏳ **(YOU) turn on** | See §3. |
 | **ASP.NET Core Hosting Bundle 10** | ⏳ **(YOU) install AFTER IIS** | dotnet.microsoft.com/download/dotnet/10.0 → "ASP.NET Core Runtime 10.x" → Windows → **Hosting Bundle**. Lets IIS run .NET apps. |
 | MongoDB Community + Compass | ✅ installed | Check the Windows service is running: PowerShell `Get-Service MongoDB` → Running. Compass → connect `mongodb://localhost:27017`. |

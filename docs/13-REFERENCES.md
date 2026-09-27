@@ -37,3 +37,5 @@ Add to this list whenever code follows a tutorial/sample (and put a `// Referenc
 [17] C. Veness, "Calculate distance, bearing and more between Latitude/Longitude points," *Movable Type Scripts*. [Online]. Available: https://www.movable-type.co.uk/scripts/latlong.html [Accessed: 27-Sep-2026].
 
 [18] Anthropic, "Claude Code overview." [Online]. Available: https://docs.claude.com/en/docs/claude-code/overview [Accessed: 27-Sep-2026]. *(AI tool disclosure)*
+
+[19] Vite, "Configuring Vite." [Online]. Available: https://vite.dev/config/ [Accessed: 27-Sep-2026].

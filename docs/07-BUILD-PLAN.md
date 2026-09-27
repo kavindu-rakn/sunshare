@@ -18,12 +18,12 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 ---
 
 ## Phase 0 — Repo & project scaffolds · Owner: Kvn
-- [ ] (Manual, Kvn) Create empty GitHub repo `sunshare`, then `git remote add origin <url>` and push the docs commit.
-- [ ] `api/`: `dotnet new webapi --use-controllers -n SunShare.Api -f net10.0` → remove WeatherForecast sample → add allowed NuGet packages.
-- [ ] Set `launchSettings.json` http profile to `http://localhost:5080`.
-- [ ] `web/`: `npm create vite@latest web -- --template react` → `npm i bootstrap bootstrap-icons react-router-dom` → remove Vite demo content.
+- [x] (Manual, Kvn) Create empty GitHub repo `sunshare`, then `git remote add origin <url>` and push the docs commit.
+- [x] `api/`: `dotnet new webapi --use-controllers -n SunShare.Api -f net10.0` → remove WeatherForecast sample → add allowed NuGet packages.
+- [x] Set `launchSettings.json` http profile to `http://localhost:5080`.
+- [x] `web/`: `npm create vite@latest web -- --template react` → `npm i bootstrap bootstrap-icons react-router-dom` → remove Vite demo content.
 - [ ] (Manual, Kvn) Android Studio → New Project → Empty Views Activity → steps in `08-SETUP-AND-HOSTING.md §5` → saved to `android/`.
-- [ ] Header comments on every generated `.cs`/`.jsx`/`.java` file that stays.
+- [ ] Header comments on every generated `.cs`/`.jsx`/`.java` file that stays. *(API + web done; Android once the project exists.)*
 - **Done when:** `dotnet build` passes · `npm run dev` shows a blank page · Android template app runs on the emulator.
 - **Commits:** `chore(api): scaffold SunShare.Api`, `chore(web): scaffold React + Bootstrap app`, `chore(android): add Android Studio project`.
 
