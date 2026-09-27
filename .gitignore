@@ -1,0 +1,40 @@
+# ---------- OS / editors ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+*.swp
+
+# ---------- .NET (api/) ----------
+bin/
+obj/
+.vs/
+*.user
+*.suo
+publish/
+logs/
+
+# ---------- Node / Vite (web/) ----------
+node_modules/
+dist/
+.env.local
+.env.*.local
+npm-debug.log*
+
+# ---------- Android (android/) ----------
+.gradle/
+build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.iml
+.idea/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# ---------- Report / submission ----------
+~$*.docx
+*.zip
