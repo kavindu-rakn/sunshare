@@ -145,3 +145,4 @@ CORS on the API allows `http://localhost:5173` and `http://localhost:8081` (list
 - QR "security" = a random 32-char token that only the server and the booking owner know; faking a QR needs that token.
 - Demo runs on **HTTP over the local network** (no HTTPS certificate) — acceptable for a lab demo, would be HTTPS in production.
 - JWT secret sits in `appsettings.json` for simplicity; production would use environment variables / a secret store.
+- A token stays valid until it expires (8 h), even if the account is deactivated meanwhile — the server keeps no session list. We limit the damage: login is refused (R4), profile edits check the status again, and reservations need an Active prosumer (R11). Production could use short-lived tokens + refresh tokens or a revocation list.

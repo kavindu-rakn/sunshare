@@ -1,7 +1,7 @@
 # 04 — API Contract (SunShare.Api)
 
 - Base path: **`/api`** · JSON uses **camelCase** · dates are ISO-8601 **UTC** (`2026-09-29T02:30:00Z`).
-- Auth: header `Authorization: Bearer <token>` on everything except `auth/login` and `auth/register`.
+- Auth: header `Authorization: Bearer <token>` on everything except `auth/login`, `auth/register` and `health`. The token (JWT, 8 h) carries the claims `nic`, `name` and `role`; controllers read the caller's NIC from `nic` (R16).
 - Errors: always `{ "message": "human friendly text" }` with 400 / 401 / 403 / 404 / 409 / 500.
 - Roles: **BO** = Backoffice, **GO** = GridOperator, **PR** = Prosumer, **Any** = any logged-in user.
 - "Part" = owner in `09-TEAM.md`. "Rules" = IDs in `01-SPEC.md`.
@@ -62,7 +62,7 @@
 | Method | Path | Who | Body → Response | Rules |
 |---|---|---|---|---|
 | POST | `/api/auth/login` | Public | LoginRequest → LoginResponse. Wrong NIC/password → 401 "NIC or password is incorrect." Pending → 403 "Your account is waiting for Backoffice activation." Deactivated → 403 "Your account is deactivated. Please contact the Backoffice." | R3, R4 |
-| POST | `/api/auth/register` | Public | RegisterRequest → 201 UserResponse (status `Pending`). Bad NIC → 400. NIC exists → 409. | R1, R3 |
+| POST | `/api/auth/register` | Public | RegisterRequest → 201 UserResponse (always role `Prosumer`, status `Pending`). Bad NIC, missing details or password < 6 chars → 400. NIC exists → 409. | R1, R3 |
 
 ### Users — Part A
 | Method | Path | Who | Body → Response | Rules |
@@ -70,7 +70,7 @@
 | GET | `/api/users?role=&status=&search=` | BO, GO (GO: read only, used to pick a prosumer when booking on behalf) | → UserResponse[] | R2 |
 | GET | `/api/users/pending-activations` | BO | → UserResponse[] of Prosumers with status `Pending` **or** `Deactivated` (oldest first) | R3, R4 |
 | GET | `/api/users/{nic}` | BO | → UserResponse | |
-| POST | `/api/users` | BO | CreateUserRequest → 201 UserResponse (status `Active`) | R1, R2 |
+| POST | `/api/users` | BO | CreateUserRequest → 201 UserResponse (status `Active`; password ≥ 6 chars) | R1, R2 |
 | PUT | `/api/users/{nic}` | BO | UpdateUserRequest → UserResponse (NIC and role can't change) | R1 |
 | PATCH | `/api/users/{nic}/activate` | BO | → UserResponse. `Pending`/`Deactivated` → `Active` | R3, R4 |
 | PATCH | `/api/users/{nic}/deactivate` | BO | → UserResponse. Can't deactivate self → 400 | R4 |
