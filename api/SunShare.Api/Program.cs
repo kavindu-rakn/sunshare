@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using SunShare.Api.Data;
+using SunShare.Api.Helpers;
 using SunShare.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,11 @@ var builder = WebApplication.CreateBuilder(args);
 // (a singleton) that every controller and service receives.
 var mongoSettings = builder.Configuration.GetSection("MongoDb").Get<MongoDbSettings>()!;
 builder.Services.AddSingleton(new MongoDbContext(mongoSettings));
+
+// ---------- Our helpers and services ----------
+// Registered here so ASP.NET Core can hand them to the controllers that ask for them ("dependency injection").
+// Singleton = one shared object for the whole app; Scoped = a fresh object for each request.
+builder.Services.AddSingleton<JwtTokenHelper>();
 
 // ---------- Controllers + JSON ----------
 // JSON uses camelCase names (e.g. availableSlots). If a request body has missing or badly typed
@@ -54,6 +60,9 @@ var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Ke
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        // Keep the short claim names from the token ("nic", "name", "role") instead of renaming them
+        // to long Microsoft URLs, and tell ASP.NET which claim holds the role for [Authorize(Roles = ...)].
+        options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -63,7 +72,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = signingKey,
-            ClockSkew = TimeSpan.FromMinutes(1)
+            ClockSkew = TimeSpan.FromMinutes(1),
+            NameClaimType = JwtTokenHelper.NameClaim,
+            RoleClaimType = JwtTokenHelper.RoleClaim
         };
         // Missing/expired token (401) and wrong role (403) also answer with { "message": "..." }.
         options.Events = new JwtBearerEvents
