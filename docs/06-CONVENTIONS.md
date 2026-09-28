@@ -102,5 +102,12 @@ Co-authored-by: Malkith G W L <malkith@example.com>
 Subject prefixes: `feat`, `fix`, `docs`, `style` (UI only), `refactor`, `chore` (setup/config), `test`. Scope: `api`, `web`, `android`, `docs`, `report`.
 One increment = one commit (e.g. "stations API", "stations web page"). Never commit secrets (`local.properties`, keys).
 
+### Branches and pull requests (one PR per phase)
+- **Never commit on `main`.** Each phase gets its own branch from an up-to-date `main`: `phase-N-short-name` (e.g. `phase-1-api-foundation`).
+- Commit every increment on that branch as above. When the phase's "Done when" checks pass: push the branch and open a PR into `main` titled `Phase N — <name>`, with a short summary, the commit list and what was tested.
+- **Kvn reviews the PR** (the "critically evaluated" part of the CLEAR rules), then merges it himself or tells Claude Code to (`gh pr merge <n> --merge --delete-branch`).
+- Always a **merge commit** — never squash or rebase — so every increment commit and its `Co-authored-by` trailer stay in the history as evidence of who did what.
+- No AI co-author or "Generated with" line in PR titles or descriptions either.
+
 ## 8. After each phase, explain it (CLEAR / viva rule)
 When a phase is done, give Kvn a short plain-language summary in chat: **what** was built, **why** it was done that way, **how** a request flows through it, and **one likely viva question + answer**. Then update the owner's sheet in `docs/group-pack/` (files owned + how it works).

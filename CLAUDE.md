@@ -41,13 +41,15 @@
 7. **No scope creep.** Build only what `01-SPEC.md`, `04-API.md` and `05-SCREENS.md` list. Out-of-scope list is in `01-SPEC.md §7`.
 8. **Test before you commit**: it builds, and the phase's "Done when" checks pass (Swagger / browser / emulator). Say honestly what you could and couldn't test.
 9. **Commit after every increment** (one feature slice = one commit). Format: subject line, blank line, **hyphen bullets**. Add `Co-authored-by: <owner> <email>` when the work belongs to Part A, C or D (see `09-TEAM.md`). **Do NOT add any AI/Claude co-author or "Generated with" line.** Never commit secrets (`local.properties`, API keys) or build output.
+   **Branch + PR per phase — never commit on `main`.** Start a phase with `git switch main; git pull; git switch -c phase-N-short-name`. When it's done: push the branch, `gh pr create --base main` (title `Phase N — <name>`), and give Kvn the link. Merge **only after Kvn says so** (`gh pr merge <n> --merge --delete-branch`) — a **merge commit**, never squash/rebase, so every commit and its `Co-authored-by` survive. The no-AI-line rule applies to PR text too.
 10. **Log as you go:** real problems → `12-CHALLENGES.md`; any decision change → `11-DECISIONS.md`.
 11. **Don't touch** `../Assignment.pdf` / `../Assignment.docx`.
 
 ## When a phase is finished
 1. Tick its boxes in `docs/07-BUILD-PLAN.md`.
 2. Update the owner's sheet in `docs/group-pack/` → "Files" and "How it works" (plain words).
-3. Tell Kvn in chat (short): **What** was built · **Why** this way · **How** a request flows · **1 likely viva question + answer** · then **"👉 You need to do:"** (or "nothing").
+3. Push the phase branch and open its PR (golden rule 9); wait for Kvn's OK before merging.
+4. Tell Kvn in chat (short), including the **PR link**: **What** was built · **Why** this way · **How** a request flows · **1 likely viva question + answer** · then **"👉 You need to do:"** (or "nothing").
 
 ## Environment
 - Windows 11, PowerShell. Repo root: `C:\Users\User\Documents\EAD\sunshare`.
