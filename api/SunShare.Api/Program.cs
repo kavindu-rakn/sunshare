@@ -37,6 +37,8 @@ builder.Services.AddSingleton(new MongoDbContext(mongoSettings));
 builder.Services.AddSingleton<JwtTokenHelper>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<StationService>();
+builder.Services.AddScoped<SlotService>();
 
 // ---------- Controllers + JSON ----------
 // JSON uses camelCase names (e.g. availableSlots). If a request body is broken or badly typed,

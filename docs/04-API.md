@@ -86,7 +86,7 @@
 | Method | Path | Who | Body → Response | Rules |
 |---|---|---|---|---|
 | GET | `/api/stations?activeOnly=` | Any (PR always gets active only) | → StationResponse[] | |
-| GET | `/api/stations/nearby?lat=&lng=&radiusKm=25` | Any | → StationResponse[] with `distanceKm`, active only, nearest first | R18 |
+| GET | `/api/stations/nearby?lat=&lng=&radiusKm=25` | Any | → StationResponse[] with `distanceKm` (km, 2 decimals), active only, nearest first. No `lat`/`lng` or out-of-range → 400; `radiusKm` must be > 0 | R18 |
 | GET | `/api/stations/{id}` | Any | → StationResponse | |
 | POST | `/api/stations` | BO | StationRequest → 201 StationResponse | lat/lng range, capacity > 0, batterySlots ≥ 1, open < close |
 | PUT | `/api/stations/{id}` | BO | StationRequest → StationResponse (updates schedule too) | |
@@ -97,11 +97,11 @@
 ### Slots — Part B
 | Method | Path | Who | Body → Response | Rules |
 |---|---|---|---|---|
-| GET | `/api/stations/{stationId}/slots?from=&to=` | BO, GO | → SlotResponse[] (default: from today, 14 days) | |
-| GET | `/api/slots/available?stationId=` | Any | → SlotResponse[] that are active, `availableSlots > 0`, start in the future and ≤ 7 days away, station active | R9, R11 |
+| GET | `/api/stations/{stationId}/slots?from=&to=` | BO, GO | → SlotResponse[] soonest first (default: from the start of today UTC, for 14 days; `from`/`to` are UTC, `to` exclusive) | |
+| GET | `/api/slots/available?stationId=` | Any | → SlotResponse[] that are active, `availableSlots > 0`, start in the future and ≤ 7 days away, station active. `stationId` optional (omit = all active stations) | R9, R11 |
 | GET | `/api/slots/{id}` | Any | → SlotResponse | |
 | POST | `/api/slots` | BO, GO | SlotRequest → 201 SlotResponse (`availableSlots = totalSlots`) | R8 |
-| PUT | `/api/slots/{id}` | BO, GO | SlotUpdateRequest → SlotResponse (`availableSlots` recalculated = total − booked) | R8 |
+| PUT | `/api/slots/{id}` | BO, GO | SlotUpdateRequest → SlotResponse (`availableSlots` recalculated = total − booked). Changing the **time** of a slot that has bookings → 409 | R8 |
 | DELETE | `/api/slots/{id}` | BO, GO | → 204. Active reservations → 409 | R8 |
 
 ### Reservations: actions — Part C

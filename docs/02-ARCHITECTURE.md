@@ -114,6 +114,8 @@ EAD/                               ← Cowork folder (Assignment.pdf lives here)
 - Services throw **`ApiException(statusCode, message)`** — e.g. `400` rule broken, `401` bad login, `403` wrong role/not yours, `404` not found, `409` conflict (duplicate NIC, slot full).
 - **`ErrorHandlingMiddleware`** turns it into JSON: `{ "message": "Cancellations need at least 12 hours' notice." }`. Unknown errors → `500 { "message": "Something went wrong on the server." }` (details only in the server log).
 - Web shows `message` in a Bootstrap alert; Android shows it in a Toast/Snackbar. **Messages must be human-friendly.**
+- **Ids from the URL or body** (stations, slots, reservations are MongoDB ObjectIds): check `ObjectId.TryParse(id, out _)` first and throw `404` if it fails — otherwise a typo like `/api/stations/abc` crashes the query with a 500. Reuse `StationService.FindOrThrowAsync` / `SlotService.FindOrThrowAsync` where possible.
+- **Times in requests** must be UTC ISO strings (`2026-09-30T02:30:00Z`). A time with an offset (`+05:30`) is converted to UTC; a time with no zone at all is taken as UTC. The web converts `datetime-local` values with `new Date(value).toISOString()` before sending.
 
 ## 7. Addresses and ports
 

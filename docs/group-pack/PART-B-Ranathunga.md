@@ -40,7 +40,7 @@ Prosumers can only book if there are stations with battery places and open time 
 `dotnet publish` → files in `C:\inetpub\sunshare\api` → IIS site **SunShareApi** on port 8080 (app pool "No Managed Code"; the **Hosting Bundle** lets IIS run .NET) → `web.config` removes **WebDAV** (otherwise PUT/DELETE/PATCH give 405) → firewall rule so the phone can reach `http://<laptop-IP>:8080`.
 
 ## Files (planned — updated after the build)
-- API (Part B): `Controllers/StationsController.cs`, `SlotsController.cs` · `Services/StationService.cs`, `SlotService.cs` · `Helpers/GeoHelper.cs` · `Dtos/StationRequest.cs`, `StationResponse.cs`, `SlotRequest.cs`, `SlotUpdateRequest.cs`, `SlotResponse.cs`
+- API (Part B) — ✅ **built in Phase 3**: `Controllers/StationsController.cs`, `SlotsController.cs` · `Services/StationService.cs`, `SlotService.cs` · `Helpers/GeoHelper.cs` · `Dtos/StationRequest.cs`, `StationResponse.cs`, `SlotRequest.cs`, `SlotUpdateRequest.cs`, `SlotResponse.cs`
 - API (shared foundation) — ✅ **built in Phase 1** (all in `api/SunShare.Api/`):
   - `Program.cs` (start-up), `appsettings.json` (Mongo address, JWT settings, CORS list), `web.config` (IIS)
   - `Data/MongoDbSettings.cs`, `Data/MongoDbContext.cs`, `Data/DataSeeder.cs`
@@ -72,6 +72,31 @@ _(Claude Code fills this in after Phases 1, 3, 6, 7, 9, 12, 13 and 15.)_
 **`GET /api/health` flow:** browser → `HealthController.Get` → `MongoDbContext.PingAsync` sends MongoDB `{ ping: 1 }` → answer within 5 s? `200 "connected"` : `503 "unreachable"`.
 
 **`web.config`:** tells IIS to run the app through the ASP.NET Core Module (from the Hosting Bundle), and **removes WebDAV** — an IIS module that would otherwise grab PUT/DELETE/PATCH and answer 405.
+
+### Stations, slots and nearby (Phase 3)
+**Stations** (`StationService`, `StationsController`, route `/api/stations`):
+- **Who:** anyone logged in can *read*; only Backoffice can *change* (`[Authorize(Roles = Roles.Backoffice)]`). Prosumers only ever get **active** stations in the list (R2).
+- **Form checks:** name + address filled in, latitude −90..90 and longitude −180..180, capacity > 0 kW, at least 1 battery slot, open/close time as `HH:mm` with open before close.
+- **`activeReservationCount`** on every station = bookings that are Pending/Approved **and** haven't started (this is also the R6 definition). For a list, one query fetches the station ids of all active bookings and we count them in C# — instead of asking MongoDB once per station.
+- **Deactivate (R6):** if that count is > 0 → **409** "This station has 2 active reservations. Cancel or complete them first." Otherwise `isActive = false` (it vanishes from the map and from booking).
+- **Delete (R7):** if the station has **any** booking at all (even Completed/Cancelled history) → **409** "…deactivate it instead." Otherwise its slots are deleted, then the station.
+- **Rename:** bookings keep a copy of the station name (for fast lists/search), so a rename also updates those copies (D29).
+- **Bad ids:** `ObjectId.TryParse` first → **404** "Station not found." (a typo id would otherwise crash with 500).
+
+**Nearby (R18)** — `GET /api/stations/nearby?lat=6.9147&lng=79.9730&radiusKm=25`:
+1. Check lat/lng were sent and are in range; radius > 0 (default 25 km).
+2. Load all **active** stations.
+3. For each: `GeoHelper.DistanceKm(phone, station)` (Haversine: distance along the Earth's curved surface, radius 6371 km).
+4. Keep those ≤ radius, fill `distanceKm` (2 decimals), sort **nearest first**.
+From SLIIT: Malabe 0.00 km → Kaduwela 2.42 → Battaramulla 6.23 → Kottawa 8.24; Nugegoda (inactive) is left out. The phone only draws the markers — the maths is on the server (FAT service).
+
+**Slots** (`SlotService`, `SlotsController`) — Backoffice **and** Grid Operator manage them (`Roles.Staff`):
+- **Create (R8):** station must exist and be active; start in the future; end after start; places `1..station.batterySlots`; `availableSlots = totalSlots`.
+- **Edit (R8):** `booked = total − available`; new total must be ≥ booked and ≤ batterySlots; then `available = newTotal − booked`. `isActive = false` closes the window. Changing the **time** of a slot that already has bookings → **409** (D28: people chose that time).
+- **Delete (R8):** blocked (409) while the slot has active bookings — close it instead.
+- **Bookable list** (`GET /api/slots/available?stationId=`, used by the booking forms): slot open, at least 1 free place, station active (R11), and starts in the future but **no more than 7 days** ahead (R9).
+- **Station's slot list** (`GET /api/stations/{id}/slots`, staff): default from the start of today (UTC) for 14 days, soonest first.
+- **Times:** everything is UTC; a time sent without a zone is taken as UTC (D30). The web converts its `datetime-local` input to UTC before sending.
 
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
