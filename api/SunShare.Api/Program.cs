@@ -21,6 +21,7 @@ using Microsoft.OpenApi;
 using SunShare.Api.Data;
 using SunShare.Api.Helpers;
 using SunShare.Api.Middleware;
+using SunShare.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,11 +35,14 @@ builder.Services.AddSingleton(new MongoDbContext(mongoSettings));
 // Registered here so ASP.NET Core can hand them to the controllers that ask for them ("dependency injection").
 // Singleton = one shared object for the whole app; Scoped = a fresh object for each request.
 builder.Services.AddSingleton<JwtTokenHelper>();
+builder.Services.AddScoped<UserService>();
 
 // ---------- Controllers + JSON ----------
-// JSON uses camelCase names (e.g. availableSlots). If a request body has missing or badly typed
-// fields, answer 400 with { "message": "..." } like every other error, instead of ASP.NET's default shape.
-builder.Services.AddControllers()
+// JSON uses camelCase names (e.g. availableSlots). If a request body is broken or badly typed,
+// answer 400 with { "message": "..." } like every other error, instead of ASP.NET's default shape.
+// Empty text fields are NOT rejected automatically: the services check them and give friendly
+// messages ("Please enter the full name.") - FAT service.
+builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
     .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase)
     .ConfigureApiBehaviorOptions(options =>
         options.InvalidModelStateResponseFactory = context =>
