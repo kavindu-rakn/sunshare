@@ -28,14 +28,14 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Commits:** `chore(api): scaffold SunShare.Api`, `chore(web): scaffold React + Bootstrap app`, `chore(android): add Android Studio project`.
 
 ## Phase 1 — API foundation (shared) · Owner: Kvn
-- [ ] `MongoDbSettings` + `appsettings.json` (`ConnectionString`, `DatabaseName = SunShareDb`); `MongoDbContext` exposing the 4 collections with the **exact names** from `03-DATABASE.md` + indexes.
-- [ ] Models: `User`, `SolarStation`, `EnergyBookingSlot`, `EnergyReservation`; constants `Roles`, `UserStatuses`, `ReservationStatuses`, `ReservationTypes`.
-- [ ] Helpers: `ApiException` (the other helpers belong to their Parts: `JwtTokenHelper` + `NicValidator` → Phase 2, `GeoHelper` → Phase 3, `ReservationMapper` → Phase 4).
-- [ ] `ErrorHandlingMiddleware` (→ `{ message }`).
-- [ ] `Program.cs`: DI, JWT auth, CORS (5173, 8081), Swagger **with Authorize button**, camelCase JSON, Swagger ON in all environments.
-- [ ] `web.config` for IIS that **removes WebDAV** (otherwise PUT/DELETE/PATCH return 405 on IIS).
-- [ ] `DataSeeder` — full sample data from `03-DATABASE.md §5` (only when `Users` is empty).
-- [ ] `HealthController`: `GET /api/health` → `{ "api": "ok", "database": "connected", "time": ... }` (pings MongoDB — proves the DB connection in the demo).
+- [x] `MongoDbSettings` + `appsettings.json` (`ConnectionString`, `DatabaseName = SunShareDb`); `MongoDbContext` exposing the 4 collections with the **exact names** from `03-DATABASE.md` + indexes.
+- [x] Models: `User`, `SolarStation`, `EnergyBookingSlot`, `EnergyReservation`; constants `Roles`, `UserStatuses`, `ReservationStatuses`, `ReservationTypes`.
+- [x] Helpers: `ApiException` (the other helpers belong to their Parts: `JwtTokenHelper` + `NicValidator` → Phase 2, `GeoHelper` → Phase 3, `ReservationMapper` → Phase 4).
+- [x] `ErrorHandlingMiddleware` (→ `{ message }`).
+- [x] `Program.cs`: DI, JWT auth, CORS (5173, 8081), Swagger **with Authorize button**, camelCase JSON, Swagger ON in all environments.
+- [x] `web.config` for IIS that **removes WebDAV** (otherwise PUT/DELETE/PATCH return 405 on IIS).
+- [x] `DataSeeder` — full sample data from `03-DATABASE.md §5` (only when `Users` is empty).
+- [x] `HealthController`: `GET /api/health` → `{ "api": "ok", "database": "connected", "time": ... }` (pings MongoDB — proves the DB connection in the demo).
 - **Done when:** `dotnet run` → Swagger opens → `/api/health` says connected → Compass shows the 4 collections full of seed data.
 - **Commits:** foundation, seeder, health (separately).
 

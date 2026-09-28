@@ -41,12 +41,37 @@ Prosumers can only book if there are stations with battery places and open time 
 
 ## Files (planned — updated after the build)
 - API (Part B): `Controllers/StationsController.cs`, `SlotsController.cs` · `Services/StationService.cs`, `SlotService.cs` · `Helpers/GeoHelper.cs` · `Dtos/StationRequest.cs`, `StationResponse.cs`, `SlotRequest.cs`, `SlotUpdateRequest.cs`, `SlotResponse.cs`
-- API (shared foundation): `Program.cs`, `appsettings.json`, `web.config`, `Data/MongoDbContext.cs`, `MongoDbSettings.cs`, `DataSeeder.cs`, `Models/*`, `Helpers/ApiException.cs`, `Middleware/ErrorHandlingMiddleware.cs`, `Controllers/HealthController.cs`, `scripts/deploy-api.ps1`
+- API (shared foundation) — ✅ **built in Phase 1** (all in `api/SunShare.Api/`):
+  - `Program.cs` (start-up), `appsettings.json` (Mongo address, JWT settings, CORS list), `web.config` (IIS)
+  - `Data/MongoDbSettings.cs`, `Data/MongoDbContext.cs`, `Data/DataSeeder.cs`
+  - `Models/User.cs`, `SolarStation.cs`, `EnergyBookingSlot.cs`, `EnergyReservation.cs`, `Roles.cs`, `UserStatuses.cs`, `ReservationStatuses.cs`, `ReservationTypes.cs`
+  - `Helpers/ApiException.cs`, `Middleware/ErrorHandlingMiddleware.cs`, `Controllers/HealthController.cs`
+  - still to come: `scripts/deploy-api.ps1` (Phase 6)
 - Web: `pages/Home.jsx`, `Stations.jsx`, `StationForm.jsx`, `Slots.jsx`, `SlotForm.jsx`, `NotFound.jsx` · `api/client.js`, `stationsApi.js`, `slotsApi.js` · `components/*` · `context/AuthContext.jsx` · `styles/theme.css` · `App.jsx`, `main.jsx`
 - Android: `ui/map/StationMapActivity.java` · `db/SunShareDbHelper.java` · `api/ApiClient.java`, `ApiService.java`, `ApiConfig.java`, `ApiErrorParser.java`, `api/models/*` · `util/*` · `res/values/*`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`
 
 ## How it works
 _(Claude Code fills this in after Phases 1, 3, 6, 7, 9, 12, 13 and 15.)_
+
+### API foundation (Phase 1)
+**Start-up (`Program.cs`, top to bottom):**
+1. Reads `appsettings.json` → makes **one** `MongoDbContext` for the whole app (a *singleton*: one shared object, because `MongoClient` is built to be shared and keeps its own pool of connections).
+2. Turns on **controllers** with **camelCase JSON** (`availableSlots`). If a request body is missing fields or has the wrong types → 400 `{ "message": "..." }`.
+3. Turns on **JWT checking**: a token is only accepted if it is signed with our secret key, came from our API (*issuer*), is meant for our apps (*audience*) and hasn't expired. No/expired token → 401 `{ "message": "Please log in to continue." }`; wrong role → 403 `{ "message": "You don't have permission to do that." }`.
+4. Turns on **CORS** (see Q11 below) for `localhost:5173` and `localhost:8081` (+ any localhost port only while developing).
+5. Turns on **Swagger** with an **Authorize** button (paste a token once, then every test call sends it).
+6. **Prepares the database:** creates 3 indexes, then runs `DataSeeder` (only if `Users` is empty). If MongoDB is down it just logs an error, so the API still starts.
+7. Builds the **request pipeline** — every request passes these steps in order: error handler → Swagger → CORS → authentication (*who are you?*) → authorization (*may you do this?*) → the controller.
+
+**Models** = C# classes that match the MongoDB documents. `[BsonElement("fullName")]` gives each field its camelCase name in the database; `[BsonId]` marks the `_id` (the NIC for users, an ObjectId for the others). Status/role words live in constant classes (`Roles.Prosumer`, `ReservationStatuses.Approved`) so nobody misspells them.
+
+**Errors:** a service that finds a broken rule does `throw new ApiException(409, "This slot is full.")`. `ErrorHandlingMiddleware` (first in the pipeline) catches it and sends status 409 + `{ "message": "This slot is full." }`. MongoDB timeouts → 503 "The database can't be reached right now…"; any other crash → 500 "Something went wrong on the server." (details only in the server log, never shown to users).
+
+**Seeder:** builds everything in memory first (so bookings can point at slot ids), then inserts. Slot times are chosen in Sri Lanka time (08:00, 11:00, 14:00) and stored in UTC (subtract 5 h 30 min). Each sample booking takes a place from its slot and the cancelled one gives it back, so `availableSlots` is always right. Dates are relative to "now" → re-seed the day before the viva (`08-SETUP-AND-HOSTING.md §8`).
+
+**`GET /api/health` flow:** browser → `HealthController.Get` → `MongoDbContext.PingAsync` sends MongoDB `{ ping: 1 }` → answer within 5 s? `200 "connected"` : `503 "unreachable"`.
+
+**`web.config`:** tells IIS to run the app through the ASP.NET Core Module (from the Hosting Bundle), and **removes WebDAV** — an IIS module that would otherwise grab PUT/DELETE/PATCH and answer 405.
 
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.

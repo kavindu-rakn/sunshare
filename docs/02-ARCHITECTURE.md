@@ -125,7 +125,7 @@ EAD/                               ← Cowork folder (Assignment.pdf lives here)
 | Android → API | Emulator: `http://10.0.2.2:8080/` · Phone: `http://<laptop-LAN-IP>:8080/` — changeable at runtime via the ⚙ **Server address** setting on the Login screen (saved in SQLite) |
 | MongoDB | `mongodb://localhost:27017`, database **`SunShareDb`** |
 
-CORS on the API allows `http://localhost:5173` and `http://localhost:8081`.
+CORS on the API allows `http://localhost:5173` and `http://localhost:8081` (list in `appsettings.json` → `Cors:AllowedOrigins`). **Only while developing** (`ASPNETCORE_ENVIRONMENT=Development`, i.e. `dotnet run`) any `http://localhost:<port>` is also allowed; on IIS (Production) only the list counts (D23).
 
 ## 8. Time handling
 - MongoDB stores **UTC**. API sends ISO strings like `2026-09-29T02:30:00Z`.
