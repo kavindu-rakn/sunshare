@@ -50,6 +50,25 @@ Reads `EnergyReservations` (status, startTime, stationName, prosumerNic…), `So
 > **Built for you in Phase 4 (reuse, don't copy):** `ReservationMapper.ToResponse(r)` builds every `ReservationResponse` (incl. `canModify`, `qrData`); `ReservationMapper.QrPrefix` = `"SUNSHARE"`; `ReservationService.FindOrThrowAsync(id)` (404 incl. bad ids) and `ReservationService.CheckOwner(r, nic, role)` (R16 → 403) are public.
 
 ## How it works
+### API (Phase 5) — ✅ built
+**Files** (in `api/SunShare.Api/`): `Services/ReservationQueryService.cs`, `QrService.cs`, `DashboardService.cs` · `Controllers/ReservationViewsController.cs`, `QrController.cs`, `DashboardController.cs` · `Dtos/VerifyQrRequest.cs`, `StaffDashboardResponse.cs`, `ProsumerDashboardResponse.cs`. (Reuses Part C's `ReservationMapper`, `ReservationService.FindOrThrowAsync` and `CheckOwner`.)
+
+**Lists** (`GET /api/reservations?view=&status=&stationId=&from=&to=&search=`):
+- **R16 first:** if the caller is a Prosumer, the filter always starts with `prosumerNic = my NIC` (from the token) — they can never see anyone else's booking, even by searching. Opening someone else's by id → 403.
+- **Views** (01-SPEC §5): `current` = Approved and start > now · `pending` = Pending · `history` = Completed **or** Cancelled **or** start ≤ now · `all` = everything.
+- **Filters:** status, station, start-time range. **Search:** station name contains the text (not case-sensitive); a full reservation id; staff also NIC / prosumer name.
+- **Order:** history newest first (what just happened is on top); the others soonest first.
+
+**QR** (Grid Operator only):
+- **Verify** splits the text on `|` and checks, in order: 3 parts and starts with `SUNSHARE` → booking exists → not Completed ("a QR code can only be used once") → not Cancelled → Approved → **token matches** the one saved at approval. Each failure has its own message for the operator's red card.
+- **Complete** runs the same checks, makes sure the QR belongs to the booking in the URL, then sets `Completed` + `completedBy` (operator NIC) + `completedAt`.
+- Why it's safe: the QR only contains the booking id and a random token; the **server** decides. Edit a booking → it goes Pending and loses its token; re-approval makes a new token, so an old screenshot is useless (tested).
+
+**Dashboards** — every number is counted on the server (`CountDocumentsAsync`), so web and mobile always agree:
+- Staff: Pending · Approved + future · Today (Sri Lanka date, not cancelled) · active stations · Pending/Deactivated prosumers · next 5 upcoming Pending (for the Approve table).
+- Prosumer: my Pending · my Approved + future · my Completed · my next upcoming booking (or null).
+- Checked against raw MongoDB with separate code: the numbers matched exactly.
+
 _(Claude Code fills this in after Phases 5, 10, 16 and 18.)_
 
 ## Your demo (≈ 75 s)
