@@ -64,8 +64,10 @@ dotnet publish api/SunShare.Api -c Release -o C:\inetpub\sunshare\api
 
 ## 5. Create the Android project (YOU, Phase 0 — 2 minutes)
 1. Android Studio → **New Project** → Phone and Tablet → **Empty Views Activity** → Next.
-2. Name `SunShare` · Package name `com.sunshare.app` · Save location `C:\Users\User\Documents\EAD\sunshare\android` · Language **Java** · Minimum SDK **API 26 (Android 8.0)** · Build configuration language: leave the default → **Finish**. Wait for Gradle sync.
-3. **Emulator:** Device Manager → **+** → Pixel 7 → pick a system image that says **Google Play** (API 34 or 35) → Finish → ▶ run the app once.
+2. Name `SunShare` · Package name `com.sunshare.app` · Save location `C:\Users\User\Documents\EAD\sunshare\android` · Language **Java** · Minimum SDK **API 26 (Android 8.0)** · Build configuration language: leave the default (**Kotlin DSL**, see `11-DECISIONS.md` D21) → **Finish**. Wait for Gradle sync.
+   - If Android Studio pops up **"Add Files to Git"**: tick *Don't ask again* → **Cancel**. Claude Code adds the files itself, on the phase branch, with the right ignore rules.
+   - ✅ Done 28 Sep (Android Studio made AGP 9.4.1, Gradle 9.6.0, compile/target SDK 37).
+3. **Emulator:** the existing AVD **`Medium_Phone`** already uses an **Android 15 (API 35) Google Play** image, which Maps needs, so there's no need to make a new one. (For a new one: Device Manager → **+** → pick a system image that says **Google Play** → Finish.) ▶ run the app once.
 4. Emulator location: emulator ⋯ (Extended controls) → **Location** → search "SLIIT Malabe" → **Set location**.
 
 ## 6. Google Maps API key (YOU, ~10 min)
