@@ -78,9 +78,9 @@ API dev `:5080` · API on IIS `:8080` · Web dev `:5173` · Web on IIS `:8081` �
 | Prosumer (Deactivated) | `981234567V` | `Prosumer@123` |
 
 ## Part owners (for headers + trailers)
-| Part | Owner | Covers |
-|---|---|---|
-| A | Gimhan T P K | Accounts & access (auth, users, prosumers, activations, mobile login/register/profile) |
-| B | Ranathunga R A K N | Stations, slots, map + shared foundation, hosting, web/Android shells, report |
-| C | Malkith G W L | Reservation create/update/cancel/approve, 7-day/12-hour rules, summary page |
-| D | Chamara R M L K | Booking lists/filters, dashboards, QR display, operator scan/verify/finalize |
+| Part | Owner (header `Author`) | `Co-authored-by` trailer | Covers |
+|---|---|---|---|
+| A | Gimhan T P K (IT22266996) | `Gimhan T P K <karindragimhan49@gmail.com>` | Accounts & access (auth, users, prosumers, activations, mobile login/register/profile) |
+| B | Ranathunga R A K N (IT22552860) | none (Kvn commits himself) | Stations, slots, map + shared foundation, hosting, web/Android shells, report |
+| C | Malkith G W L (IT22630834) | `Malkith G W L <lithiramalkith@gmail.com>` | Reservation create/update/cancel/approve, 7-day/12-hour rules, summary page |
+| D | Chamara R M L K (IT22076816) | `Chamara R M L K <lahiruchamara1112@gmail.com>` | Booking lists/filters, dashboards, QR display, operator scan/verify/finalize |

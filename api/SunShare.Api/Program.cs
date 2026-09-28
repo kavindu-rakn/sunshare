@@ -19,7 +19,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using SunShare.Api.Data;
+using SunShare.Api.Helpers;
 using SunShare.Api.Middleware;
+using SunShare.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,19 +31,33 @@ var builder = WebApplication.CreateBuilder(args);
 var mongoSettings = builder.Configuration.GetSection("MongoDb").Get<MongoDbSettings>()!;
 builder.Services.AddSingleton(new MongoDbContext(mongoSettings));
 
+// ---------- Our helpers and services ----------
+// Registered here so ASP.NET Core can hand them to the controllers that ask for them ("dependency injection").
+// Singleton = one shared object for the whole app; Scoped = a fresh object for each request.
+builder.Services.AddSingleton<JwtTokenHelper>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AuthService>();
+
 // ---------- Controllers + JSON ----------
-// JSON uses camelCase names (e.g. availableSlots). If a request body has missing or badly typed
-// fields, answer 400 with { "message": "..." } like every other error, instead of ASP.NET's default shape.
-builder.Services.AddControllers()
+// JSON uses camelCase names (e.g. availableSlots). If a request body is broken or badly typed,
+// answer 400 with { "message": "..." } like every other error, instead of ASP.NET's default shape.
+// Empty text fields are NOT rejected automatically: the services check them and give friendly
+// messages ("Please enter the full name.") - FAT service.
+builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
     .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase)
     .ConfigureApiBehaviorOptions(options =>
         options.InvalidModelStateResponseFactory = context =>
         {
-            string firstError = context.ModelState.Values
-                .SelectMany(entry => entry.Errors)
-                .Select(error => error.ErrorMessage)
-                .FirstOrDefault(text => text != "") ?? "Some details are missing or invalid.";
-            return new BadRequestObjectResult(new { message = firstError });
+            // Find the first field that could not be read, e.g. "$.energyKwh" -> "energyKwh"
+            // ("request" is just the name of the whole body, so it is skipped).
+            string? field = context.ModelState
+                .Where(entry => entry.Value!.Errors.Count > 0)
+                .Select(entry => entry.Key.TrimStart('$', '.'))
+                .FirstOrDefault(key => key != "" && key != "request");
+            string message = field == null
+                ? "The request data is missing or not in the right format."
+                : $"The value of '{field}' is not in the right format.";
+            return new BadRequestObjectResult(new { message });
         });
 
 // ---------- Login tokens (JWT) ----------
@@ -54,6 +70,9 @@ var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Ke
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        // Keep the short claim names from the token ("nic", "name", "role") instead of renaming them
+        // to long Microsoft URLs, and tell ASP.NET which claim holds the role for [Authorize(Roles = ...)].
+        options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -63,7 +82,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = signingKey,
-            ClockSkew = TimeSpan.FromMinutes(1)
+            ClockSkew = TimeSpan.FromMinutes(1),
+            NameClaimType = JwtTokenHelper.NameClaim,
+            RoleClaimType = JwtTokenHelper.RoleClaim
         };
         // Missing/expired token (401) and wrong role (403) also answer with { "message": "..." }.
         options.Events = new JwtBearerEvents

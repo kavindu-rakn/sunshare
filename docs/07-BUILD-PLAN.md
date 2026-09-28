@@ -40,10 +40,10 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Commits:** foundation, seeder, health (separately).
 
 ## Phase 2 — API Part A: accounts & access · Owner: Gimhan T P K
-- [ ] `NicValidator` (R1), `JwtTokenHelper` (makes the signed token).
-- [ ] `AuthService` + `AuthController` (login R3/R4, register R1/R3).
-- [ ] `UserService` + `UsersController` (list/filter, pending-activations, get, create, update, activate, deactivate R4).
-- [ ] `ProfileController` (get/update own, self-deactivate R5, R16).
+- [x] `NicValidator` (R1), `JwtTokenHelper` (makes the signed token).
+- [x] `AuthService` + `AuthController` (login R3/R4, register R1/R3).
+- [x] `UserService` + `UsersController` (list/filter, pending-activations, get, create, update, activate, deactivate R4).
+- [x] `ProfileController` (get/update own, self-deactivate R5, R16).
 - **Done when:** Swagger: BO login → activate the Pending seed prosumer → that prosumer can now log in; register with `12345` NIC → 400; login as Deactivated → 403; PR token calling `/api/users` → 403.
 
 ## Phase 3 — API Part B: stations & slots · Owner: Kvn

@@ -4,12 +4,12 @@
 
 | Part | Feature area | Owner | IT number | Email for `Co-authored-by` |
 |---|---|---|---|---|
-| **A** | Accounts & Access | **Gimhan T P K** | IT________ | ________ (ask Gimhan for the email on his GitHub account) |
+| **A** | Accounts & Access | **Gimhan T P K** | **IT22266996** | karindragimhan49@gmail.com |
 | **B** | Nodes, Slots & Map + shared foundation, hosting, integration | **Ranathunga R A K N** (Kvn) — group lead | **IT22552860** | — (Kvn commits as himself; no trailer) |
-| **C** | Reservations | **Malkith G W L** | IT________ | ________ |
-| **D** | Dashboards & QR | **Chamara R M L K** | IT________ | ________ |
+| **C** | Reservations | **Malkith G W L** | **IT22630834** | lithiramalkith@gmail.com |
+| **D** | Dashboards & QR | **Chamara R M L K** | **IT22076816** | lahiruchamara1112@gmail.com |
 
-> **TODO (Kvn):** fill in the three IT numbers and GitHub emails. GitHub only credits a co-author if the email matches one on their GitHub account (their `...@users.noreply.github.com` address also works). Until then Claude Code uses the placeholder and Kvn can amend before pushing.
+> GitHub only credits a co-author if the email matches one on their GitHub account (their `...@users.noreply.github.com` address also works). Emails received from Kvn on 28 Sep 2026.
 
 Trailer format (last lines of the commit message):
 ```

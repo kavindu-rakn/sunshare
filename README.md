@@ -20,9 +20,9 @@ Both clients talk to the API only through REST calls. Details: [`docs/02-ARCHITE
 | Member | IT number | Part | Contribution |
 |---|---|---|---|
 | Ranathunga R A K N | IT22552860 | B — Nodes, Slots & Map | Solar station & slot management (API + web), nearby-stations Google Map with SQLite cache (Android), shared API foundation, IIS hosting, web & Android app shells, Home page, report |
-| Gimhan T P K | IT________ | A — Accounts & Access | Login & role-based access (web + mobile), web user management, prosumer management, pending activations, mobile registration / profile / deactivation |
-| Malkith G W L | IT________ | C — Reservations | Reservation create / update / cancel / approve with 7-day and 12-hour rules (API, web, mobile), summary page after each action |
-| Chamara R M L K | IT________ | D — Dashboards & QR | Booking views (current / pending / history + search), web & mobile dashboards, QR generation, operator QR scan → verify → finalize |
+| Gimhan T P K | IT22266996 | A — Accounts & Access | Login & role-based access (web + mobile), web user management, prosumer management, pending activations, mobile registration / profile / deactivation |
+| Malkith G W L | IT22630834 | C — Reservations | Reservation create / update / cancel / approve with 7-day and 12-hour rules (API, web, mobile), summary page after each action |
+| Chamara R M L K | IT22076816 | D — Dashboards & QR | Booking views (current / pending / history + search), web & mobile dashboards, QR generation, operator QR scan → verify → finalize |
 
 Full breakdown: [`docs/09-TEAM.md`](docs/09-TEAM.md).
 
