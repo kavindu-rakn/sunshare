@@ -1,6 +1,12 @@
 # Normalise line endings for text files; keep binaries untouched.
 * text=auto
 
+# Scripts must keep their own line endings or they stop running.
+gradlew text eol=lf
+*.sh     text eol=lf
+*.bat    text eol=crlf
+*.ps1    text eol=crlf
+
 *.png  binary
 *.jpg  binary
 *.jpeg binary
