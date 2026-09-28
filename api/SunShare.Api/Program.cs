@@ -120,16 +120,17 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // ---------- Prepare the database ----------
-// Once at start-up: create the indexes. If MongoDB is down we only log it,
-// so the API still starts and GET /api/health can report "unreachable".
+// Once at start-up: create the indexes, then add the sample data if the database is empty.
+// If MongoDB is down we only log it, so the API still starts and GET /api/health can report "unreachable".
 var db = app.Services.GetRequiredService<MongoDbContext>();
 try
 {
     await db.CreateIndexesAsync();
+    await new DataSeeder(db).SeedAsync();
 }
 catch (TimeoutException ex)
 {
-    app.Logger.LogError(ex, "MongoDB could not be reached at start-up, so the indexes were not created.");
+    app.Logger.LogError(ex, "MongoDB could not be reached at start-up, so indexes and sample data were skipped.");
 }
 
 // ---------- Request pipeline (the order matters) ----------
