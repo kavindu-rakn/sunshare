@@ -47,9 +47,9 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Done when:** Swagger: BO login → activate the Pending seed prosumer → that prosumer can now log in; register with `12345` NIC → 400; login as Deactivated → 403; PR token calling `/api/users` → 403.
 
 ## Phase 3 — API Part B: stations & slots · Owner: Kvn
-- [ ] `GeoHelper` (Haversine distance in km).
-- [ ] `StationService` + `StationsController` (CRUD, activate/deactivate R6, delete R7, nearby R18, `activeReservationCount`).
-- [ ] `SlotService` + `SlotsController` (per-station list, available R9/R11, create/update/delete R8).
+- [x] `GeoHelper` (Haversine distance in km).
+- [x] `StationService` + `StationsController` (CRUD, activate/deactivate R6, delete R7, nearby R18, `activeReservationCount`).
+- [x] `SlotService` + `SlotsController` (per-station list, available R9/R11, create/update/delete R8).
 - **Done when:** create station + slot works; deactivate Malabe Solar Hub (has bookings) → 409; nearby from SLIIT (6.9147, 79.9730) returns stations sorted by distance, inactive one excluded.
 
 ## Phase 4 — API Part C: reservation actions · Owner: Malkith G W L
