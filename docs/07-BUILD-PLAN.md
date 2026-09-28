@@ -1,6 +1,6 @@
 # 07 — Build Plan (phases for Claude Code)
 
-**How to use:** open Claude Code in the `sunshare/` folder and say **"Do Phase N"**. Claude Code reads `CLAUDE.md` + this file, does the phase, tests it, ticks the boxes here, commits (with the Part owner as co-author), and explains what it did in plain words.
+**How to use:** open Claude Code in the `sunshare/` folder and say **"Do Phase N"**. Claude Code reads `CLAUDE.md` + this file, works on a `phase-N-...` branch, does the phase, tests it, ticks the boxes here, commits (with the Part owner as co-author), opens a pull request for Kvn to review and merge, and explains what it did in plain words.
 
 **Tips to save your weekly Claude usage:** start each phase in a fresh session (`/clear`) — `CLAUDE.md` reloads automatically. Use Plan mode for the big phases (2, 4, 5, 13, 16–18). If Claude runs out, Codex or Antigravity can continue: they read `AGENTS.md` → `CLAUDE.md` → this plan.
 
