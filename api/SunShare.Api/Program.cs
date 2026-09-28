@@ -48,11 +48,16 @@ builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttri
     .ConfigureApiBehaviorOptions(options =>
         options.InvalidModelStateResponseFactory = context =>
         {
-            string firstError = context.ModelState.Values
-                .SelectMany(entry => entry.Errors)
-                .Select(error => error.ErrorMessage)
-                .FirstOrDefault(text => text != "") ?? "Some details are missing or invalid.";
-            return new BadRequestObjectResult(new { message = firstError });
+            // Find the first field that could not be read, e.g. "$.energyKwh" -> "energyKwh"
+            // ("request" is just the name of the whole body, so it is skipped).
+            string? field = context.ModelState
+                .Where(entry => entry.Value!.Errors.Count > 0)
+                .Select(entry => entry.Key.TrimStart('$', '.'))
+                .FirstOrDefault(key => key != "" && key != "request");
+            string message = field == null
+                ? "The request data is missing or not in the right format."
+                : $"The value of '{field}' is not in the right format.";
+            return new BadRequestObjectResult(new { message });
         });
 
 // ---------- Login tokens (JWT) ----------
