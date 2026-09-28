@@ -7,7 +7,8 @@
  *  Author      : Gimhan T P K (IT22266996)
  *  Created     : 2026-09-28
  *  Description : Business rules for user accounts: list/search, create,
- *                edit, activate and deactivate (rules R1, R3, R4).
+ *                edit, activate and deactivate (rules R1, R3, R4), plus a
+ *                prosumer's own profile edit and self-deactivation (R5, R16).
  * ============================================================================
  */
 using System.Text.RegularExpressions;
@@ -169,6 +170,42 @@ public class UserService
         }
 
         return await SetStatusAsync(user, UserStatuses.Deactivated);
+    }
+
+    // A prosumer edits their own details and can set a new password (at least 6 characters).
+    // RULE R16: callerNic comes from the login token, so nobody can edit someone else's profile.
+    public async Task<UserResponse> UpdateProfileAsync(string callerNic, UpdateProfileRequest request)
+    {
+        User user = await FindOrThrowAsync(callerNic);
+        // RULE R4: a deactivated account can't be changed, even if an old token is still valid.
+        if (user.Status == UserStatuses.Deactivated)
+        {
+            throw new ApiException(403, "Your account is deactivated. Please contact the Backoffice.");
+        }
+        ValidateDetails(request.FullName, request.Email, request.Phone);
+
+        ApplyDetails(user, request.FullName, request.Email, request.Phone, request.Address);
+        if (!string.IsNullOrEmpty(request.NewPassword))
+        {
+            ValidatePassword(request.NewPassword);
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        }
+        user.UpdatedAt = DateTime.UtcNow;
+
+        await _db.Users.ReplaceOneAsync(u => u.Nic == user.Nic, user);
+        return UserResponse.FromUser(user);
+    }
+
+    // RULE R5: a prosumer deactivates their own account from the mobile app.
+    // Afterwards they can't log in (R4) and they appear on Backoffice's Pending Activations list.
+    public async Task DeactivateSelfAsync(string callerNic)
+    {
+        User user = await FindOrThrowAsync(callerNic);
+        if (user.Status == UserStatuses.Deactivated)
+        {
+            throw new ApiException(400, "Your account is already deactivated.");
+        }
+        await SetStatusAsync(user, UserStatuses.Deactivated);
     }
 
     // Saves a new status for a user and returns the updated user.
