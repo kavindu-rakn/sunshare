@@ -107,10 +107,10 @@
 ### Reservations: actions — Part C
 | Method | Path | Who | Body → Response | Rules |
 |---|---|---|---|---|
-| POST | `/api/reservations` | PR (own NIC from token), BO/GO (must send `prosumerNic`) | CreateReservationRequest → 201 ReservationResponse (status `Pending`) | R9, R11, R12, R13, R16, R17 |
-| PUT | `/api/reservations/{id}` | PR (own), BO, GO | UpdateReservationRequest → ReservationResponse (Approved → back to Pending) | R9, R10, R12, R13, R15, R16, R17 |
-| PATCH | `/api/reservations/{id}/cancel` | PR (own), BO, GO | → ReservationResponse (`Cancelled`) | R10, R12, R15, R16 |
-| PATCH | `/api/reservations/{id}/approve` | BO, GO | → ReservationResponse (`Approved`, `qrData` filled). Only from `Pending` | R13 |
+| POST | `/api/reservations` | PR (own NIC from token), BO/GO (must send `prosumerNic`) | CreateReservationRequest → 201 ReservationResponse (status `Pending`). Errors: no slot / bad energy or type / slot closed / station inactive / too soon or > 7 days / prosumer not Active → 400; same prosumer + slot twice or slot full → 409; staff NIC not a prosumer → 404 | R9, R11, R12, R13, R16, R17 |
+| PUT | `/api/reservations/{id}` | PR (own), BO, GO | UpdateReservationRequest → ReservationResponse (Approved → back to Pending; nothing changed → returned as it is). Not yours → 403; Completed/Cancelled or < 12 h → 400 | R9, R10, R12, R13, R15, R16, R17 |
+| PATCH | `/api/reservations/{id}/cancel` | PR (own), BO, GO | → ReservationResponse (`Cancelled`, QR token cleared, place given back) | R10, R12, R15, R16 |
+| PATCH | `/api/reservations/{id}/approve` | BO, GO | → ReservationResponse (`Approved`, `qrData` filled). Only from `Pending` and not in the past → else 400 | R13 |
 
 ### Reservations: views & QR — Part D
 | Method | Path | Who | Body → Response | Rules |

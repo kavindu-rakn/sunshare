@@ -47,6 +47,28 @@ This is the heart of the trading system: a prosumer claims one battery place at 
 - Android: `ui/prosumer/ReservationFormActivity.java`, `ReservationSummaryActivity.java` · cancel method in `ReservationDetailActivity.java` (shared with D) · layouts `activity_reservation_form.xml`, `activity_reservation_summary.xml`
 
 ## How it works
+### API (Phase 4) — ✅ built
+**Files** (in `api/SunShare.Api/`): `Services/ReservationService.cs` · `Controllers/ReservationsController.cs` · `Helpers/ReservationMapper.cs` · `Dtos/CreateReservationRequest.cs`, `UpdateReservationRequest.cs`, `ReservationResponse.cs`.
+
+**Create** (`POST /api/reservations`), checks in this order:
+1. **Who is it for? (R16)** A Prosumer → their own NIC from the token (a `prosumerNic` in the body is ignored). Staff → must send `prosumerNic`.
+2. **Active prosumer? (R11)** Not found / not a Prosumer → 404; Pending or Deactivated → 400.
+3. **Energy + type (R17):** `0 < energyKwh ≤ 100`, type `Sell` or `Buy`.
+4. **The slot (R11 + R9):** exists, station active, slot open, starts in the future, **≤ 7 days** ahead, has a free place.
+5. **Not twice (R11):** the same prosumer can't have two live bookings in one slot (a Cancelled one doesn't count) → 409.
+6. **Take a place (R12):** `UpdateOne(filter: id = slot AND availableSlots > 0, update: availableSlots − 1)`. If nothing matched, someone just took the last place → 409. Because the check and the subtraction are **one database step**, two people can't both get the last place (tested: 1 place, 2 parallel bookings → one 201, one 409).
+7. Save as **Pending (R13)** with copies of the slot times and station name.
+
+**Update** (`PUT /{id}`): R16 own booking (else 403) → R15 not Completed/Cancelled → R10 ≥ 12 h before start → prosumer still Active → R17. Moving to another slot = new slot −1, old slot +1 (R12). If an **Approved** booking really changed → back to **Pending**, QR token cleared (R13) — the old QR stops working. Nothing changed → returned as it is (D32).
+
+**Cancel** (`PATCH /{id}/cancel`): R16 → R15 → R10 → status Cancelled, who/when saved, QR token cleared → slot +1 (R12).
+
+**Approve** (`PATCH /{id}/approve`, Backoffice/Grid Operator only): only **Pending** and not already started → Approved + a random 32-character token (`RandomNumberGenerator`, 16 bytes → hex) + approvedBy/At.
+
+**ReservationMapper** builds every reservation answer (Part D reuses it):
+- `canModify` = (Pending or Approved) AND start − now ≥ 12 h → the apps show Edit/Cancel only when true (the apps never do the maths).
+- `qrData` = `SUNSHARE|<id>|<token>` **only** when Approved; otherwise null.
+
 _(Claude Code fills this in after Phases 4, 11 and 17.)_
 
 ## Your demo (≈ 60 s)
