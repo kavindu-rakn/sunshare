@@ -40,6 +40,9 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<StationService>();
 builder.Services.AddScoped<SlotService>();
 builder.Services.AddScoped<ReservationService>();
+builder.Services.AddScoped<ReservationQueryService>();
+builder.Services.AddScoped<QrService>();
+builder.Services.AddScoped<DashboardService>();
 
 // ---------- Controllers + JSON ----------
 // JSON uses camelCase names (e.g. availableSlots). If a request body is broken or badly typed,

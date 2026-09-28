@@ -58,9 +58,9 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Done when:** book 2 days ahead ✓ · 8 days ahead → 400 · same slot twice → 409 · cancel a booking < 12 h away → 400 · approve → `qrData` present · edit an Approved one → back to Pending, `qrData` null · slot `availableSlots` correct in Compass after each step.
 
 ## Phase 5 — API Part D: views, QR, dashboards · Owner: Chamara R M L K
-- [ ] `ReservationQueryService` + `ReservationViewsController` (list with `view/status/stationId/from/to/search`, get by id; R16).
-- [ ] `QrService` + `QrController` (verify-qr, complete — R14).
-- [ ] `DashboardService` + `DashboardController` (summary for staff, prosumer counts).
+- [x] `ReservationQueryService` + `ReservationViewsController` (list with `view/status/stationId/from/to/search`, get by id; R16).
+- [x] `QrService` + `QrController` (verify-qr, complete — R14).
+- [x] `DashboardService` + `DashboardController` (summary for staff, prosumer counts).
 - **Done when:** PR sees only own bookings · `view=history` includes Completed/Cancelled/past · search "malabe" works · wrong token → 400 · complete → Completed · counts match Compass.
 
 ## Phase 6 — Host the API on IIS · Owner: Kvn

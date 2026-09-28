@@ -115,15 +115,15 @@
 ### Reservations: views & QR — Part D
 | Method | Path | Who | Body → Response | Rules |
 |---|---|---|---|---|
-| GET | `/api/reservations?view=&status=&stationId=&from=&to=&search=` | PR (own only), BO, GO | `view` = `current` \| `pending` \| `history` \| `all` (default). `search` matches station name, reservation id; staff also prosumer NIC/name. → ReservationResponse[] (current/pending: soonest first; history: newest first) | R16, dashboard definitions |
+| GET | `/api/reservations?view=&status=&stationId=&from=&to=&search=` | PR (own only), BO, GO | `view` = `current` \| `pending` \| `history` \| `all` (default). `search` matches station name (not case-sensitive) or a **full** 24-character reservation id; staff also prosumer NIC/name. `from`/`to` filter the start time (UTC, `to` exclusive). → ReservationResponse[] (all/current/pending: soonest first; history: newest first). Unknown `view` or bad `stationId` → 400 | R16, dashboard definitions |
 | GET | `/api/reservations/{id}` | PR (own), BO, GO | → ReservationResponse | R16 |
-| POST | `/api/reservations/verify-qr` | GO | VerifyQrRequest → ReservationResponse. Bad format → 400 "This is not a SunShare QR code." Wrong token / not Approved → 400 with reason | R14 |
-| PATCH | `/api/reservations/{id}/complete` | GO | VerifyQrRequest → ReservationResponse (`Completed`) | R14 |
+| POST | `/api/reservations/verify-qr` | GO | VerifyQrRequest → ReservationResponse. Bad format → 400 "This is not a SunShare QR code." Unknown booking / already completed / cancelled / not approved / wrong token → 400, each with its own reason | R14 |
+| PATCH | `/api/reservations/{id}/complete` | GO | VerifyQrRequest → ReservationResponse (`Completed`, `completedBy/At`). Same checks as verify, and the QR must belong to `{id}` → else 400 | R14 |
 
 ### Dashboards — Part D
 | Method | Path | Who | Response |
 |---|---|---|---|
-| GET | `/api/dashboard/summary` | BO, GO | StaffDashboardResponse (web dashboard + mobile operator home) |
+| GET | `/api/dashboard/summary` | BO, GO | StaffDashboardResponse (web dashboard + mobile operator home). `todayReservations` = not Cancelled, starting today in **Sri Lanka** time; `pendingList` = next 5 **upcoming** Pending |
 | GET | `/api/dashboard/prosumer` | PR | ProsumerDashboardResponse (mobile prosumer home) |
 
 ## Controller → service map

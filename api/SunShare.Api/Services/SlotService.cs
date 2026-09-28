@@ -41,8 +41,8 @@ public class SlotService
     public async Task<List<SlotResponse>> ListForStationAsync(string stationId, DateTime? from, DateTime? to)
     {
         SolarStation station = await _stations.FindOrThrowAsync(stationId);
-        DateTime start = from.HasValue ? AsUtc(from.Value) : DateTime.UtcNow.Date;
-        DateTime end = to.HasValue ? AsUtc(to.Value) : start.AddDays(14);
+        DateTime start = from.HasValue ? TimeHelper.AsUtc(from.Value) : DateTime.UtcNow.Date;
+        DateTime end = to.HasValue ? TimeHelper.AsUtc(to.Value) : start.AddDays(14);
 
         List<EnergyBookingSlot> slots = await _db.EnergyBookingSlots
             .Find(s => s.StationId == station.Id && s.StartTime >= start && s.StartTime < end)
@@ -97,8 +97,8 @@ public class SlotService
             throw new ApiException(400, "This station is deactivated, so it can't get new slots.");
         }
 
-        DateTime start = AsUtc(request.StartTime);
-        DateTime end = AsUtc(request.EndTime);
+        DateTime start = TimeHelper.AsUtc(request.StartTime);
+        DateTime end = TimeHelper.AsUtc(request.EndTime);
         ValidateTimes(start, end);
         ValidateTotal(request.TotalSlots, station, 0);
 
@@ -127,8 +127,8 @@ public class SlotService
         SolarStation station = await _stations.FindOrThrowAsync(slot.StationId);
         int booked = slot.TotalSlots - slot.AvailableSlots;
 
-        DateTime start = AsUtc(request.StartTime);
-        DateTime end = AsUtc(request.EndTime);
+        DateTime start = TimeHelper.AsUtc(request.StartTime);
+        DateTime end = TimeHelper.AsUtc(request.EndTime);
         bool timeChanged = start != slot.StartTime || end != slot.EndTime;
         if (timeChanged)
         {
@@ -211,16 +211,5 @@ public class SlotService
         {
             throw new ApiException(400, $"{booked} places are already booked, so the total can't be less than {booked}.");
         }
-    }
-
-    // The API always works in UTC. A time sent with a zone ("...Z" or "...+05:30") is converted to UTC;
-    // a time sent without one ("2026-09-30T08:00") is taken as UTC already.
-    private static DateTime AsUtc(DateTime value)
-    {
-        if (value.Kind == DateTimeKind.Unspecified)
-        {
-            return DateTime.SpecifyKind(value, DateTimeKind.Utc);
-        }
-        return value.ToUniversalTime();
     }
 }
