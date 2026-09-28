@@ -53,8 +53,8 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Done when:** create station + slot works; deactivate Malabe Solar Hub (has bookings) → 409; nearby from SLIIT (6.9147, 79.9730) returns stations sorted by distance, inactive one excluded.
 
 ## Phase 4 — API Part C: reservation actions · Owner: Malkith G W L
-- [ ] `ReservationService` + `ReservationsController`: create (R9, R11, R12, R13, R16, R17), update (R9, R10, R12, R13, R15), cancel (R10, R12, R15), approve (R13 → `qrToken`).
-- [ ] `Helpers/ReservationMapper` builds `ReservationResponse` incl. `canModify` + `qrData` (reused by Part D).
+- [x] `ReservationService` + `ReservationsController`: create (R9, R11, R12, R13, R16, R17), update (R9, R10, R12, R13, R15), cancel (R10, R12, R15), approve (R13 → `qrToken`).
+- [x] `Helpers/ReservationMapper` builds `ReservationResponse` incl. `canModify` + `qrData` (reused by Part D).
 - **Done when:** book 2 days ahead ✓ · 8 days ahead → 400 · same slot twice → 409 · cancel a booking < 12 h away → 400 · approve → `qrData` present · edit an Approved one → back to Pending, `qrData` null · slot `availableSlots` correct in Compass after each step.
 
 ## Phase 5 — API Part D: views, QR, dashboards · Owner: Chamara R M L K

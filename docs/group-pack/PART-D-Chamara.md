@@ -47,6 +47,8 @@ Reads `EnergyReservations` (status, startTime, stationName, prosumerNic…), `So
 - Web: `pages/Dashboard.jsx`, `Reservations.jsx` (list + filter bar; C adds row actions) · `api/dashboardApi.js` + list functions in `api/reservationsApi.js`
 - Android: `ui/prosumer/ProsumerHomeActivity.java`, `BookingsActivity.java`, `BookingAdapter.java`, `ReservationDetailActivity.java` · `ui/operator/OperatorHomeActivity.java`, `ScanResultActivity.java` · their layouts
 
+> **Built for you in Phase 4 (reuse, don't copy):** `ReservationMapper.ToResponse(r)` builds every `ReservationResponse` (incl. `canModify`, `qrData`); `ReservationMapper.QrPrefix` = `"SUNSHARE"`; `ReservationService.FindOrThrowAsync(id)` (404 incl. bad ids) and `ReservationService.CheckOwner(r, nic, role)` (R16 → 403) are public.
+
 ## How it works
 _(Claude Code fills this in after Phases 5, 10, 16 and 18.)_
 
