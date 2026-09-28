@@ -12,7 +12,7 @@
  *  Project     : SunShare - Smart Solar Microgrid Trading System
  *  Module      : SE4040 Enterprise Application Development - Assignment 1
  *  Part        : C - Reservations
- *  Author      : Malkith G W L (ITxxxxxxxx)
+ *  Author      : Malkith G W L (IT22630834)
  *  Created     : 2026-09-28
  *  Description : Business rules for creating, updating, cancelling and
  *                approving energy reservations (rules R9-R13, R15, R17).
@@ -97,7 +97,7 @@ feat(api): add reservation cancel with 12-hour rule
 - Return the freed place to the slot (R12)
 - Add PATCH /api/reservations/{id}/cancel to ReservationsController
 
-Co-authored-by: Malkith G W L <malkith@example.com>
+Co-authored-by: Malkith G W L <lithiramalkith@gmail.com>
 ```
 Subject prefixes: `feat`, `fix`, `docs`, `style` (UI only), `refactor`, `chore` (setup/config), `test`. Scope: `api`, `web`, `android`, `docs`, `report`.
 One increment = one commit (e.g. "stations API", "stations web page"). Never commit secrets (`local.properties`, keys).
