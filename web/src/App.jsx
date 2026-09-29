@@ -21,6 +21,7 @@ import Prosumers from './pages/Prosumers.jsx';
 import UserForm from './pages/UserForm.jsx';
 import Users from './pages/Users.jsx';
 import NotFound from './pages/NotFound.jsx';
+import PendingActivations from './pages/PendingActivations.jsx';
 
 const STAFF = ['Backoffice', 'GridOperator'];
 const BACKOFFICE = ['Backoffice'];
@@ -57,7 +58,7 @@ export default function App() {
                 <Route path="/prosumers" element={<Prosumers />} />
                 <Route path="/prosumers/new" element={<UserForm kind="prosumer" />} />
                 <Route path="/prosumers/:nic/edit" element={<UserForm kind="prosumer" />} />
-                <Route path="/activations" element={<PagePlaceholder title="Pending activations" phase={8} />} />
+                <Route path="/activations" element={<PendingActivations />} />
               </Route>
             </Route>
           </Route>
