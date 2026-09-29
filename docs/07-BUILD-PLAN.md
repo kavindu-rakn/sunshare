@@ -92,6 +92,8 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] `npm run build` with `.env.production` → copy `dist/` → IIS site **SunShareWeb** on port 8081 (`08 §4`).
 - **Done when:** `http://localhost:8081` works end to end against IIS API.
 
+> **Order change (29 Sep, D47):** the Google Maps key needs a card on a Google Cloud billing account, which Kvn can't use right now. Android is built **13 → 14 → 16 → 17 → 18 → 15** (map last). If no key arrives in time, Phase 15 uses the fallback in D47 (OpenStreetMap in-app map + "Open in Google Maps" per station).
+
 ## Phase 13 — Android shell · Owner: Kvn
 - [ ] Gradle deps (allowed list), Manifest permissions (INTERNET, CAMERA, ACCESS_FINE/COARSE_LOCATION), `network_security_config.xml` (allow HTTP for the LAN demo), Maps key from `local.properties` → manifest placeholder.
 - [ ] Brand `colors.xml`, `themes.xml`, `strings.xml`, app icon (sun).
