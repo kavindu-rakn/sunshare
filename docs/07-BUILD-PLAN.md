@@ -112,7 +112,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] M3 Prosumer Home (counts + next booking), M8 Bookings (tabs Current/Pending/History + search, RecyclerView), M9 Detail (details + **QR from `qrData`**).
 
 ## Phase 17 — Android Part C · Owner: Malkith G W L
-- [ ] M6 Reservation form (create + edit), Cancel button on M9, **M7 Summary after every action**.
+- [x] M6 Reservation form (create + edit), Cancel button on M9, **M7 Summary after every action**.
 
 ## Phase 18 — Android Part D (operator mode) · Owner: Chamara R M L K
 - [ ] M10 Operator Home (counts + Scan QR + map), ZXing scanner, M11 Scan Result (verify → **Finalize** → M7 Completed).
