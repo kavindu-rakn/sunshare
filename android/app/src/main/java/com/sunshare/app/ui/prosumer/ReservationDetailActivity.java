@@ -11,7 +11,7 @@
  *                R16). When the booking is Approved the API sends qrData
  *                ("SUNSHARE|<id>|<token>", R14) and this screen draws it as a
  *                QR code with ZXing for the Grid Operator to scan.
- *                Edit / Cancel buttons are added by Part C in Phase 17.
+ *                (Edit / Cancel buttons: Part C, see ReservationActions.)
  * ============================================================================
  */
 package com.sunshare.app.ui.prosumer;
@@ -19,6 +19,7 @@ package com.sunshare.app.ui.prosumer;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -59,6 +60,8 @@ public class ReservationDetailActivity extends AppCompatActivity {
     private View cardQr;
     private ImageView imageQr;
     private TextView textNote;
+    private Button buttonEdit;
+    private Button buttonCancel;
 
     // Called when the screen opens: makes sure someone is logged in, reads which booking to show
     // and links the views. The booking itself is loaded in onResume.
@@ -86,6 +89,8 @@ public class ReservationDetailActivity extends AppCompatActivity {
         cardQr = findViewById(R.id.cardQr);
         imageQr = findViewById(R.id.imageQr);
         textNote = findViewById(R.id.textNote);
+        buttonEdit = findViewById(R.id.buttonEdit);
+        buttonCancel = findViewById(R.id.buttonCancel);
     }
 
     // Called every time the screen comes to the front, so the details are fresh
@@ -125,7 +130,8 @@ public class ReservationDetailActivity extends AppCompatActivity {
         });
     }
 
-    // Puts the booking on the screen: details, status badge, QR code (Approved only) and a "what next" note.
+    // Puts the booking on the screen: details, status badge, QR code (Approved only), a "what next" note
+    // and the Edit / Cancel buttons.
     private void showReservation(ReservationResponse booking) {
         content.setVisibility(View.VISIBLE);
         textStation.setText(booking.stationName);
@@ -136,6 +142,8 @@ public class ReservationDetailActivity extends AppCompatActivity {
         textHistory.setText(historyText(booking));
         showQr(booking);
         showNote(booking);
+        // Edit / Cancel (Part C): shown only when the API says canModify.
+        ReservationActions.show(this, booking, buttonEdit, buttonCancel);
     }
 
     // "Booked Mon, 28 Sep, 10:00 · Approved Tue, 29 Sep, 09:00" - when each step happened.

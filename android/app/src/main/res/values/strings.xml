@@ -80,6 +80,10 @@
     <string name="type_buy">Buy – charge from the station</string>
     <string name="create_booking">Create booking</string>
 
+    <!-- M9 Edit / Cancel (Part C) -->
+    <string name="edit_booking">Edit booking</string>
+    <string name="cancel_booking">Cancel booking</string>
+
     <!-- M7 Summary (Part C) -->
     <string name="summary_title">Summary</string>
     <string name="view_my_bookings">View my bookings</string>
