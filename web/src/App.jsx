@@ -14,7 +14,6 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
 import AppLayout from './components/AppLayout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import PagePlaceholder from './components/PagePlaceholder.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
@@ -23,6 +22,7 @@ import UserForm from './pages/UserForm.jsx';
 import Users from './pages/Users.jsx';
 import NotFound from './pages/NotFound.jsx';
 import PendingActivations from './pages/PendingActivations.jsx';
+import ReservationForm from './pages/ReservationForm.jsx';
 import Reservations from './pages/Reservations.jsx';
 import SlotForm from './pages/SlotForm.jsx';
 import Slots from './pages/Slots.jsx';
@@ -47,8 +47,8 @@ export default function App() {
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/reservations" element={<Reservations />} />
-              <Route path="/reservations/new" element={<PagePlaceholder title="New reservation" phase={11} />} />
-              <Route path="/reservations/:id/edit" element={<PagePlaceholder title="Edit reservation" phase={11} />} />
+              <Route path="/reservations/new" element={<ReservationForm />} />
+              <Route path="/reservations/:id/edit" element={<ReservationForm />} />
               <Route path="/stations" element={<Stations />} />
               <Route path="/stations/:id/slots" element={<Slots />} />
               <Route path="/slots/new" element={<SlotForm />} />

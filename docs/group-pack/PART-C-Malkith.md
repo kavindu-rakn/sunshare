@@ -71,6 +71,14 @@ This is the heart of the trading system: a prosumer claims one battery place at 
 
 _(Claude Code fills this in after Phases 4, 11 and 17.)_
 
+### Web (Phase 11) — ✅ built
+**Files** (in `web/src/`): `pages/ReservationForm.jsx` · the row actions inside `pages/Reservations.jsx` · `createReservation`, `updateReservation`, `cancelReservation` in `api/reservationsApi.js`.
+
+- **Reservation form (W14):** staff book *on behalf of* a prosumer. Drop-downs come from the API: active prosumers (`GET /api/users?role=Prosumer&status=Active`), active stations, then **bookable slots** of that station (`GET /api/slots/available?stationId=` — the API already applied R9 ≤ 7 days and R11 free place). Energy and Sell/Buy are typed/picked. Save → `POST /api/reservations` (new, starts **Pending**) or `PUT /api/reservations/{id}` (edit). The browser only blocks empty boxes; everything else (R9–R13, R17) is the API's answer, shown in a red alert — e.g. *"Energy must be more than 0 and at most 100 kWh."* or *"Changes and cancellations need at least 12 hours' notice…"*.
+- **Edit an Approved booking:** the API sends it back to Pending and deletes its QR token (R13); the page tells staff *"It went back to Pending and needs approval again."*
+- **Row actions on the Reservations list (W13):** **Approve** for Pending; **Edit** and **Cancel** (with "Are you sure?") **only when the API's `canModify` is true** — so a booking that starts in under 12 hours, or is Completed/Cancelled, shows no Edit/Cancel. The page never calculates the 12 hours itself.
+- **Checked in the database after the web tests:** every slot's free places still matched its bookings (create −1, cancel +1, move old +1 / new −1 — R12).
+
 ## Your demo (≈ 60 s)
 1. Phone (prosumer): **New Reservation** → Malabe Solar Hub → a slot 2 days ahead → 12 kWh → Sell → **Summary: Created (Pending)**.
 2. Edit it → change slot → **Summary: Updated**.
