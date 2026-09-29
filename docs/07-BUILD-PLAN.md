@@ -89,7 +89,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] W14 Reservation form (create/edit on behalf of a prosumer) + W13 row actions Edit / Cancel / Approve (shown only when `canModify` / Pending).
 
 ## Phase 12 — Host the web app on IIS · Owner: Kvn
-- [ ] `npm run build` with `.env.production` → copy `dist/` → IIS site **SunShareWeb** on port 8081 (`08 §4`).
+- [x] `npm run build` with `.env.production` → copy `dist/` → IIS site **SunShareWeb** on port 8081 (`08 §4`).
 - **Done when:** `http://localhost:8081` works end to end against IIS API.
 
 ## Phase 13 — Android shell · Owner: Kvn

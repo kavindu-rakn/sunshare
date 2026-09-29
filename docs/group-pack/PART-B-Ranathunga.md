@@ -125,6 +125,13 @@ From SLIIT: Malabe 0.00 km → Kaduwela 2.42 → Battaramulla 6.23 → Kottawa 8
 - **Slots (W11):** the station's windows for 14 days — total / booked / free, Open or Closed — with Add, Edit, Delete.
 - **Slot form (W12):** staff type times in their local time (`datetime-local`); the page converts to UTC (`new Date(value).toISOString()`) because the API works in UTC. For a booked slot the form shows *"1 already booked - the time can't change…"*, and the API enforces it (R8, D28).
 
+### Web app on IIS (Phase 12)
+- **Deploy:** admin PowerShell → `powershell -ExecutionPolicy Bypass -File .\scripts\deploy-web.ps1`.
+- **What happens:** `npm run build` turns the React code into plain files (`index.html`, one CSS, one JS, the icon fonts) using `.env.production`, so every API call goes to the IIS API `http://localhost:8080`. The script mirrors `web/dist` into `C:\inetpub\sunshare\web`, and the IIS site **SunShareWeb** on port **8081** serves those files. No .NET runs in this site — it is static files only.
+- **Why no rewrite rules:** HashRouter keeps the page in the part after `#` (e.g. `/#/stations`), which never reaches IIS, so IIS always serves `index.html`.
+- **Two sites, two ports:** web 8081 → API 8080 → MongoDB. The browser allows the web page to call the API only because the API's CORS list contains `http://localhost:8081`.
+- **Tested:** Kvn logged in on `http://localhost:8081` (Dashboard with live counts); the icon font is served as `font/woff2`; the built JS contains `http://localhost:8080`.
+
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
 2. Web as Backoffice: create "SLIIT Rooftop Hub" with lat/lng → add two slots.
