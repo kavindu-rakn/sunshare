@@ -45,7 +45,8 @@ Reads `EnergyReservations` (status, startTime, stationName, prosumerNic…), `So
 ## Files (planned — updated after the build)
 - API: `Controllers/ReservationViewsController.cs`, `QrController.cs`, `DashboardController.cs` · `Services/ReservationQueryService.cs`, `QrService.cs`, `DashboardService.cs` · `Dtos/VerifyQrRequest.cs`, `StaffDashboardResponse.cs`, `ProsumerDashboardResponse.cs`
 - Web: `pages/Dashboard.jsx`, `Reservations.jsx` (list + filter bar; C adds row actions) · `api/dashboardApi.js` + list functions in `api/reservationsApi.js`
-- Android: `ui/prosumer/ProsumerHomeActivity.java`, `BookingsActivity.java`, `BookingAdapter.java`, `ReservationDetailActivity.java` · `ui/operator/OperatorHomeActivity.java`, `ScanResultActivity.java` · their layouts
+- Android — basic homes ✅ built in Phase 14 (greeting, NIC, Log out; D49): `ui/prosumer/ProsumerHomeActivity.java`, `ui/operator/OperatorHomeActivity.java` + `activity_prosumer_home.xml`, `activity_operator_home.xml`. Still to build: counts / next booking (Phase 16), Scan QR (Phase 18).
+- Android (planned): `ui/prosumer/ProsumerHomeActivity.java`, `BookingsActivity.java`, `BookingAdapter.java`, `ReservationDetailActivity.java` · `ui/operator/OperatorHomeActivity.java`, `ScanResultActivity.java` · their layouts
 
 > **Built for you in Phase 4 (reuse, don't copy):** `ReservationMapper.ToResponse(r)` builds every `ReservationResponse` (incl. `canModify`, `qrData`); `ReservationMapper.QrPrefix` = `"SUNSHARE"`; `ReservationService.FindOrThrowAsync(id)` (404 incl. bad ids) and `ReservationService.CheckOwner(r, nic, role)` (R16 → 403) are public.
 

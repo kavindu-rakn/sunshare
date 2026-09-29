@@ -102,7 +102,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Done when:** app builds; a temporary test call to `/api/health` from the emulator shows "connected".
 
 ## Phase 14 — Android Part A · Owner: Gimhan T P K
-- [ ] M1 Login (session check, role routing, ⚙ server address dialog), M2 Register, M4 Profile (edit + deactivate → clear session).
+- [x] M1 Login (session check, role routing, ⚙ server address dialog), M2 Register, M4 Profile (edit + deactivate → clear session).
 
 ## Phase 15 — Android Part B · Owner: Kvn
 - [ ] M5 StationMapActivity: location permission, `/stations/nearby`, markers, **info window with station details**, my-location dot, save to `stations_cache`, offline fallback.
