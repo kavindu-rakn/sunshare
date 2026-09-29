@@ -1,0 +1,93 @@
+' ============================================================================
+'  File        : 02-use-case.puml
+'  Project     : SunShare - Smart Solar Microgrid Trading System
+'  Part        : B - Report diagrams
+'  Author      : Ranathunga R A K N (IT22552860)
+'  Description : Use case diagram. Actors: Prosumer, Grid Operator, Backoffice
+'                officer (both staff roles share the "Staff" use cases).
+'                System boundary: SunShare. Part letters (A-D) show who built
+'                each use case (docs/09-TEAM.md).
+' ============================================================================
+@startuml
+!pragma layout smetana
+left to right direction
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #334155
+skinparam ActorBorderColor #0B1F33
+skinparam ActorBackgroundColor #FEF3C7
+skinparam UsecaseBorderColor #0F766E
+skinparam UsecaseBackgroundColor #E6F4F2
+skinparam RectangleBorderColor #0B1F33
+skinparam RectangleFontSize 15
+title SunShare - Use case diagram
+
+actor "Prosumer" as PR
+actor "Staff\n(Backoffice or\nGrid Operator)" as ST
+actor "Grid Operator" as GO
+actor "Backoffice officer" as BO
+ST <|-- GO
+ST <|-- BO
+
+rectangle "SunShare" {
+  usecase "Log in\n(A)" as Login
+
+  usecase "Register an account\n(A)" as Register
+  usecase "Edit own profile\n(A)" as Profile
+  usecase "Deactivate own account\n(A)" as Deactivate
+  usecase "View my dashboard\n(D)" as PrDash
+  usecase "Find nearby stations\non a map (B)" as Map
+  usecase "Create a booking\n(C)" as Create
+  usecase "Update a booking\n(C)" as Update
+  usecase "Cancel a booking\n(C)" as Cancel
+  usecase "View current / pending /\nhistory bookings + search (D)" as Lists
+  usecase "Show booking QR code\n(D)" as ShowQr
+
+  usecase "View staff dashboard\n(D)" as StDash
+  usecase "Approve a booking\n(C)" as Approve
+  usecase "Search & filter\nreservations (D)" as Filter
+  usecase "Book / edit / cancel\nfor a prosumer (C)" as OnBehalf
+  usecase "Manage slot schedules\n(B)" as Slots
+
+  usecase "Scan QR and verify\nwith server (D)" as Scan
+  usecase "Finalize energy transfer\n(D)" as Finalize
+
+  usecase "Manage web users\n(A)" as Users
+  usecase "Manage prosumers\n(A)" as Prosumers
+  usecase "Activate / reactivate\naccounts (A)" as Activate
+  usecase "Manage stations\ncreate / update /\ndeactivate / delete (B)" as Stations
+}
+
+PR --> Login
+PR --> Register
+PR --> Profile
+PR --> Deactivate
+PR --> PrDash
+PR --> Map
+PR --> Create
+PR --> Update
+PR --> Cancel
+PR --> Lists
+
+' Staff actors are drawn on the right of the system box (arrows written from the use case side).
+Login <-- ST
+StDash <-- ST
+Approve <-- ST
+Filter <-- ST
+OnBehalf <-- ST
+Slots <-- ST
+
+Scan <-- GO
+Finalize <-- GO
+Map <-- GO
+
+Users <-- BO
+Prosumers <-- BO
+Activate <-- BO
+Stations <-- BO
+
+ShowQr .> Lists : <<extend>>\n(only when Approved)
+Finalize .> Scan : <<include>>
+@enduml

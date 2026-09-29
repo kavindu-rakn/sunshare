@@ -1,0 +1,44 @@
+' ============================================================================
+'  File        : 03-dfd-level-0.puml
+'  Project     : SunShare - Smart Solar Microgrid Trading System
+'  Part        : B - Report diagrams
+'  Author      : Ranathunga R A K N (IT22552860)
+'  Description : Data flow diagram, level 0 (context diagram): the whole
+'                SunShare system as one process and the data flowing between
+'                it and the outside entities.
+'                Notation: rectangle = external entity, circle = process.
+' ============================================================================
+@startuml
+!pragma layout smetana
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #334155
+skinparam ArrowFontSize 11
+skinparam RectangleBorderColor #0B1F33
+skinparam RectangleBackgroundColor #FEF3C7
+skinparam UsecaseBorderColor #0F766E
+skinparam UsecaseBackgroundColor #E6F4F2
+skinparam UsecaseFontSize 15
+title SunShare - Data flow diagram, level 0 (context)
+
+rectangle "Prosumer" as PR
+rectangle "Grid Operator" as GO
+rectangle "Backoffice officer" as BO
+rectangle "Google Maps" as GM
+
+usecase "0\n**SunShare**\nsystem" as SYS
+
+PR --> SYS : sign-up details, login,\nprofile changes, location,\nbooking requests (create /\nupdate / cancel)
+SYS --> PR : account status, dashboard counts,\nbookings + history, summaries,\nQR code, nearby stations
+
+GO --> SYS : login, slot schedules,\napprovals, scanned QR text,\nfinalize request
+SYS --> GO : dashboard counts, reservations,\nQR verification result,\ncompleted booking
+
+BO --> SYS : web users, prosumers,\nactivations, stations,\napprovals
+SYS --> BO : user and prosumer lists,\npending activations,\nstations, dashboard
+
+SYS --> GM : my position,\nstation positions
+GM --> SYS : map tiles
+@enduml

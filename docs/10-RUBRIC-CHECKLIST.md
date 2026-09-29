@@ -28,7 +28,7 @@
 | Home (index) page | 1 | W1 | Polished landing page | [x] |
 | Completeness of all pages | 1 | all | Every page works, no placeholders | [x] |
 | UI screenshots | 1 | report | All screens, unique | [ ] |
-| High-level, use case, DFD | 1 | `diagrams/` | Accurate + labelled | [ ] |
+| High-level, use case, DFD | 1 | `diagrams/` | Accurate + labelled | [x] |
 | References | 1 | `13-REFERENCES.md` | IEEE style, complete | [x] |
 | Individual contribution | 1 | report | Each member distinct (`09-TEAM.md`) | [ ] |
 | Challenges | 1 | `12-CHALLENGES.md` | Genuine reflection | [x] |
@@ -66,7 +66,7 @@
 ## Submission checklist (Wed 30 Sep)
 - [ ] Final IIS deploy of API + web; re-seeded data
 - [ ] All screenshots taken (`05-SCREENS.md` names) + `MAIN-SCREEN-web.png`, `MAIN-SCREEN-mobile.png`
-- [ ] Diagrams exported
+- [x] Diagrams exported
 - [ ] Report generated and opened in Word; code pasted as text; page numbers/TOC updated
 - [ ] Video recorded (≤ 5:00), uploaded, link in README + report
 - [ ] GitHub repo pushed; visibility set so the lecturer can open it

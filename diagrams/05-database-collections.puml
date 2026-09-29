@@ -1,0 +1,85 @@
+' ============================================================================
+'  File        : 05-database-collections.puml
+'  Project     : SunShare - Smart Solar Microgrid Trading System
+'  Part        : B - Report diagrams
+'  Author      : Ranathunga R A K N (IT22552860)
+'  Description : Database design: the 4 MongoDB collections in SunShareDb,
+'                their fields and how documents point at each other by id
+'                (MongoDB has no JOINs). * = required. Crow's feet show
+'                "one to many" (docs/03-DATABASE.md).
+' ============================================================================
+@startuml
+!pragma layout smetana
+hide circle
+hide methods
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #334155
+skinparam ClassBorderColor #0B1F33
+skinparam ClassBackgroundColor #FFFFFF
+skinparam ClassHeaderBackgroundColor #E6F4F2
+title SunShare - Database design (MongoDB SunShareDb)
+
+entity "Users" as U {
+  * _id : string  <<NIC>>
+  --
+  * fullName : string
+  * email : string
+  * phone : string
+  address : string
+  * role : Backoffice | GridOperator | Prosumer
+  * status : Pending | Active | Deactivated
+  * passwordHash : string (BCrypt)
+  * createdAt, updatedAt : date (UTC)
+}
+
+entity "SolarStationInfo" as S {
+  * _id : ObjectId
+  --
+  * name : string
+  * address : string
+  * latitude, longitude : double
+  * capacityKw : double
+  * batterySlots : int
+  * openTime, closeTime : "HH:mm"
+  * isActive : bool
+  * createdAt, updatedAt : date (UTC)
+}
+
+entity "EnergyBookingSlots" as B {
+  * _id : ObjectId
+  --
+  * stationId : ObjectId  -> SolarStationInfo
+  * startTime, endTime : date (UTC)
+  * totalSlots : int  (1..batterySlots)
+  * availableSlots : int
+  * isActive : bool
+  * createdAt, updatedAt : date (UTC)
+}
+
+entity "EnergyReservations" as R {
+  * _id : ObjectId
+  --
+  * prosumerNic : string  -> Users
+  * prosumerName : string  (copy)
+  * stationId : ObjectId  -> SolarStationInfo
+  * stationName : string  (copy)
+  * slotId : ObjectId  -> EnergyBookingSlots
+  * startTime, endTime : date (UTC, copied from slot)
+  * energyKwh : double  (0 < x <= 100)
+  * type : Sell | Buy
+  * status : Pending | Approved | Completed | Cancelled
+  qrToken : string  (set on approval)
+  approvedBy, approvedAt
+  completedBy, completedAt
+  cancelledBy, cancelledAt
+  * createdAt, updatedAt : date (UTC)
+}
+
+S ||--o{ B : "has time slots"
+B ||--o{ R : "holds bookings\n(up to totalSlots)"
+U ||--o{ R : "prosumer makes"
+S ||--o{ R : "stationId\n(for quick lists)"
+@enduml

@@ -55,3 +55,5 @@ Add to this list whenever code follows a tutorial/sample (and put a `// Referenc
 [26] Google, "Load the Maps JavaScript API," *Google for Developers*. [Online]. Available: https://developers.google.com/maps/documentation/javascript/load-maps-js-api [Accessed: 29-Sep-2026].
 
 [27] Google, "Build web apps in WebView," *Android Developers*. [Online]. Available: https://developer.android.com/develop/ui/views/layout/webapps/webview [Accessed: 29-Sep-2026].
+
+[28] PlantUML, "PlantUML - Open-source tool that uses simple textual descriptions to draw UML diagrams." [Online]. Available: https://plantuml.com/ [Accessed: 29-Sep-2026].
