@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File: activity_operator_home.xml | Part D | M10 Operator Home: greeting header + actions (counts and Scan QR added in Phase 18). -->
+<!-- File: activity_operator_home.xml | Part D | M10 Operator Home: greeting, today's counts and the Scan QR button. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -59,6 +60,123 @@
                 tools:text="Grid Operator · NIC 199845678912" />
         </LinearLayout>
 
+        <!-- Count cards (from GET /api/dashboard/summary) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="14dp"
+                app:strokeColor="@color/ss_primary_soft">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:id="@+id/textTodayCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/count_loading"
+                        android:textColor="@color/ss_dark"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/count_today"
+                        android:textColor="@color/ss_dark"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="6dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/ss_accent_soft"
+                app:cardCornerRadius="14dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:id="@+id/textPendingCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/count_loading"
+                        android:textColor="@color/ss_dark"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/count_pending"
+                        android:textColor="@color/ss_dark"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/ss_primary_soft"
+                app:cardCornerRadius="14dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:id="@+id/textApprovedCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/count_loading"
+                        android:textColor="@color/ss_primary_dark"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/count_approved"
+                        android:textColor="@color/ss_primary_dark"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:textAppearance="@style/TextAppearance.SunShare.Error"
+            android:visibility="gone" />
+
         <!-- Actions -->
         <LinearLayout
             android:id="@+id/actions"
@@ -74,6 +192,24 @@
                 android:textColor="@color/ss_dark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/scan_help"
+                android:textColor="@color/ss_muted"
+                android:textSize="14sp" />
+
+            <!-- Big Scan QR button (ZXing scanner) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonScan"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/scan_qr"
+                android:textSize="18sp"
+                app:cornerRadius="16dp" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

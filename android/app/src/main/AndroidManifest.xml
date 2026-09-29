@@ -78,6 +78,18 @@
         <activity
             android:name=".ui.operator.OperatorHomeActivity"
             android:exported="false" />
+        <!-- M11 Scan result (Part D) -->
+        <activity
+            android:name=".ui.operator.ScanResultActivity"
+            android:exported="false" />
+        <!-- QR scanner (Part D): ZXing's scanner screen, kept clear of the phone's bars; turns with the phone -->
+        <activity
+            android:name=".ui.operator.QrScanActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>
