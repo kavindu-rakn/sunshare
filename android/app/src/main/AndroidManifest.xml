@@ -40,7 +40,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <!-- M2 Register (Part A) -->
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <!-- M3 Prosumer Home (Part D) -->
         <activity
             android:name=".ui.prosumer.ProsumerHomeActivity"
