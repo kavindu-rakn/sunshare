@@ -115,8 +115,9 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] M6 Reservation form (create + edit), Cancel button on M9, **M7 Summary after every action**.
 
 ## Phase 18 — Android Part D (operator mode) · Owner: Chamara R M L K
-- [ ] M10 Operator Home (counts + Scan QR + map), ZXing scanner, M11 Scan Result (verify → **Finalize** → M7 Completed).
+- [x] M10 Operator Home (counts + Scan QR; the map button comes with Phase 15), ZXing scanner, M11 Scan Result (verify → **Finalize** → M7 Completed).
 - **Done when:** emulator shows the prosumer QR on screen, the phone (operator) scans it, it's verified and completed; Compass shows `Completed`.
+  - ✅ 29 Sep (emulator): verify → Finalize → Completed tested with the scanned text passed in by adb (the emulator camera can't see a real QR); scanner opens, asks for the camera, Back cancels. ⏳ **Kvn:** the real camera scan with a phone.
 
 ## Phase 19 — End-to-end test + polish · Owner: Kvn
 - [ ] Walk every row of `10-RUBRIC-CHECKLIST.md` on the IIS-hosted build (web + emulator + phone). Fix bugs.
