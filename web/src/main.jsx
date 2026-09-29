@@ -7,13 +7,15 @@
  *  Author      : Ranathunga R A K N (IT22552860)
  *  Created     : 2026-09-27
  *  Description : Entry point of the React web app. Loads the Bootstrap 5 and
- *                Bootstrap Icons stylesheets, then draws <App /> on the page.
+ *                Bootstrap Icons stylesheets plus our SunShare theme on top,
+ *                then draws <App /> on the page.
  * ============================================================================
  */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import './styles/theme.css'
 import App from './App.jsx'
 
 // Start-up: find <div id="root"> in index.html and draw the App inside it.

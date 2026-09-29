@@ -1,0 +1,266 @@
+/*
+ * ============================================================================
+ *  File        : theme.css
+ *  Project     : SunShare - Smart Solar Microgrid Trading System
+ *  Module      : SE4040 Enterprise Application Development - Assignment 1
+ *  Part        : B - Shared foundation (web shell)
+ *  Author      : Ranathunga R A K N (IT22552860)
+ *  Created     : 2026-09-29
+ *  Description : SunShare brand colours and small layout styles laid over
+ *                Bootstrap 5 (design tokens from docs/05-SCREENS.md §1).
+ * ============================================================================
+ */
+
+/* ---------- Brand tokens ---------- */
+:root {
+  --ss-primary: #0f766e;        /* Deep Teal - buttons, links, active menu, Approved */
+  --ss-primary-dark: #0b5f58;
+  --ss-primary-soft: #e6f4f2;
+  --ss-accent: #f59e0b;         /* Solar Amber - sun logo, highlights, Pending (dark text on it) */
+  --ss-accent-soft: #fef3c7;
+  --ss-dark: #0b1f33;           /* Night Navy - sidebar, headings */
+  --ss-bg: #f8fafc;             /* page background */
+  --ss-success: #16a34a;
+  --ss-danger: #dc2626;
+  --ss-info: #0284c7;
+  --ss-muted: #64748b;
+  --ss-radius: 12px;
+  --ss-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --ss-shadow-lg: 0 12px 32px rgba(11, 31, 51, 0.12);
+
+  /* Tell Bootstrap to use our font, background and brand colour. */
+  --bs-body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --bs-body-bg: var(--ss-bg);
+  --bs-body-color: #1e293b;
+  --bs-primary: var(--ss-primary);
+  --bs-primary-rgb: 15, 118, 110;
+  --bs-link-color: var(--ss-primary);
+  --bs-link-color-rgb: 15, 118, 110;
+  --bs-link-hover-color: var(--ss-primary-dark);
+  --bs-link-hover-color-rgb: 11, 95, 88;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: var(--ss-dark);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Bootstrap components in brand colours ---------- */
+.btn-primary {
+  --bs-btn-bg: var(--ss-primary);
+  --bs-btn-border-color: var(--ss-primary);
+  --bs-btn-hover-bg: var(--ss-primary-dark);
+  --bs-btn-hover-border-color: var(--ss-primary-dark);
+  --bs-btn-active-bg: var(--ss-primary-dark);
+  --bs-btn-active-border-color: var(--ss-primary-dark);
+  --bs-btn-disabled-bg: var(--ss-primary);
+  --bs-btn-disabled-border-color: var(--ss-primary);
+  --bs-btn-focus-shadow-rgb: 15, 118, 110;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--ss-primary);
+  --bs-btn-border-color: var(--ss-primary);
+  --bs-btn-hover-bg: var(--ss-primary);
+  --bs-btn-hover-border-color: var(--ss-primary);
+  --bs-btn-active-bg: var(--ss-primary-dark);
+  --bs-btn-active-border-color: var(--ss-primary-dark);
+  --bs-btn-focus-shadow-rgb: 15, 118, 110;
+}
+
+/* Amber button: dark text on amber for contrast (never white on amber). */
+.btn-accent {
+  --bs-btn-color: var(--ss-dark);
+  --bs-btn-bg: var(--ss-accent);
+  --bs-btn-border-color: var(--ss-accent);
+  --bs-btn-hover-color: var(--ss-dark);
+  --bs-btn-hover-bg: #fbbf24;
+  --bs-btn-hover-border-color: #fbbf24;
+  --bs-btn-active-bg: #d97706;
+  --bs-btn-active-border-color: #d97706;
+  --bs-btn-focus-shadow-rgb: 245, 158, 11;
+  font-weight: 600;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #5eb3ab;
+  box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.2);
+}
+
+.form-check-input:checked {
+  background-color: var(--ss-primary);
+  border-color: var(--ss-primary);
+}
+
+.card {
+  --bs-card-bg: #fff;
+  --bs-card-border-radius: var(--ss-radius);
+  --bs-card-inner-border-radius: var(--ss-radius);
+  border: 0;
+  box-shadow: var(--ss-shadow);
+}
+
+.table > :not(caption) > * > th {
+  color: var(--ss-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ---------- Status badges (StatusBadge.jsx) ---------- */
+.status-badge { font-weight: 600; padding: 0.4em 0.7em; }
+.status-pending { background: var(--ss-accent); color: var(--ss-dark); }
+.status-approved { background: var(--ss-primary); color: #fff; }
+.status-completed,
+.status-active { background: var(--ss-success); color: #fff; }
+.status-cancelled { background: #94a3b8; color: #fff; }
+.status-deactivated { background: var(--ss-danger); color: #fff; }
+
+/* ---------- Keyboard focus and skip link (accessibility) ---------- */
+:where(a, button, .nav-link):focus-visible {
+  outline: 3px solid var(--ss-accent);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2000;
+  padding: 0.5rem 1rem;
+  background: var(--ss-dark);
+  color: #fff;
+  border-radius: 8px;
+}
+
+/* ---------- App shell: sidebar + content (AppLayout.jsx, Sidebar.jsx) ---------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--ss-dark);
+  color: #cbd5e1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-sidebar .brand {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.25rem;
+  text-decoration: none;
+}
+
+.app-sidebar .brand .bi-sun-fill { color: var(--ss-accent); }
+
+.app-sidebar .nav-link {
+  color: #cbd5e1;
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.app-sidebar .nav-link:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+.app-sidebar .nav-link.active { background: var(--ss-primary); color: #fff; }
+
+.app-sidebar .sidebar-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.app-sidebar .user-box {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.875rem;
+}
+
+.app-content {
+  flex-grow: 1;
+  min-width: 0;          /* lets wide tables scroll instead of stretching the page */
+}
+
+.app-content main:focus { outline: none; }
+
+/* Small screens: the sidebar becomes a top bar and the links open with the menu button. */
+@media (max-width: 991.98px) {
+  .app-shell { flex-direction: column; }
+  .app-sidebar { width: 100%; height: auto; position: sticky; z-index: 1020; }
+  .app-sidebar .sidebar-body { display: none; }
+  .app-sidebar.open .sidebar-body { display: flex; }
+}
+
+.page-subtitle { color: var(--ss-muted); }
+
+/* ---------- Home page (Home.jsx) ---------- */
+.home-hero {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.35), transparent 40%),
+    linear-gradient(135deg, var(--ss-dark) 0%, #123a55 55%, var(--ss-primary) 100%);
+  color: #e2e8f0;
+  overflow: hidden;   /* the decorative sun may stick out of the edge */
+}
+
+.home-hero h1 { color: #fff; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; }
+
+.home-hero .lead { color: #cbd5e1; }
+
+.hero-sun {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fde68a 0%, var(--ss-accent) 60%, #d97706 100%);
+  box-shadow: 0 0 60px rgba(245, 158, 11, 0.6);
+}
+
+.hero-card { border-radius: 16px; box-shadow: var(--ss-shadow-lg); }
+
+.step-number {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--ss-accent-soft);
+  color: #92400e;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 12px;
+  background: var(--ss-primary-soft);
+  color: var(--ss-primary);
+  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-where { background: var(--ss-primary-soft); color: var(--ss-primary-dark); font-weight: 600; }
+
+.home-cta { background: var(--ss-primary); color: #fff; }
+.home-cta h2 { color: #fff; }
+
+.home-footer { background: var(--ss-dark); color: #94a3b8; }
+.home-footer a { color: #e2e8f0; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; }
+}
