@@ -4,4 +4,6 @@
     <string name="app_name">SunShare</string>
     <string name="tagline">Trade your sunshine</string>
     <string name="checking_server">Checking the SunShare server…</string>
+    <string name="server_check_title">Server check</string>
+    <string name="check_again">Check again</string>
 </resources>
