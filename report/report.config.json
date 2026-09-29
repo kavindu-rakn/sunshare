@@ -1,0 +1,15 @@
+{
+  "title": "SunShare - Smart Solar Microgrid Trading System",
+  "subtitle": "Client-Server Application (Web, Mobile and Web Service)",
+  "module": "SE4040 Enterprise Application Development - Assignment 1",
+  "year": "Year 4, Semester 2, 2026",
+  "submitted": "30 September 2026",
+  "gitUrl": "https://github.com/kavindu-rakn/sunshare",
+  "videoUrl": "",
+  "members": [
+    { "part": "A", "name": "Gimhan T P K", "it": "IT22266996", "area": "Accounts & access", "sheet": "PART-A-Gimhan.md", "reflection": "A-Gimhan.md" },
+    { "part": "B", "name": "Ranathunga R A K N", "it": "IT22552860", "area": "Stations, slots & map; shared foundation, hosting (group lead)", "sheet": "PART-B-Ranathunga.md", "reflection": "B-Ranathunga.md" },
+    { "part": "C", "name": "Malkith G W L", "it": "IT22630834", "area": "Reservations", "sheet": "PART-C-Malkith.md", "reflection": "C-Malkith.md" },
+    { "part": "D", "name": "Chamara R M L K", "it": "IT22076816", "area": "Dashboards & QR", "sheet": "PART-D-Chamara.md", "reflection": "D-Chamara.md" }
+  ]
+}
