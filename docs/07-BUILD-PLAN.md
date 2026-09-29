@@ -108,7 +108,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [ ] M5 StationMapActivity: location permission, `/stations/nearby`, markers, **info window with station details**, my-location dot, save to `stations_cache`, offline fallback.
 
 ## Phase 16 — Android Part D (prosumer views) · Owner: Chamara R M L K
-- [ ] M3 Prosumer Home (counts + next booking), M8 Bookings (tabs Current/Pending/History + search, RecyclerView), M9 Detail (details + **QR from `qrData`**).
+- [x] M3 Prosumer Home (counts + next booking), M8 Bookings (tabs Current/Pending/History + search, RecyclerView), M9 Detail (details + **QR from `qrData`**).
 
 ## Phase 17 — Android Part C · Owner: Malkith G W L
 - [ ] M6 Reservation form (create + edit), Cancel button on M9, **M7 Summary after every action**.
