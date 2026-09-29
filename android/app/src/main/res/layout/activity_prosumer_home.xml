@@ -293,9 +293,17 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- M6 New booking (Part C) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonNewBooking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/new_booking" />
+
             <!-- M8 My bookings -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonBookings"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/my_bookings" />

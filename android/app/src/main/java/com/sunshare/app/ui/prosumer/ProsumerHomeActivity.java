@@ -13,7 +13,7 @@
  *                refreshed every time the screen comes back. Tapping a count
  *                opens that list (M8); the next booking opens its details
  *                (M9). (The My profile button was added with M4 Profile,
- *                Part A.)
+ *                Part A; the New booking button with M6, Part C.)
  * ============================================================================
  */
 package com.sunshare.app.ui.prosumer;
@@ -86,6 +86,7 @@ public class ProsumerHomeActivity extends AppCompatActivity {
         findViewById(R.id.cardApproved).setOnClickListener(v -> openBookings("current"));
         findViewById(R.id.cardCompleted).setOnClickListener(v -> openBookings("history"));
         findViewById(R.id.cardNext).setOnClickListener(v -> openNextBooking());
+        findViewById(R.id.buttonNewBooking).setOnClickListener(v -> startActivity(new Intent(this, ReservationFormActivity.class)));
         findViewById(R.id.buttonBookings).setOnClickListener(v -> openBookings("current"));
         findViewById(R.id.buttonLogout).setOnClickListener(v -> SessionGuard.logout(this));
         findViewById(R.id.buttonProfile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));

@@ -64,6 +64,22 @@
     <string name="qr_description">QR code for this booking</string>
     <string name="qr_help">Show this at the station. The Grid Operator scans it to finish the energy transfer.</string>
 
+    <!-- M6 Booking form (Part C) -->
+    <string name="new_booking">New booking</string>
+    <string name="form_title_new">New booking</string>
+    <string name="form_title_edit">Edit booking</string>
+    <string name="form_intro_new">Pick a station and one of its free slots. New bookings are Pending until they are approved.</string>
+    <string name="form_intro_edit">Change the slot, energy or type. An approved booking goes back to Pending and needs approval again.</string>
+    <string name="station">Station</string>
+    <string name="time_slot">Time slot</string>
+    <string name="slot_helper_choose_station">Choose a station first</string>
+    <string name="energy_kwh">Energy (kWh)</string>
+    <string name="energy_helper">More than 0 and up to 100 kWh</string>
+    <string name="type">Type</string>
+    <string name="type_sell">Sell – drop off spare energy</string>
+    <string name="type_buy">Buy – charge from the station</string>
+    <string name="create_booking">Create booking</string>
+
     <!-- M7 Summary (Part C) -->
     <string name="summary_title">Summary</string>
     <string name="view_my_bookings">View my bookings</string>
