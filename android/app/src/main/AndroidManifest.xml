@@ -78,6 +78,10 @@
         <activity
             android:name=".ui.operator.OperatorHomeActivity"
             android:exported="false" />
+        <!-- M11 Scan result (Part D) -->
+        <activity
+            android:name=".ui.operator.ScanResultActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
