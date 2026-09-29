@@ -98,7 +98,12 @@ What it does:
 ## 7. Demo networking (emulator + phone)
 - Everything points to the **IIS API on port 8080**.
 - **Emulator** → server address `http://10.0.2.2:8080/` (10.0.2.2 = "the laptop" as seen from the emulator).
-- **Phone** → `http://<laptop IPv4>:8080/` — laptop and phone on the **same Wi-Fi** (or connect the laptop to the phone's hotspot).
+- **Phone, over Wi-Fi** → `http://<laptop IPv4>:8080/` — laptop and phone must get addresses in the **same range** (e.g. both `192.168.1.x`). The same Wi-Fi *name* is not enough: a router with two bands or a repeater can hand out different ranges (C12). Check: laptop `ipconfig` → IPv4; phone → Settings → Wi-Fi → the network → IP address. **Most reliable at the viva:** turn on the **Android phone's own hotspot** and connect the laptop to it (campus Wi-Fi often blocks device-to-device traffic).
+- **Phone, over the USB cable** (no Wi-Fi needed): with the phone plugged in and USB debugging on, run once per connection in a terminal:
+  ```powershell
+  & "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" -d reverse tcp:8080 tcp:8080
+  ```
+  then in the app: ⚙ Server → `http://localhost:8080/`. The phone's port 8080 is carried through the cable to the laptop's IIS API. Unplugging the cable ends it.
 - Change it at runtime: Login screen ⚙ → Server address (saved in SQLite). **At the viva the Wi-Fi/IP will be different — just update it there, no rebuild.**
 - Phone: Settings → About phone → tap **Build number** 7 times → Developer options → **USB debugging** ON → plug in → Allow.
 - QR demo: prosumer booking open on the **emulator** (QR on the laptop screen) → operator logged in on the **phone** → Scan.
