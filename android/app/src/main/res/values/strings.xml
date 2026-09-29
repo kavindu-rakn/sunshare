@@ -1,3 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File: strings.xml | Part B (Android shell) | Texts used by the app. -->
 <resources>
     <string name="app_name">SunShare</string>
+    <string name="tagline">Trade your sunshine</string>
+    <string name="checking_server">Checking the SunShare server…</string>
 </resources>
