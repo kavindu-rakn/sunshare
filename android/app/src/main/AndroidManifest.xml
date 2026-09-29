@@ -30,8 +30,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
 
+        <!-- M1 Login (Part A) - the app's first screen -->
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -40,6 +41,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- M2 Register (Part A) -->
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- M4 Profile (Part A) -->
+        <activity
+            android:name=".ui.prosumer.ProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- M3 Prosumer Home (Part D) -->
+        <activity
+            android:name=".ui.prosumer.ProsumerHomeActivity"
+            android:exported="false" />
+        <!-- M10 Operator Home (Part D) -->
+        <activity
+            android:name=".ui.operator.OperatorHomeActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

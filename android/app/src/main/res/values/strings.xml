@@ -3,7 +3,45 @@
 <resources>
     <string name="app_name">SunShare</string>
     <string name="tagline">Trade your sunshine</string>
-    <string name="checking_server">Checking the SunShare server…</string>
-    <string name="server_check_title">Server check</string>
-    <string name="check_again">Check again</string>
+    <string name="back">Back</string>
+
+    <!-- Form fields (shared by Register and Profile) -->
+    <string name="nic">NIC</string>
+    <string name="nic_helper">9 digits + V/X, or 12 digits</string>
+    <string name="full_name">Full name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="address_optional">Address (optional)</string>
+    <string name="password">Password</string>
+    <string name="password_helper">At least 6 characters</string>
+    <string name="confirm_password">Confirm password</string>
+
+    <!-- M1 Login (Part A) -->
+    <string name="login_title">Log in</string>
+    <string name="login_subtitle">Use your NIC and password.</string>
+    <string name="login_button">Log in</string>
+    <string name="register_link">New prosumer? Create an account</string>
+    <string name="server_button">⚙ Server</string>
+    <string name="server_address">Server address</string>
+    <string name="server_address_helper">Emulator: http://10.0.2.2:8080/ · Phone: http://&lt;laptop Wi-Fi IP&gt;:8080/</string>
+
+    <!-- M2 Register (Part A) -->
+    <string name="register_title">Create account</string>
+    <string name="register_intro">Sign up as a prosumer. A Backoffice officer activates new accounts before you can log in.</string>
+    <string name="register_button">Create account</string>
+
+    <!-- M4 Profile (Part A) -->
+    <string name="profile_title">My profile</string>
+    <string name="new_password_optional">New password (optional)</string>
+    <string name="new_password_helper">Leave empty to keep your current password</string>
+    <string name="save_changes">Save changes</string>
+    <string name="close_account_title">Close your account</string>
+    <string name="close_account_text">You won\'t be able to log in until a Backoffice officer reactivates your account.</string>
+    <string name="deactivate_account">Deactivate my account</string>
+
+    <!-- Home screens -->
+    <string name="log_out">Log out</string>
+    <string name="home_prompt">What would you like to do?</string>
+    <string name="my_profile">My profile</string>
+    <string name="operator_ready">Ready for today\'s energy transfers.</string>
 </resources>

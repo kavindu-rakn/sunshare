@@ -47,7 +47,7 @@ Phone SQLite: `session` table (NIC, name, role, token).
 ## Files (planned — updated after the build)
 - API ✅ (Phase 2): `Controllers/AuthController.cs`, `UsersController.cs`, `ProfileController.cs` · `Services/AuthService.cs`, `UserService.cs` · `Helpers/JwtTokenHelper.cs`, `NicValidator.cs` · `Dtos/LoginRequest.cs`, `LoginResponse.cs`, `RegisterRequest.cs`, `CreateUserRequest.cs`, `UpdateUserRequest.cs`, `UpdateProfileRequest.cs`, `UserResponse.cs`
 - Web: `pages/Login.jsx`, `Users.jsx`, `UserForm.jsx`, `Prosumers.jsx`, `ProsumerForm.jsx`, `PendingActivations.jsx` · `api/authApi.js`, `usersApi.js`
-- Android: `ui/auth/LoginActivity.java`, `RegisterActivity.java` · `ui/prosumer/ProfileActivity.java` · layouts `activity_login.xml`, `activity_register.xml`, `activity_profile.xml`
+- Android ✅ (Phase 14): `ui/auth/LoginActivity.java`, `RegisterActivity.java` · `ui/prosumer/ProfileActivity.java` · layouts `activity_login.xml`, `activity_register.xml`, `activity_profile.xml`, `dialog_server_address.xml`
 
 ## How it works
 _(Claude Code fills this in after Phases 2, 8 and 14.)_
@@ -82,6 +82,18 @@ _(Claude Code fills this in after Phases 2, 8 and 14.)_
 - **Pending activations (W8):** `GET /api/users/pending-activations` → Pending (new sign-up) + Deactivated (needs reactivation), longest waiting first → one click `PATCH /api/users/{nic}/activate`.
 - **Sidebar badge:** Backoffice sees how many prosumers are waiting. After any activate/deactivate, the page fires a small browser event (`sunshare:activations-changed`) and the sidebar reloads the count.
 
+### Android screens (Phase 14) — ✅ built
+**Files** (in `android/app/src/main/java/com/sunshare/app/`): `ui/auth/LoginActivity.java`, `ui/auth/RegisterActivity.java`, `ui/prosumer/ProfileActivity.java` · layouts in `res/layout/`: `activity_login.xml`, `activity_register.xml`, `activity_profile.xml`, `dialog_server_address.xml`.
+
+**Words first:** an **Activity** = one screen (Java class) + its **layout** (XML file that says what is on it). **Retrofit** sends the HTTP call in the background and calls `onResponse` (the server answered) or `onFailure` (no answer at all). **SQLite** = a small database file on the phone.
+
+- **M1 Login (first screen of the app):** `onCreate` first asks SQLite "is a session saved?" — if yes, it opens the home screen straight away (**stay logged in**). Otherwise: check NIC and password aren't empty → `POST /api/auth/login`. On success the answer (`token`, `nic`, `fullName`, `role`) is saved in the SQLite `session` table, then **Prosumer → Prosumer Home (M3)**, **Grid Operator → Operator Home (M10)**. **Backoffice** gets "Backoffice accounts use the SunShare web app" and nothing is saved. On an error the API's own message is shown in red: wrong password (401), **Pending** (403, R3), **Deactivated** (403, R4). The keyboard's ✓ key also logs in.
+- **⚙ Server:** a dialog to type the API address. It is saved in SQLite (`app_settings`), and the app immediately calls `/api/health` and says "Connected" or "can't reach". At the viva the laptop's Wi-Fi IP changes — fix it here, no rebuild.
+- **M2 Register:** the form only checks boxes are filled and the two passwords match (a typing check). Everything else — NIC format, NIC already used, password length — is decided by the API (R1) and its message is shown. Success → "Registered! A Backoffice officer will activate your account." → back to Login. The new account is **Pending** until Backoffice activates it on the web (R3).
+- **M4 Profile** (from Prosumer Home → *My profile*): `GET /api/profile` fills the form. The API finds *whose* profile from the **token**, not from anything the app sends — so nobody can open someone else's (R16). *Save changes* → `PUT /api/profile` (empty new password = keep the old one); the new name is also written into the SQLite session so the Home greeting updates. *Deactivate my account* → "are you sure?" → `PATCH /api/profile/deactivate` (R5) → the SQLite session is deleted → back to Login; logging in again now says "deactivated".
+- **Expired token:** if any Profile call gets **401**, `SessionGuard.handleUnauthorized` deletes the session and returns to Login.
+- **Tested on the emulator (29 Sep):** empty boxes; wrong password; Pending `200198765432`; Deactivated `981234567V`; Backoffice → web message; Nimal → Home, app killed and reopened → still logged in; Profile bad email → API message; name change → greeting "Hello, Nimalka" (then changed back); Grid Operator → Operator Home; Register mismatch / bad NIC / existing NIC / success; new account Pending → activated by Backoffice → logged in → deactivated itself → login refused; wrong server address → "can't reach", Default → "Connected".
+
 ## Your demo (≈ 60 s)
 1. Phone: **Register** a new prosumer → "waiting for activation". Try logging in → blocked (R3).
 2. Web as Backoffice: **Pending Activations** → the new user is listed → **Activate**.
@@ -100,3 +112,5 @@ _(Claude Code fills this in after Phases 2, 8 and 14.)_
 8. **Where is the NIC format checked, and why there?** — In the API (`NicValidator`, regex). FAT service: the phone only checks the field isn't empty.
 9. **Why can a Grid Operator read the users list?** — Only to pick a prosumer when booking on their behalf. Creating/editing users is Backoffice only.
 10. **What does `[Authorize(Roles = "Backoffice")]` do?** — ASP.NET checks the token's role before our method runs; wrong role → 403 automatically.
+11. **Profile never sends the NIC — how does the API know whose profile it is?** — The phone's `ApiClient` adds `Authorization: Bearer <token>` (read from the SQLite session) to every call; the API reads the NIC from inside that signed token. So a prosumer can only ever see or change their own profile (R16).
+12. **At the viva the laptop's IP is different — do you rebuild the app?** — No. Login → ⚙ Server → type `http://<new IP>:8080/` → Save. It's stored in SQLite (`app_settings`) and the app tests it with `/api/health` right away.
