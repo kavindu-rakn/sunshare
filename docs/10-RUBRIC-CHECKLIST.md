@@ -1,14 +1,14 @@
 # 10 — Rubric Checklist (tick only after testing on the IIS-hosted build)
 
-> **Walked 29 Sep (Phase 19).** Web on IIS `:8081` (Backoffice, Grid Operator, Prosumer refused; every call to `:8080`), rules R6/R7/R9/R10 against the IIS API, every Android screen against the IIS API (emulator) in Phases 13–18, and the QR scan + map on Kvn's real phone. Still open: screenshots, diagrams, report, contributions, zip, video (Phases 20–21).
+> **Walked 29 Sep (Phase 19).** Web on IIS `:8081` (Backoffice, Grid Operator, Prosumer refused; every call to `:8080`), rules R6/R7/R9/R10 against the IIS API, every Android screen against the IIS API (emulator) in Phases 13–18, and the QR scan + map on Kvn's real phone. Diagrams (Phase 20), screenshots, report and README (Phase 21) done 29 Sep. Still open: each member's AI reflection, the video, final IIS deploy + re-seed, the zip.
 
 ## 🚨 "Will not be marked" traps
 - [x] Every `.cs` file starts with the header block (`06-CONVENTIONS.md §1`)
 - [x] Every method has a `//` comment directly above it (`§2`)
 - [x] Borrowed code has `// Reference:` comments + is listed in `13-REFERENCES.md`
-- [ ] Screenshots are unique (one per screen/state, real data)
-- [ ] Zip named `IT22552860.zip`, contains code + report + main-screen screenshots
-- [ ] README has the Git link, contributions and the video link (≤ 5 min)
+- [x] Screenshots are unique (one per screen/state, real data) — `screenshots/web` W01–W14, `screenshots/mobile` M01–M11 (+ 3 extra states)
+- [ ] Zip named `IT22552860.zip`, contains code + report + main-screen screenshots — `scripts/make-zip.ps1`, run after the final merge
+- [ ] README has the Git link, contributions and the video link (≤ 5 min) — Git link + contributions done; **video link still to add**
 
 ## Table 1 — Group (35)
 
@@ -27,10 +27,10 @@
 | Web UIs with Bootstrap 5 | 2 | W1–W14 | Bootstrap classes everywhere, responsive | [x] |
 | Home (index) page | 1 | W1 | Polished landing page | [x] |
 | Completeness of all pages | 1 | all | Every page works, no placeholders | [x] |
-| UI screenshots | 1 | report | All screens, unique | [ ] |
+| UI screenshots | 1 | report | All screens, unique | [x] |
 | High-level, use case, DFD | 1 | `diagrams/` | Accurate + labelled | [x] |
 | References | 1 | `13-REFERENCES.md` | IEEE style, complete | [x] |
-| Individual contribution | 1 | report | Each member distinct (`09-TEAM.md`) | [ ] |
+| Individual contribution | 1 | report | Each member distinct (`09-TEAM.md`); each member's own AI statement in `report/contributions/` | [ ] |
 | Challenges | 1 | `12-CHALLENGES.md` | Genuine reflection | [x] |
 
 ## Table 2 — Individual (65)
@@ -65,10 +65,10 @@
 
 ## Submission checklist (Wed 30 Sep)
 - [ ] Final IIS deploy of API + web; re-seeded data
-- [ ] All screenshots taken (`05-SCREENS.md` names) + `MAIN-SCREEN-web.png`, `MAIN-SCREEN-mobile.png`
+- [x] All screenshots taken (`05-SCREENS.md` names) + `MAIN-SCREEN-web.png`, `MAIN-SCREEN-mobile.png`
 - [x] Diagrams exported
-- [ ] Report generated and opened in Word; code pasted as text; page numbers/TOC updated
+- [x] Report generated and opened in Word; code pasted as text; page numbers/TOC updated (`report/`: `npm run build` → `update-toc.ps1`; rebuild after the reflections + video link arrive)
 - [ ] Video recorded (≤ 5:00), uploaded, link in README + report
-- [ ] GitHub repo pushed; visibility set so the lecturer can open it
+- [x] GitHub repo pushed; visibility set so the lecturer can open it (public)
 - [ ] `IT22552860.zip` built without `node_modules`/`bin`/`obj`/`build`/`.gradle`; opened once to check
 - [ ] Submitted before 11:59 PM (target 10 PM)

@@ -129,10 +129,10 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] Sources in PlantUML/Mermaid + exported PNGs (PlantUML can run with Android Studio's bundled Java; fallback: mermaid.live / draw.io). *(PlantUML 1.2026.8, built-in smetana layout — no Graphviz; how to re-draw: `diagrams/README.md`.)*
 
 ## Phase 21 — Report, README, video, zip · Owner: Kvn
-- [ ] `report/` generator → **`SunShare-Report.docx`** with: cover (group, members, IT numbers), intro, high-level diagram, use case, DFD, database design, API summary, design decisions (`11`), screenshots of all UIs, **source code pasted as text** (all `.cs`, `.java`, `.js/.jsx`, key XML), hosting steps (`08`), references (`13`), individual contribution + **AI disclosure & reflection** per member (`09`), challenges (`12`), Git link.
-- [ ] Final `README.md` (Git link, contributions table, video link, how to run, test accounts).
+- [x] `report/` generator → **`SunShare-Report.docx`** with: cover (group, members, IT numbers), intro, high-level diagram, use case, DFD, database design, API summary, design decisions (`11`), screenshots of all UIs, **source code pasted as text** (all `.cs`, `.java`, `.js/.jsx`, key XML), hosting steps (`08`), references (`13`), individual contribution + **AI disclosure & reflection** per member (`09`), challenges (`12`), Git link. *(`cd report; npm run build` then `update-toc.ps1` → contents page + PDF copy; ~235 pages, 33 figures, 166 source files. Each member's own reflection goes in `report/contributions/*.md` — until then a yellow "to be written" box shows.)*
+- [x] Final `README.md` (Git link, contributions table, video link, how to run, test accounts). *(video link added after recording)*
 - [ ] (Manual, Kvn) Record ≤ 5 min video (script in `group-pack/00-INDEX.md`), upload unlisted to YouTube/OneDrive, paste link in README + report.
-- [ ] Zip → **`IT22552860.zip`**: repo **without** `node_modules`, `bin`, `obj`, `build`, `.gradle`, `.vs` + report + `MAIN-SCREEN-web.png` + `MAIN-SCREEN-mobile.png`.
+- [ ] Zip → **`IT22552860.zip`**: repo **without** `node_modules`, `bin`, `obj`, `build`, `.gradle`, `.vs` + report + `MAIN-SCREEN-web.png` + `MAIN-SCREEN-mobile.png`. *(Script ready: `scripts/make-zip.ps1` — `git archive` of the last commit, report + both main screens at the top of the zip; run it after the final merge.)*
 
 ## Phase 22 — Group pack final · Owner: all
 - [ ] Update each `group-pack/PART-*.md`: real file paths, how it works, viva Q&A checked against the final code.
