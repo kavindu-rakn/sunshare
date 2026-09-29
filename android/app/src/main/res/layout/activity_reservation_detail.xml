@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File: activity_reservation_detail.xml | Part D | M9 Booking details: status, details and the QR code when Approved. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ss_bg"
+    android:orientation="vertical"
+    tools:context=".ui.prosumer.ReservationDetailActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.SunShare.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationContentDescription="@string/back"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/detail_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32dp" />
+
+            <TextView
+                android:id="@+id/textError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.SunShare.Error"
+                android:visibility="gone" />
+
+            <!-- Everything below is shown once the booking has loaded -->
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="16dp"
+                    app:strokeColor="@color/ss_primary_soft">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textStation"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/ss_dark"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                tools:text="Malabe Solar Hub" />
+
+                            <TextView
+                                android:id="@+id/textStatus"
+                                style="@style/Widget.SunShare.StatusBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                tools:text="Approved" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="@color/ss_text"
+                            android:textSize="16sp"
+                            tools:text="Wed, 30 Sep, 11:00 - 12:00" />
+
+                        <TextView
+                            android:id="@+id/textEnergy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="@color/ss_text"
+                            android:textSize="16sp"
+                            tools:text="12.5 kWh · Sell" />
+
+                        <TextView
+                            android:id="@+id/textBookingId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textColor="@color/ss_muted"
+                            android:textIsSelectable="true"
+                            android:textSize="13sp"
+                            tools:text="Booking ID 6abb6457eb5429ade68d6395" />
+
+                        <TextView
+                            android:id="@+id/textHistory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/ss_muted"
+                            android:textSize="13sp"
+                            tools:text="Booked Mon, 28 Sep, 10:00 · Approved Tue, 29 Sep, 09:00" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- QR code, only for Approved bookings -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardQr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="16dp"
+                    app:strokeColor="@color/ss_primary_soft">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/qr_title"
+                            android:textColor="@color/ss_dark"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/imageQr"
+                            android:layout_width="240dp"
+                            android:layout_height="240dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/white"
+                            android:contentDescription="@string/qr_description" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="@string/qr_help"
+                            android:textColor="@color/ss_muted"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- What happens next, for Pending / Completed / Cancelled -->
+                <TextView
+                    android:id="@+id/textNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/ss_muted"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    tools:text="Waiting for approval." />
+
+                <!-- Edit / Cancel buttons (Part C, Phase 17) go here -->
+                <LinearLayout
+                    android:id="@+id/actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

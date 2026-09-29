@@ -75,6 +75,12 @@ What it does:
 4. Emulator location: emulator ⋯ (Extended controls) → **Location** → search "SLIIT Malabe" → **Set location**.
 
 ## 6. Google Maps API key (YOU, ~10 min)
+> **Plan from 29 Sep (D51): Maps Demo Key — no credit card.**
+> 1. Signed in with your Google account, open **https://mapsplatform.google.com/maps-demo-key/** → **Get a Demo Key** → accept the terms → copy the key.
+> 2. Paste it into `android/local.properties` (never committed, never pasted in chat): `MAPS_API_KEY=...your demo key...`
+> 3. Tell Claude Code "demo key added". Phase 15 first tries the **native Maps SDK for Android** with it; if Google refuses the demo key there, the map screen shows Google's **Maps JavaScript API** in a WebView with the same key (D51). The demo key has a **daily limit** — when it is hit the map pauses until the next day (no charge).
+>
+> The steps below (a billing-enabled Cloud project) are only needed if someone with a card makes a normal key instead.
 > **Status 29 Sep:** blocked — Google Cloud needs a card for billing (Kvn's card can't cover the authorization hold). Anyone with a card can create the key for us: it is locked to package `com.sunshare.app` + Kvn's debug SHA-1 `95:23:58:43:F0:62:F5:F3:F1:97:09:60:0B:3B:D7:73:B9:FB:03:39`, Android map loads are free, and a $1 budget alert is a safety net. A Google **AI Studio** (Gemini) key does **not** work for maps. Fallback: D47.
 
 1. console.cloud.google.com → new project **SunShare**.

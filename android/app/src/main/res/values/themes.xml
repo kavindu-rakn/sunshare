@@ -28,6 +28,17 @@
         <item name="navigationIconTint">@color/white</item>
     </style>
 
+    <!-- Small coloured pill for a booking status (Pending / Approved / Completed / Cancelled). -->
+    <style name="Widget.SunShare.StatusBadge" parent="">
+        <item name="android:background">@drawable/bg_status_badge</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Red line under a form that shows the API's error message (hidden until needed). -->
     <style name="TextAppearance.SunShare.Error" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:textColor">@color/ss_danger</item>

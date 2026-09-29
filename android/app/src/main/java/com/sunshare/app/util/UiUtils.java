@@ -9,9 +9,10 @@
  *  Description : Small screen helpers every Activity uses: show a message,
  *                read a text box, check a box is not empty (the only check
  *                the app does itself - real rules are in the API), put a
- *                button into a "Please wait..." state during an API call, and
- *                keep the screen clear of the phone's status/navigation bars
- *                and keyboard (edge-to-edge, required from Android 15).
+ *                button into a "Please wait..." state during an API call,
+ *                colour a booking status label, and keep the screen clear of
+ *                the phone's status/navigation bars and keyboard
+ *                (edge-to-edge, required from Android 15).
  * ============================================================================
  */
 package com.sunshare.app.util;
@@ -28,11 +29,13 @@ import android.widget.Toast;
 import androidx.activity.ComponentActivity;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.SystemBarStyle;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.sunshare.app.R;
 
 public final class UiUtils {
 
@@ -104,6 +107,31 @@ public final class UiUtils {
     public static void hideMessage(TextView view) {
         view.setText("");
         view.setVisibility(View.GONE);
+    }
+
+    // Colours a status label like the web badges (docs/05-SCREENS.md §1): Pending amber with dark text,
+    // Approved teal, Completed green, Cancelled grey. The label uses style Widget.SunShare.StatusBadge.
+    public static void showStatusBadge(TextView badge, String status) {
+        int background;
+        int text = R.color.white;
+        switch (status == null ? "" : status) {
+            case "Pending":
+                background = R.color.ss_accent;
+                text = R.color.ss_dark;
+                break;
+            case "Approved":
+                background = R.color.ss_primary;
+                break;
+            case "Completed":
+                background = R.color.ss_success;
+                break;
+            default:
+                background = R.color.ss_grey;
+                break;
+        }
+        badge.setText(status);
+        badge.setBackgroundTintList(ContextCompat.getColorStateList(badge.getContext(), background));
+        badge.setTextColor(ContextCompat.getColor(badge.getContext(), text));
     }
 
     // Android 15+ always draws apps behind the status bar (top) and navigation bar (bottom).

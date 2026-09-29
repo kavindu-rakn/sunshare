@@ -44,4 +44,23 @@
     <string name="home_prompt">What would you like to do?</string>
     <string name="my_profile">My profile</string>
     <string name="operator_ready">Ready for today\'s energy transfers.</string>
+
+    <!-- M3 Prosumer Home counts (Part D) -->
+    <string name="count_loading">–</string>
+    <string name="count_pending">Pending</string>
+    <string name="count_approved">Approved upcoming</string>
+    <string name="count_completed">Completed</string>
+    <string name="next_booking">NEXT BOOKING</string>
+    <string name="no_next_booking">No upcoming bookings.</string>
+    <string name="my_bookings">My bookings</string>
+
+    <!-- M8 My bookings (Part D) -->
+    <string name="bookings_title">My bookings</string>
+    <string name="search_hint">Search station or booking ID</string>
+
+    <!-- M9 Booking details (Part D) -->
+    <string name="detail_title">Booking details</string>
+    <string name="qr_title">Your QR code</string>
+    <string name="qr_description">QR code for this booking</string>
+    <string name="qr_help">Show this at the station. The Grid Operator scans it to finish the energy transfer.</string>
 </resources>

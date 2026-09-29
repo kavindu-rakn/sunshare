@@ -17,6 +17,7 @@
 
     <!-- Status colours (badges / chips) -->
     <color name="ss_success">#FF16A34A</color>        <!-- Completed, Active -->
+    <color name="ss_success_soft">#FFDCFCE7</color>
     <color name="ss_danger">#FFDC2626</color>         <!-- Cancelled errors, Deactivated -->
     <color name="ss_info">#FF0284C7</color>
     <color name="ss_grey">#FF94A3B8</color>           <!-- Cancelled -->
