@@ -15,6 +15,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import AppLayout from './components/AppLayout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import PagePlaceholder from './components/PagePlaceholder.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Prosumers from './pages/Prosumers.jsx';
@@ -22,6 +23,7 @@ import UserForm from './pages/UserForm.jsx';
 import Users from './pages/Users.jsx';
 import NotFound from './pages/NotFound.jsx';
 import PendingActivations from './pages/PendingActivations.jsx';
+import Reservations from './pages/Reservations.jsx';
 import SlotForm from './pages/SlotForm.jsx';
 import Slots from './pages/Slots.jsx';
 import StationForm from './pages/StationForm.jsx';
@@ -43,8 +45,8 @@ export default function App() {
           {/* Staff pages (Backoffice + Grid Operator), inside the sidebar layout. */}
           <Route element={<ProtectedRoute roles={STAFF} />}>
             <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<PagePlaceholder title="Dashboard" phase={10} />} />
-              <Route path="/reservations" element={<PagePlaceholder title="Reservations" phase={10} />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/reservations" element={<Reservations />} />
               <Route path="/reservations/new" element={<PagePlaceholder title="New reservation" phase={11} />} />
               <Route path="/reservations/:id/edit" element={<PagePlaceholder title="Edit reservation" phase={11} />} />
               <Route path="/stations" element={<Stations />} />

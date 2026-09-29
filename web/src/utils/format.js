@@ -59,3 +59,11 @@ export function toDateTimeInput(isoText) {
 export function fromDateTimeInput(localText) {
   return new Date(localText).toISOString();
 }
+
+// A <input type="date"> value ("2026-09-30", a local day) -> UTC ISO text of that day's local midnight,
+// moved by addDays (the "to" filter uses the next day, so the whole chosen day is included).
+export function fromDateInput(dateText, addDays = 0) {
+  const date = new Date(`${dateText}T00:00`);
+  date.setDate(date.getDate() + addDays);
+  return date.toISOString();
+}
