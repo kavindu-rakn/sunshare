@@ -73,6 +73,15 @@ _(Claude Code fills this in after Phases 2, 8 and 14.)_
 
 **Errors you can show in the demo (Swagger):** register `12345` → 400 · register an existing NIC → 409 · log in as `981234567V` → 403 deactivated · a Prosumer token on `GET /api/users` → 403 "You don't have permission to do that." · no token → 401 "Please log in to continue."
 
+### Web pages (Phase 8) — ✅ built
+**Files** (in `web/src/`): `pages/Login.jsx`, `Users.jsx`, `UserForm.jsx` (used for web users **and** prosumers), `Prosumers.jsx`, `PendingActivations.jsx` · `components/UserTable.jsx` · `api/authApi.js`, `api/usersApi.js` · the count badge inside `components/Sidebar.jsx`.
+
+- **Login (W2):** the page only checks that NIC and password aren't empty → `POST /api/auth/login`. The API decides everything else and its message is shown in a red alert (wrong password, Pending, Deactivated). If the role is **Prosumer**, the token is *not* saved and the page says "Prosumers use the SunShare mobile app". Staff are sent to the page they first tried to open, or the dashboard.
+- **Web users (W4) / Prosumers (W6):** a filter bar (role / status / search) → `GET /api/users?role=&status=&search=`. The list loads inside `useEffect`; a `cancelled` flag ignores late answers so a slow old search can't overwrite a newer one. Row actions: **Edit**, **Deactivate** (asks "Are you sure?" with `window.confirm`), **Activate / Reactivate**. Errors from the API (e.g. "You can't deactivate your own account." — R4) appear in a red alert.
+- **User form (W5 / W7):** one component with `kind="staff"` or `kind="prosumer"`. Create → `POST /api/users` (account starts Active); edit → `PUT /api/users/{nic}` with the NIC read-only (it's the primary key, R1). Inputs use `required`, so the browser only blocks *empty* boxes — the NIC format, duplicates and password length are checked by the API (FAT service).
+- **Pending activations (W8):** `GET /api/users/pending-activations` → Pending (new sign-up) + Deactivated (needs reactivation), longest waiting first → one click `PATCH /api/users/{nic}/activate`.
+- **Sidebar badge:** Backoffice sees how many prosumers are waiting. After any activate/deactivate, the page fires a small browser event (`sunshare:activations-changed`) and the sidebar reloads the count.
+
 ## Your demo (≈ 60 s)
 1. Phone: **Register** a new prosumer → "waiting for activation". Try logging in → blocked (R3).
 2. Web as Backoffice: **Pending Activations** → the new user is listed → **Activate**.

@@ -77,7 +77,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Done when:** Home looks great on desktop + phone width; routes work.
 
 ## Phase 8 — Web Part A · Owner: Gimhan T P K
-- [ ] W2 Login (role redirect; Prosumer blocked with message), W4–W5 Users, W6–W7 Prosumers, W8 Pending Activations (+ count badge in sidebar).
+- [x] W2 Login (role redirect; Prosumer blocked with message), W4–W5 Users, W6–W7 Prosumers, W8 Pending Activations (+ count badge in sidebar).
 
 ## Phase 9 — Web Part B · Owner: Kvn
 - [ ] W9–W10 Stations (deactivate/activate/delete with API messages, "Open in Google Maps" link), W11–W12 Slots.

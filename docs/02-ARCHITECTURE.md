@@ -69,7 +69,7 @@ EAD/                               ← Cowork folder (Assignment.pdf lives here)
     │       ├── api/               client.js (fetch wrapper) + one file per resource (usersApi.js, stationsApi.js …)
     │       ├── context/           AuthContext.jsx
     │       ├── components/        AppLayout, Sidebar, ProtectedRoute, StatusBadge, AlertMessage, ConfirmButton, EmptyState
-    │       ├── pages/             Home, Login, Dashboard, Users, UserForm, Prosumers, ProsumerForm, PendingActivations,
+    │       ├── pages/             Home, Login, Dashboard, Users, UserForm (also the Prosumer form: kind="prosumer"), Prosumers, PendingActivations,
     │       │                      Stations, StationForm, Slots, SlotForm, Reservations, ReservationForm, NotFound
     │       ├── styles/            theme.css (brand colours over Bootstrap)
     │       ├── App.jsx  main.jsx
