@@ -30,7 +30,7 @@
 | Mobile | **Java + XML layouts (Android Studio "Empty Views Activity")**, minSdk 26 | Pure native Android; Java looks like C# |
 | Mobile HTTP | **Retrofit + Gson** (OkHttp underneath) | One short line per API call |
 | Mobile DB | **SQLite via `SQLiteOpenHelper`** (no Room) | Rubric says SQLite — raw SQLite is the most literal match |
-| Maps | **Google Maps SDK for Android** + **Fused Location** | Rubric says Google Maps API (3 + 5 marks) |
+| Maps | **Google Maps JavaScript API** shown in Android's built-in **WebView** (Maps Demo Key, D53) + **Fused Location** | Rubric says Google Maps API (3 + 5 marks); the no-card demo key works with the JavaScript API but not the native Android SDK |
 | QR | **ZXing Android Embedded** (journeyapps) | One library both makes and scans QR codes |
 
 ### Allowed packages (do not add others without asking Kvn)

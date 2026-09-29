@@ -75,7 +75,7 @@ What it does:
 4. Emulator location: emulator ⋯ (Extended controls) → **Location** → search "SLIIT Malabe" → **Set location**.
 
 ## 6. Google Maps API key (YOU, ~10 min)
-> **Plan from 29 Sep (D51): Maps Demo Key — no credit card.**
+> **Plan from 29 Sep (D51): Maps Demo Key — no credit card.** ✅ Key added by Kvn on 29 Sep. **Test result (D53):** the native Maps SDK for Android shows a blank map ("Authorization failure"); the **Maps JavaScript API in a WebView works** (tiles, marker, info window) — Phase 15 uses that.
 > 1. Signed in with your Google account, open **https://mapsplatform.google.com/maps-demo-key/** → **Get a Demo Key** → accept the terms → copy the key.
 > 2. Paste it into `android/local.properties` (never committed, never pasted in chat): `MAPS_API_KEY=...your demo key...`
 > 3. Tell Claude Code "demo key added". Phase 15 first tries the **native Maps SDK for Android** with it; if Google refuses the demo key there, the map screen shows Google's **Maps JavaScript API** in a WebView with the same key (D51). The demo key has a **daily limit** — when it is hit the map pauses until the next day (no charge).

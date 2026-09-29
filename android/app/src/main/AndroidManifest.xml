@@ -65,6 +65,15 @@
         <activity
             android:name=".ui.prosumer.ReservationDetailActivity"
             android:exported="false" />
+        <!-- M6 Booking form (Part C) -->
+        <activity
+            android:name=".ui.prosumer.ReservationFormActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- M7 Summary (Part C) -->
+        <activity
+            android:name=".ui.prosumer.ReservationSummaryActivity"
+            android:exported="false" />
         <!-- M10 Operator Home (Part D) -->
         <activity
             android:name=".ui.operator.OperatorHomeActivity"

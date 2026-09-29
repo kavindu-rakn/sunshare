@@ -186,13 +186,32 @@
                     android:visibility="gone"
                     tools:text="Waiting for approval." />
 
-                <!-- Edit / Cancel buttons (Part C, Phase 17) go here -->
+                <!-- Edit / Cancel buttons (Part C, ReservationActions): only when the API says canModify -->
                 <LinearLayout
                     android:id="@+id/actions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:orientation="vertical" />
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonEdit"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/edit_booking"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonCancel"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cancel_booking"
+                        android:textColor="@color/ss_danger"
+                        android:visibility="gone"
+                        app:strokeColor="@color/ss_danger" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

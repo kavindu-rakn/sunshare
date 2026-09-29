@@ -106,12 +106,13 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 
 ## Phase 15 — Android Part B · Owner: Kvn
 - [ ] M5 StationMapActivity: location permission, `/stations/nearby`, markers, **info window with station details**, my-location dot, save to `stations_cache`, offline fallback.
+  - **How (D53):** a `WebView` loads a small HTML page with the **Google Maps JavaScript API** (demo key from `local.properties`); Java gets the location (Fused Location), calls `/stations/nearby`, saves `stations_cache`, and hands the stations to the page, which draws the markers + info windows. The native Maps SDK refused the demo key in a test.
 
 ## Phase 16 — Android Part D (prosumer views) · Owner: Chamara R M L K
 - [x] M3 Prosumer Home (counts + next booking), M8 Bookings (tabs Current/Pending/History + search, RecyclerView), M9 Detail (details + **QR from `qrData`**).
 
 ## Phase 17 — Android Part C · Owner: Malkith G W L
-- [ ] M6 Reservation form (create + edit), Cancel button on M9, **M7 Summary after every action**.
+- [x] M6 Reservation form (create + edit), Cancel button on M9, **M7 Summary after every action**.
 
 ## Phase 18 — Android Part D (operator mode) · Owner: Chamara R M L K
 - [ ] M10 Operator Home (counts + Scan QR + map), ZXing scanner, M11 Scan Result (verify → **Finalize** → M7 Completed).
