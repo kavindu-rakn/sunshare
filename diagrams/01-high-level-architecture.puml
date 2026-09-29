@@ -1,0 +1,55 @@
+' ============================================================================
+'  File        : 01-high-level-architecture.puml
+'  Project     : SunShare - Smart Solar Microgrid Trading System
+'  Part        : B - Report diagrams
+'  Author      : Ranathunga R A K N (IT22552860)
+'  Description : High-level architecture: the three kinds of users, the two
+'                client apps, the FAT Web API on IIS, MongoDB, and Google Maps.
+'                Render: java -jar plantuml.jar -tpng diagrams/*.puml
+' ============================================================================
+@startuml
+!pragma layout smetana
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #334155
+skinparam ArrowFontSize 11
+skinparam NodeBackgroundColor #F8FAFC
+skinparam NodeBorderColor #0B1F33
+skinparam RectangleBorderColor #0B1F33
+skinparam DatabaseBackgroundColor #FFFFFF
+skinparam DatabaseBorderColor #0B1F33
+skinparam CloudBackgroundColor #FFFFFF
+skinparam CloudBorderColor #0B1F33
+skinparam ActorBorderColor #0B1F33
+skinparam ActorBackgroundColor #FEF3C7
+title SunShare - High-level architecture
+
+actor "Prosumer" as PR
+actor "Grid Operator" as GO
+actor "Backoffice officer" as BO
+
+node "Android phone" as Phone {
+  rectangle "**SunShare Android app**\nJava + XML (native)\n\nRetrofit + Gson (API calls)\nZXing (QR make / scan)\nFused Location + WebView map" as App #E6F4F2
+  database "**SQLite**\nsunshare_local.db\nsession · stations_cache\napp_settings" as SQLite
+}
+
+node "Windows laptop / server - IIS" as Server {
+  rectangle "**Web app** - IIS site SunShareWeb :8081\nReact + Bootstrap 5 (UI only)" as Web #E6F4F2
+  rectangle "**SunShare.Api** - IIS site SunShareApi :8080\nASP.NET Core Web API (.NET 10, C#)\n\nControllers -> **Services** (all business rules R1-R18)\n-> MongoDbContext\nJWT login · BCrypt passwords · Swagger" as API #FEF3C7
+  database "**MongoDB** - SunShareDb\nUsers · SolarStationInfo\nEnergyBookingSlots · EnergyReservations" as Mongo
+}
+
+cloud "**Google Maps**\nMaps JavaScript API (map, markers)\nMaps URLs (directions)" as Google
+
+PR --> App : uses
+GO --> App : uses (scan QR, map)
+GO --> Web : browser
+BO --> Web : browser
+App --> SQLite : login session,\ncached stations
+App --> API : HTTP + JSON (REST)\nAuthorization: Bearer JWT
+Web --> API : HTTP + JSON (REST)\nAuthorization: Bearer JWT
+API --> Mongo : MongoDB.Driver
+App ..> Google : map + markers\n(Maps Demo Key)
+@enduml

@@ -1,0 +1,91 @@
+' ============================================================================
+'  File        : 04-dfd-level-1.puml
+'  Project     : SunShare - Smart Solar Microgrid Trading System
+'  Part        : B - Report diagrams
+'  Author      : Ranathunga R A K N (IT22552860)
+'  Description : Data flow diagram, level 1: the SunShare system split into
+'                its main processes (they match the API's Services) and the
+'                data stores (the 4 MongoDB collections + the phone's SQLite).
+'                Notation: rectangle = external entity, circle = process,
+'                cylinder = data store. Layout: entities on top, processes in
+'                the middle, data stores at the bottom (every arrow is written
+'                "upper -- lower"; the arrow head shows which way data flows).
+' ============================================================================
+@startuml
+!pragma layout smetana
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #334155
+skinparam ArrowFontSize 10
+skinparam RectangleBorderColor #0B1F33
+skinparam RectangleBackgroundColor #FEF3C7
+skinparam UsecaseBorderColor #0F766E
+skinparam UsecaseBackgroundColor #E6F4F2
+skinparam DatabaseBorderColor #0B1F33
+skinparam DatabaseBackgroundColor #FFFFFF
+title SunShare - Data flow diagram, level 1
+
+' ---- external entities (top) ----
+rectangle "Prosumer" as PR
+rectangle "Google Maps" as GM
+rectangle "Grid Operator" as GO
+rectangle "Backoffice officer" as BO
+
+' ---- processes (middle) ----
+usecase "1.0\nManage accounts\n& access" as P1
+usecase "6.0\nFind nearby\nstations" as P6
+usecase "3.0\nManage\nbookings" as P3
+usecase "5.0\nLists &\ndashboards" as P5
+usecase "4.0\nVerify QR &\ncomplete" as P4
+usecase "2.0\nManage stations\n& slots" as P2
+
+' ---- data stores (bottom) ----
+database "D5 Phone SQLite\n(session, stations_cache)" as D5
+database "D1 Users" as D1
+database "D2 SolarStationInfo" as D2
+database "D3 EnergyBookingSlots" as D3
+database "D4 EnergyReservations" as D4
+
+' 1.0 accounts
+PR --> P1 : sign-up, login,\nprofile
+PR <-- P1 : token,\nstatus
+BO --> P1 : users,\nactivations
+P1 --> D1 : user records
+P1 --> D5 : session
+
+' 6.0 nearby stations
+PR --> P6 : location
+PR <-- P6 : map, nearest\nfirst
+GM <-- P6 : positions
+GM --> P6 : map tiles
+P6 <-- D2 : active stations
+P6 --> D5 : cached stations
+
+' 3.0 bookings
+PR --> P3 : create / update /\ncancel
+PR <-- P3 : summary,\nQR data
+GO --> P3 : approvals,\nbook for prosumer
+P3 <-- D1 : prosumer\nActive?
+P3 --> D3 : free places\n-1 / +1
+P3 --> D4 : bookings,\nQR token
+
+' 5.0 lists and dashboards
+PR <-- P5 : counts, current /\npending / history
+GO <-- P5 : counts,\nfiltered lists
+BO <-- P5 : counts
+P5 <-- D4 : bookings
+P5 <-- D2 : stations
+
+' 4.0 verify and complete
+GO --> P4 : scanned QR,\nfinalize
+GO <-- P4 : verification\nresult
+P4 --> D4 : set Completed
+
+' 2.0 stations and slots
+BO --> P2 : stations
+GO --> P2 : slot schedules
+P2 --> D2 : stations
+P2 --> D3 : slots
+@enduml
