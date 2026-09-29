@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--
+ ============================================================================
+  File        : map.html
+  Project     : SunShare - Smart Solar Microgrid Trading System
+  Module      : SE4040 Enterprise Application Development - Assignment 1
+  Part        : B - Stations, slots & map
+  Author      : Ranathunga R A K N (IT22552860)
+  Created     : 2026-09-29
+  Description : The page shown inside the Nearby stations screen (M5) by a
+                WebView. StationMapActivity (Java) replaces __MAPS_API_KEY__
+                and __DATA__ (my location + the nearby stations from the API
+                or the SQLite cache) before loading it. This page only DRAWS:
+                a Google map (Maps JavaScript API, D53), a blue "you are
+                here" dot and one numbered marker per station (1 = nearest);
+                tapping a marker shows the station's details. If the Google
+                map can't load (no internet, key refused) it shows a plain
+                list of the same stations instead.
+ ============================================================================
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nearby stations</title>
+    <style>
+        html, body, #map { height: 100%; margin: 0; }
+        body { font-family: sans-serif; color: #1E293B; background: #F8FAFC; }
+        .info { max-width: 240px; font-size: 14px; line-height: 1.4; }
+        .info b { font-size: 16px; font-weight: bold; color: #0B1F33; }
+        .info .muted { color: #64748B; }
+        .info a { display: inline-block; margin-top: 6px; color: #0F766E; font-weight: bold; }
+        #fallback { padding: 16px; }
+        #fallback h2 { margin: 0 0 4px; color: #0B1F33; }
+        #fallback li { margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="fallback" hidden>
+    <h2>Nearby stations</h2>
+    <p id="fallbackNote" class="muted"></p>
+    <ol id="list"></ol>
+</div>
+<script>
+    // Filled in by StationMapActivity before the page loads:
+    // { "me": { "lat": 6.91, "lng": 79.97 }, "stations": [ { "name": ..., "latitude": ..., ... }, ... ] }
+    var DATA = __DATA__;
+
+    var map = null;
+    var infoWindow = null;
+
+    // Called by the Maps JavaScript API once it has loaded: draws the map, my dot and the station markers,
+    // then zooms so that all of them fit on the screen.
+    function initMap() {
+        var me = { lat: DATA.me.lat, lng: DATA.me.lng };
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: me, zoom: 12, streetViewControl: false, mapTypeControl: false, fullscreenControl: false
+        });
+        infoWindow = new google.maps.InfoWindow();
+        var bounds = new google.maps.LatLngBounds();
+        bounds.extend(me);
+        addMyLocation(me);
+        DATA.stations.forEach(function (station, index) {
+            addStationMarker(station, index + 1);
+            bounds.extend({ lat: station.latitude, lng: station.longitude });
+        });
+        if (DATA.stations.length > 0) {
+            map.fitBounds(bounds, 60);
+        }
+    }
+
+    // The blue "you are here" dot.
+    function addMyLocation(me) {
+        new google.maps.Marker({
+            position: me, map: map, title: 'You are here', zIndex: 1,
+            icon: { path: google.maps.SymbolPath.CIRCLE, scale: 9, fillColor: '#1A73E8', fillOpacity: 1, strokeColor: '#FFFFFF', strokeWeight: 3 }
+        });
+    }
+
+    // One marker per station, labelled 1, 2, 3 ... (nearest first). Tapping it opens the details window (R18).
+    function addStationMarker(station, number) {
+        var marker = new google.maps.Marker({
+            position: { lat: station.latitude, lng: station.longitude }, map: map, title: station.name,
+            label: { text: String(number), color: '#FFFFFF', fontWeight: 'bold' }, zIndex: 2
+        });
+        marker.addListener('click', function () {
+            infoWindow.setContent(detailsFor(station));
+            infoWindow.open({ anchor: marker, map: map });
+        });
+    }
+
+    // Builds the details box: name, address, capacity, battery slots, opening hours, distance and a
+    // Directions link. Text is added with textContent, so a name can never be read as HTML.
+    function detailsFor(station) {
+        var box = document.createElement('div');
+        box.className = 'info';
+        addLine(box, 'b', station.name);
+        addLine(box, 'div', station.address, 'muted');
+        addLine(box, 'div', station.capacityKw + ' kW · ' + station.batterySlots + ' battery slots');
+        addLine(box, 'div', 'Open ' + station.openTime + ' - ' + station.closeTime);
+        if (station.distanceKm !== null && station.distanceKm !== undefined) {
+            addLine(box, 'div', station.distanceKm + ' km away');
+        }
+        var link = document.createElement('a');
+        link.href = directionsUrl(station);
+        link.textContent = 'Directions in Google Maps';
+        box.appendChild(link);
+        return box;
+    }
+
+    // Adds one line of text (a new element of the given tag) to a box.
+    function addLine(box, tag, text, className) {
+        var line = document.createElement(tag);
+        line.textContent = text;
+        if (className) {
+            line.className = className;
+        }
+        box.appendChild(line);
+        if (tag === 'b') {
+            box.appendChild(document.createElement('br'));
+        }
+    }
+
+    // A Google Maps URL (no key needed); Java opens it in the Google Maps app.
+    // Reference: Google, "Get started with Maps URLs" https://developers.google.com/maps/documentation/urls/get-started
+    function directionsUrl(station) {
+        return 'https://www.google.com/maps/dir/?api=1&destination=' + station.latitude + ',' + station.longitude;
+    }
+
+    // When the Google map can't be shown: hide it and list the same stations as plain text.
+    function showList(note) {
+        document.getElementById('map').hidden = true;
+        document.getElementById('fallback').hidden = false;
+        document.getElementById('fallbackNote').textContent = note;
+        var list = document.getElementById('list');
+        list.innerHTML = '';
+        DATA.stations.forEach(function (station) {
+            var item = document.createElement('li');
+            item.appendChild(detailsFor(station));
+            list.appendChild(item);
+        });
+    }
+
+    // Google calls this if it refuses the key (for example the demo key's daily limit was reached).
+    window.gm_authFailure = function () {
+        showList('The Google map is not available right now, so the stations are listed instead.');
+    };
+</script>
+<!-- Reference: Google, "Maps JavaScript API - Load the Maps JavaScript API" https://developers.google.com/maps/documentation/javascript/load-maps-js-api -->
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key=__MAPS_API_KEY__&loading=async&callback=initMap"
+        onerror="showList('No internet connection, so the Google map can\'t load. The stations are listed instead.')"></script>
+</body>
+</html>

@@ -25,9 +25,10 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.SunShare">
 
-        <!-- Google Maps key, filled from local.properties at build time (see app/build.gradle.kts). -->
+        <!-- Google Maps (JavaScript API) key, filled from local.properties at build time (see app/build.gradle.kts).
+             StationMapActivity reads it and puts it into the map page (D53). -->
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
+            android:name="com.sunshare.app.MAPS_API_KEY"
             android:value="${MAPS_API_KEY}" />
 
         <!-- M1 Login (Part A) - the app's first screen -->
@@ -73,6 +74,10 @@
         <!-- M7 Summary (Part C) -->
         <activity
             android:name=".ui.prosumer.ReservationSummaryActivity"
+            android:exported="false" />
+        <!-- M5 Nearby stations map (Part B) -->
+        <activity
+            android:name=".ui.map.StationMapActivity"
             android:exported="false" />
         <!-- M10 Operator Home (Part D) -->
         <activity

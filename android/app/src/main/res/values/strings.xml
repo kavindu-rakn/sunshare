@@ -96,4 +96,10 @@
     <string name="scan_result_title">Scan result</string>
     <string name="checking_qr">Checking the QR code with the server…</string>
     <string name="finalize_transfer">Finalize energy transfer</string>
+
+    <!-- M5 Nearby stations map (Part B) -->
+    <string name="nearby_stations">Nearby stations</string>
+    <string name="map_title">Nearby stations</string>
+    <string name="map_finding_location">Finding your location…</string>
+    <string name="map_loading_stations">Loading nearby stations…</string>
 </resources>

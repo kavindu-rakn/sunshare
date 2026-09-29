@@ -11,7 +11,8 @@
  *                upcoming) worked out by the API (GET /api/dashboard/summary),
  *                refreshed every time the screen comes back, and a big
  *                Scan QR button that opens the ZXing camera scanner. The
- *                scanned text goes to the Scan Result screen (M11).
+ *                scanned text goes to the Scan Result screen (M11). (The Nearby
+ *                stations button was added with M5, Part B.)
  * ============================================================================
  */
 package com.sunshare.app.ui.operator;
@@ -31,6 +32,7 @@ import com.sunshare.app.api.ApiClient;
 import com.sunshare.app.api.ApiErrorParser;
 import com.sunshare.app.api.models.StaffDashboardResponse;
 import com.sunshare.app.db.Session;
+import com.sunshare.app.ui.map.StationMapActivity;
 import com.sunshare.app.util.SessionGuard;
 import com.sunshare.app.util.UiUtils;
 
@@ -73,6 +75,7 @@ public class OperatorHomeActivity extends AppCompatActivity {
         textError = findViewById(R.id.textError);
 
         findViewById(R.id.buttonScan).setOnClickListener(v -> startScan());
+        findViewById(R.id.buttonMap).setOnClickListener(v -> startActivity(new Intent(this, StationMapActivity.class)));
         findViewById(R.id.buttonLogout).setOnClickListener(v -> SessionGuard.logout(this));
     }
 
