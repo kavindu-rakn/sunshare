@@ -119,6 +119,8 @@ h1, h2, h3, h4, h5, h6,
 .status-active { background: var(--ss-success); color: #fff; }
 .status-cancelled { background: #94a3b8; color: #fff; }
 .status-deactivated { background: var(--ss-danger); color: #fff; }
+.status-open { background: var(--ss-success); color: #fff; }     /* slot open for booking */
+.status-closed { background: #94a3b8; color: #fff; }           /* slot closed by staff */
 
 /* ---------- Keyboard focus and skip link (accessibility) ---------- */
 :where(a, button, .nav-link):focus-visible {

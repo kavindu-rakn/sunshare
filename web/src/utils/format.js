@@ -39,3 +39,23 @@ export function formatTime(isoText) {
 export function googleMapsUrl(latitude, longitude) {
   return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
 }
+
+// "2026-09-29T05:30:00Z" -> "Tue, 29 Sep" (local date only).
+export function formatDate(isoText) {
+  if (!isoText) {
+    return '';
+  }
+  return new Date(isoText).toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short' });
+}
+
+// UTC time from the API -> the "YYYY-MM-DDTHH:mm" local text a <input type="datetime-local"> expects.
+export function toDateTimeInput(isoText) {
+  const date = new Date(isoText);
+  const pad = (number) => String(number).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+// The local text from a datetime-local input -> UTC ISO text for the API (the API works in UTC).
+export function fromDateTimeInput(localText) {
+  return new Date(localText).toISOString();
+}
