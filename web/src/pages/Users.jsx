@@ -10,7 +10,7 @@
  *                role / status / search filters, Edit and Activate / Deactivate.
  * ============================================================================
  */
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { listUsers } from '../api/usersApi.js';
 import AlertMessage from '../components/AlertMessage.jsx';
@@ -31,25 +31,27 @@ export default function Users() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(location.state?.message ?? '');
 
-  // Loads the accounts with the chosen filters. With no role chosen, both staff roles are shown
-  // (prosumers have their own page).
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const list = await listUsers({ role, status, search });
-      setUsers(role ? list : list.filter((u) => u.role !== 'Prosumer'));
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [role, status, search]);
+  const [reloadKey, setReloadKey] = useState(0);
 
-  // Reload whenever a filter changes.
+  // Loads the accounts whenever a filter changes (or reloadKey goes up after an action).
+  // With no role chosen, both staff roles are shown (prosumers have their own page).
+  // "cancelled" stops an older, slower answer from overwriting a newer one.
   useEffect(() => {
-    load();
-  }, [load]);
+    let cancelled = false;
+    listUsers({ role, status, search })
+      .then((list) => {
+        if (!cancelled) setUsers(role ? list : list.filter((u) => u.role !== 'Prosumer'));
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [role, status, search, reloadKey]);
 
   // Applies the search box when the filter form is submitted.
   function handleSearch(event) {
@@ -57,11 +59,11 @@ export default function Users() {
     setSearch(searchText.trim());
   }
 
-  // After Activate / Deactivate: show the message and reload the list.
+  // After Activate / Deactivate: show the message and load the list again.
   function handleChanged(message) {
     setSuccess(message);
     setError('');
-    load();
+    setReloadKey((key) => key + 1);
   }
 
   // When the API refuses an action, show its message (and hide any older success message).
