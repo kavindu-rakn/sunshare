@@ -32,9 +32,9 @@ Prosumers can only book if there are stations with battery places and open time 
 1. `StationMapActivity` asks for location permission → Fused Location gives the phone's lat/lng.
 2. Retrofit calls `GET /api/stations/nearby?lat=6.91&lng=79.97&radiusKm=25`.
 3. `StationService.GetNearbyAsync` loads active stations, uses `GeoHelper.DistanceKm` (Haversine) for each, keeps those ≤ 25 km, sorts nearest first, fills `distanceKm`.
-4. The phone saves the list into SQLite `stations_cache`, then adds a marker per station from its stored latitude/longitude.
-5. Tapping a marker opens an info window with the station's details.
-6. If the API can't be reached, the map loads stations from `stations_cache` and shows an "offline" note.
+4. The phone saves the list into SQLite `stations_cache`, then fills the Google Maps key and the data into `assets/map.html`, which a WebView shows: a Google map (Maps JavaScript API), a blue dot for me and a numbered marker per station from its stored latitude/longitude (1 = nearest).
+5. Tapping a marker opens an info window with the station's details and a *Directions in Google Maps* link.
+6. If the API can't be reached, the map loads stations from `stations_cache` and shows an "Offline: showing N saved stations (saved …)" note.
 
 ## Hosting in one breath
 Run `scripts/deploy-api.ps1` in an **admin** PowerShell → it publishes to `C:\inetpub\sunshare\api` → IIS site **SunShareApi** on port 8080 (app pool **No Managed Code**; the **Hosting Bundle's ASP.NET Core Module** starts our app inside IIS) → `web.config` removes the **WebDAV handler** (otherwise PUT/DELETE/PATCH could get 405) → firewall rule so the phone can reach `http://<laptop-IP>:8080`. Tested from an iPhone and an Android phone on the same Wi-Fi.
@@ -49,7 +49,7 @@ Run `scripts/deploy-api.ps1` in an **admin** PowerShell → it publishes to `C:\
   - `scripts/deploy-api.ps1` — ✅ built in Phase 6 (IIS deploy)
 - Web — ✅ Home (Phase 7), Stations / Slots (Phase 9): `pages/Home.jsx`, `Stations.jsx`, `StationForm.jsx`, `Slots.jsx`, `SlotForm.jsx`, `NotFound.jsx` · `api/client.js`, `stationsApi.js`, `slotsApi.js` · `components/*` · `context/AuthContext.jsx` · `styles/theme.css` · `App.jsx`, `main.jsx`
 - Android shell — ✅ **built in Phase 13** (in `android/app/src/main/java/com/sunshare/app/`): `api/ApiConfig.java`, `ApiClient.java`, `ApiService.java`, `ApiErrorParser.java`, `api/models/*` (15 classes) · `db/SunShareDbHelper.java`, `db/Session.java` · `util/DateUtils.java`, `UiUtils.java`, `SessionGuard.java` · `MainActivity.java` (temporary server check) · `res/values/*`, `res/layout/activity_main.xml`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`, `app/build.gradle.kts`
-- Android map (Phase 15, built last): `ui/map/StationMapActivity.java` · `db/SunShareDbHelper.java` · `api/ApiClient.java`, `ApiService.java`, `ApiConfig.java`, `ApiErrorParser.java`, `api/models/*` · `util/*` · `res/values/*`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`
+- Android map ✅ (Phase 15): `ui/map/StationMapActivity.java` · `assets/map.html` · `res/layout/activity_station_map.xml` · uses `db/SunShareDbHelper.java` (`stations_cache`) · Nearby stations buttons on both home screens · `api/ApiClient.java`, `ApiService.java`, `ApiConfig.java`, `ApiErrorParser.java`, `api/models/*` · `util/*` · `res/values/*`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`
 
 ## How it works
 _(Claude Code fills this in after Phases 1, 3, 6, 7, 9, 12, 13 and 15.)_
@@ -146,6 +146,21 @@ The "plumbing" every Android screen uses. No business rules live here — the ph
 - **Why 10.0.2.2?** Inside the emulator `localhost` means the emulator itself; `10.0.2.2` is Android's fixed address for the laptop running it.
 - **Tested:** emulator → `http://10.0.2.2:8080/api/health` (IIS) → green "API: ok · Database: connected" with the server time in local time; the phone's `sunshare_local.db` contained exactly the 3 tables.
 
+### Android map (Phase 15) — ✅ built
+**Files:** `android/app/src/main/java/com/sunshare/app/ui/map/StationMapActivity.java` · `android/app/src/main/assets/map.html` · `res/layout/activity_station_map.xml`.
+
+**Words first:** a **WebView** is a small browser window inside an app screen. **Fused Location** is Google Play services' location helper (GPS + Wi-Fi + mobile network). **Maps JavaScript API** = Google's map for web pages — the same Google map, drawn by JavaScript.
+
+**Why a web map inside the app?** Google needs a card for a normal Maps key. The no-card **Maps Demo Key** was *refused* by the native Android map but *accepted* by the Maps JavaScript API — tested with a throwaway screen (D51, D53). So the screen is native Java and only the map drawing is a tiny web page. It is still the real **Google Maps API**.
+
+- **Step 1 — permission + location (Java):** Android's "Allow SunShare to access this device's location?" box. Allowed → Fused Location, *high accuracy*, a fix up to 1 minute old is fine, **10-second limit**. Denied or no fix → SLIIT Malabe (6.9147, 79.9729) and the status line says so.
+- **Step 2 — the API (Java):** `GET /api/stations/nearby?lat=&lng=&radiusKm=25` → active stations within 25 km, `distanceKm` filled, nearest first (R18). The phone does no distance maths.
+- **Step 3 — SQLite (Java):** `SunShareDbHelper.cacheStations(list)` replaces the rows of `stations_cache` (id, name, address, lat/lng, kW, battery slots, hours, distance, cached_at).
+- **Step 4 — the page (JavaScript):** Java reads `assets/map.html`, replaces `__MAPS_API_KEY__` (from `local.properties` → manifest) and `__DATA__` (my position + stations, turned into JSON by Gson, which also escapes `<` `>`), and loads it into a WebView. `initMap()` draws the map, a blue dot for me and markers **1, 2, 3 …** (nearest first), then zooms to fit them all. Tap a marker → info window: **name, address, kW, battery slots, opening hours, distance, "Directions in Google Maps"** (opens the Google Maps app). Text is added with `textContent`, so a station name can never run as code.
+- **Offline:** if the API can't be reached, the stations saved in SQLite are drawn with "Offline: showing N saved stations (saved …)". If Google's map itself can't load (no internet, key refused), the page shows the same stations as a plain list.
+- **Freeze-proof (C13):** the first WebView starts Chrome's engine, which took 2.8 s on the emulator, so the WebView is created only when the map is ready and the screen opens at once.
+- **Tested on the emulator (29 Sep):** at SLIIT → 4 markers: 1 Malabe 0.01 km, 2 Kaduwela 2.42, 3 Battaramulla 6.22, 4 Kottawa 8.24 (Nugegoda is inactive, so it's left out); tap 1 → details; Directions → Google Maps app opened; `stations_cache` had the 4 rows; wrong server address → "Offline: showing 4 saved stations"; location denied → SLIIT Malabe note; the Grid Operator's home opens the same map.
+
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
 2. Web as Backoffice: create "SLIIT Rooftop Hub" with lat/lng → add two slots.
@@ -166,3 +181,5 @@ The "plumbing" every Android screen uses. No business rules live here — the ph
 10. **Why HashRouter in React?** — The part after `#` is handled by the browser, so IIS always serves `index.html` and needs no rewrite module.
 11. **What is CORS and why configure it?** — Browser rule: a page from `:8081` may call `:8080` only if the API allows that origin. We allow the dev and IIS web addresses.
 12. **Why a slot's `totalSlots` can't exceed `batterySlots`?** — R8: a time window can't offer more places than the hub physically has.
+13. **Is a map in a WebView still "Google Maps API"?** — Yes: it is Google's Maps JavaScript API with our key, drawing Google's map, markers and info windows. We used it because the no-card demo key works there but not in the native Android SDK (tested, D53). Location, the API call and SQLite are all native Java.
+14. **What if the phone has no location?** — After 10 seconds (or if permission is denied) the app searches around SLIIT Malabe and says so on the screen — it never waits for ever.

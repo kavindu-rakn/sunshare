@@ -105,7 +105,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] M1 Login (session check, role routing, ⚙ server address dialog), M2 Register, M4 Profile (edit + deactivate → clear session).
 
 ## Phase 15 — Android Part B · Owner: Kvn
-- [ ] M5 StationMapActivity: location permission, `/stations/nearby`, markers, **info window with station details**, my-location dot, save to `stations_cache`, offline fallback.
+- [x] M5 StationMapActivity: location permission, `/stations/nearby`, markers, **info window with station details**, my-location dot, save to `stations_cache`, offline fallback.
   - **How (D53):** a `WebView` loads a small HTML page with the **Google Maps JavaScript API** (demo key from `local.properties`); Java gets the location (Fused Location), calls `/stations/nearby`, saves `stations_cache`, and hands the stations to the page, which draws the markers + info windows. The native Maps SDK refused the demo key in a test.
 
 ## Phase 16 — Android Part D (prosumer views) · Owner: Chamara R M L K
@@ -117,7 +117,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 ## Phase 18 — Android Part D (operator mode) · Owner: Chamara R M L K
 - [x] M10 Operator Home (counts + Scan QR; the map button comes with Phase 15), ZXing scanner, M11 Scan Result (verify → **Finalize** → M7 Completed).
 - **Done when:** emulator shows the prosumer QR on screen, the phone (operator) scans it, it's verified and completed; Compass shows `Completed`.
-  - ✅ 29 Sep (emulator): verify → Finalize → Completed tested with the scanned text passed in by adb (the emulator camera can't see a real QR); scanner opens, asks for the camera, Back cancels. ⏳ **Kvn:** the real camera scan with a phone.
+  - ✅ 29 Sep (emulator): verify → Finalize → Completed tested with the scanned text passed in by adb (the emulator camera can't see a real QR); scanner opens, asks for the camera, Back cancels. ✅ 29 Sep (Kvn, real phone): the Samsung scanned the emulator's QR, "Verified with server" → Finalize → Compass showed `Completed` (phone reached the API through the USB cable, C12).
 
 ## Phase 19 — End-to-end test + polish · Owner: Kvn
 - [ ] Walk every row of `10-RUBRIC-CHECKLIST.md` on the IIS-hosted build (web + emulator + phone). Fix bugs.

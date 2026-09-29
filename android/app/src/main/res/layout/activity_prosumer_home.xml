@@ -308,6 +308,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/my_bookings" />
 
+            <!-- M5 Nearby stations (Part B) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonMap"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nearby_stations" />
+
             <!-- M4 Profile (Part A) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonProfile"

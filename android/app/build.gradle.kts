@@ -56,7 +56,6 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     // QR codes: make (prosumer) and scan (operator)
     implementation(libs.zxing.android.embedded)
-    // Google Maps + the phone's location (nearby stations map)
-    implementation(libs.play.services.maps)
+    // The phone's location for the nearby stations map (the map itself is Google's JavaScript API in a WebView, D53)
     implementation(libs.play.services.location)
 }
