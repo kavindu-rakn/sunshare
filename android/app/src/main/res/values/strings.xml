@@ -4,9 +4,6 @@
     <string name="app_name">SunShare</string>
     <string name="tagline">Trade your sunshine</string>
     <string name="back">Back</string>
-    <string name="checking_server">Checking the SunShare server…</string>
-    <string name="server_check_title">Server check</string>
-    <string name="check_again">Check again</string>
 
     <!-- Form fields (shared by Register and Profile) -->
     <string name="nic">NIC</string>
@@ -18,6 +15,15 @@
     <string name="password">Password</string>
     <string name="password_helper">At least 6 characters</string>
     <string name="confirm_password">Confirm password</string>
+
+    <!-- M1 Login (Part A) -->
+    <string name="login_title">Log in</string>
+    <string name="login_subtitle">Use your NIC and password.</string>
+    <string name="login_button">Log in</string>
+    <string name="register_link">New prosumer? Create an account</string>
+    <string name="server_button">⚙ Server</string>
+    <string name="server_address">Server address</string>
+    <string name="server_address_helper">Emulator: http://10.0.2.2:8080/ · Phone: http://&lt;laptop Wi-Fi IP&gt;:8080/</string>
 
     <!-- M2 Register (Part A) -->
     <string name="register_title">Create account</string>
