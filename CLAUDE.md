@@ -62,7 +62,7 @@
 | Build API | `dotnet build api/SunShare.Api` |
 | Deploy API to IIS | **admin** PowerShell: `powershell -ExecutionPolicy Bypass -File .\scripts\deploy-api.ps1` (safe to repeat) → http://localhost:8080/swagger |
 | Run web (dev) | `cd web; npm run dev` → http://localhost:5173 |
-| Build web | `cd web; npm run build` → copy `dist/` to `C:\inetpub\sunshare\web` (IIS :8081) |
+| Build + deploy web to IIS | **admin** PowerShell: `powershell -ExecutionPolicy Bypass -File .\scripts\deploy-web.ps1` (safe to repeat) → http://localhost:8081 |
 | Build Android | `cd android; .\gradlew assembleDebug` (or Run ▶ in Android Studio) |
 
 ## Addresses

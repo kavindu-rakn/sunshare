@@ -51,11 +51,20 @@ The same by hand (fallback, or to show in IIS Manager at the viva): Win+R → `i
 **3.5 Let the phone reach it:** the script adds the firewall rule. Find the laptop's IP: `ipconfig` → *Wireless LAN adapter Wi-Fi* → **IPv4 Address** (e.g. `192.168.1.23`) — the script prints it too. Phone browser → `http://192.168.1.23:8080/api/health`.
 Tip: set the Wi-Fi network to **Private** in Windows settings (Settings → Network & internet → Wi-Fi → your network → Network profile type).
 
-## 4. Host the web app on IIS (Phase 12)
-1. `web/.env.production` → `VITE_API_BASE_URL=http://localhost:8080`
-2. `cd web; npm run build` → copy everything inside `web/dist/` to `C:\inetpub\sunshare\web` (admin).
-3. **(YOU, once)** IIS Manager → Add Website → `SunShareWeb` · `C:\inetpub\sunshare\web` · Port **8081**.
-4. Open `http://localhost:8081`. Because we use **HashRouter** (`#/login`), IIS needs no URL Rewrite module.
+## 4. Host the web app on IIS (Phase 12) — ✅ done 29 Sep
+**Deploy (admin PowerShell, from `sunshare/`) — first time and after every web change:**
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\deploy-web.ps1
+```
+What it does:
+1. `npm run build` in `web/` — Vite reads `web/.env.production` (`VITE_API_BASE_URL=http://localhost:8080`), so the built app calls the **IIS API**.
+2. Creates the app pool `SunShareWeb` (No Managed Code — the site is only static files) if missing.
+3. Mirrors `web/dist/` into `C:\inetpub\sunshare\web` with `robocopy /MIR` (old files removed).
+4. Creates the site `SunShareWeb` on port **8081** if missing, starts it, and opens the home page to check.
+
+`web/public/web.config` (copied into `dist/` on every build) sets `index.html` as the start page and declares the `.woff2` icon font type. Because we use **HashRouter** (`#/login`), IIS needs no URL Rewrite module.
+
+**Check:** `http://localhost:8081` → log in as Backoffice → the Dashboard loads (web on IIS → API on IIS → MongoDB). The API allows the `http://localhost:8081` origin (CORS list in `appsettings.json`).
 
 ## 5. Create the Android project (YOU, Phase 0 — 2 minutes)
 1. Android Studio → **New Project** → Phone and Tablet → **Empty Views Activity** → Next.
