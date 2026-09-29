@@ -120,9 +120,9 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
   - ✅ 29 Sep (emulator): verify → Finalize → Completed tested with the scanned text passed in by adb (the emulator camera can't see a real QR); scanner opens, asks for the camera, Back cancels. ✅ 29 Sep (Kvn, real phone): the Samsung scanned the emulator's QR, "Verified with server" → Finalize → Compass showed `Completed` (phone reached the API through the USB cable, C12).
 
 ## Phase 19 — End-to-end test + polish · Owner: Kvn
-- [ ] Walk every row of `10-RUBRIC-CHECKLIST.md` on the IIS-hosted build (web + emulator + phone). Fix bugs.
-- [ ] UI consistency pass (spacing, empty states, loading, messages). Check every file has the header + method comments (script it: search for methods without a comment above).
-- [ ] Re-seed fresh data.
+- [x] Walk every row of `10-RUBRIC-CHECKLIST.md` on the IIS-hosted build (web + emulator + phone). Fix bugs. *(29 Sep: web on :8081 as Backoffice / Grid Operator / Prosumer, rules R6, R7, R9, R10 on the :8080 API, all Android screens against :8080 in Phases 13–18 + the real phone. Fixed: phone backups could copy the login token.)*
+- [x] UI consistency pass (spacing, empty states, loading, messages). Check every file has the header + method comments (script it: search for methods without a comment above). *(A checker script found 2 uncommented helpers in 132 files / 498 methods — fixed; no TODO/debug logs left.)*
+- [ ] Re-seed fresh data. *(Kvn, by hand — setup doc §8. Do it again the day before the viva.)*
 
 ## Phase 20 — Diagrams · Owner: Kvn (+ team review)
 - [ ] `diagrams/`: **high-level architecture**, **use case** (actors Backoffice, Grid Operator, Prosumer; system boundary SunShare), **DFD level 0 (context) + level 1**. Also an **ER-style collection diagram** for the database design section.

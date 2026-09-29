@@ -37,6 +37,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     // What the screen does when a row is tapped.
     public interface OnBookingClickListener {
+        // Called with the booking whose row was tapped.
         void onBookingClick(ReservationResponse booking);
     }
 

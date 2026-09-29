@@ -161,6 +161,11 @@ The "plumbing" every Android screen uses. No business rules live here — the ph
 - **Freeze-proof (C13):** the first WebView starts Chrome's engine, which took 2.8 s on the emulator, so the WebView is created only when the map is ready and the screen opens at once.
 - **Tested on the emulator (29 Sep):** at SLIIT → 4 markers: 1 Malabe 0.01 km, 2 Kaduwela 2.42, 3 Battaramulla 6.22, 4 Kottawa 8.24 (Nugegoda is inactive, so it's left out); tap 1 → details; Directions → Google Maps app opened; `stations_cache` had the 4 rows; wrong server address → "Offline: showing 4 saved stations"; location denied → SLIIT Malabe note; the Grid Operator's home opens the same map.
 
+### End-to-end check (Phase 19)
+- **Comments rule** (brief: missing = not marked): a checker script scanned **132 files / 498 methods** (C#, Java, JS/JSX, map page) for the header block and a `//` comment above every method → 2 small helpers were missing one, now fixed. Every `// Reference:` in the code is listed in `13-REFERENCES.md`.
+- **Rubric walk on IIS:** web on `:8081` — Backoffice (dashboard, stations, pending activations, users, reservations history), Grid Operator (only Dashboard / Reservations / Stations & slots; Users → "You don't have access"), Prosumer refused; the network log shows every call going to the IIS API on `:8080`. Rules straight against the IIS API: R6 deactivate with bookings → 409, R7 delete with history → 409, R9 8 days ahead → 400, R10 change/cancel < 12 h → 400 (`canModify = false`).
+- **Security fix:** the Android template's backup rules would have copied `sunshare_local.db` — which holds the **login token** — to Google Drive backups and to a new phone. Now excluded (D57).
+
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
 2. Web as Backoffice: create "SLIIT Rooftop Hub" with lat/lng → add two slots.

@@ -51,6 +51,7 @@ export function formatDate(isoText) {
 // UTC time from the API -> the "YYYY-MM-DDTHH:mm" local text a <input type="datetime-local"> expects.
 export function toDateTimeInput(isoText) {
   const date = new Date(isoText);
+  // Two digits: 7 -> "07".
   const pad = (number) => String(number).padStart(2, '0');
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }

@@ -1,19 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample data extraction rules file; uncomment and customize as necessary.
-   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
-   for details.
--->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File: data_extraction_rules.xml | Part B (Android shell) | Backup rules for Android 12+:
+     the phone's SQLite file (login token, cached stations, server address) is never copied to a
+     cloud backup or to a new phone - after a restore the user simply logs in again. -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- TODO: Use <include> and <exclude> to control what is backed up.
-        <include .../>
-        <exclude .../>
-        -->
+        <exclude domain="database" path="sunshare_local.db" />
     </cloud-backup>
-    <!--
     <device-transfer>
-        <include .../>
-        <exclude .../>
+        <exclude domain="database" path="sunshare_local.db" />
     </device-transfer>
-    -->
 </data-extraction-rules>
