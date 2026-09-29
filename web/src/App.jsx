@@ -16,7 +16,12 @@ import AppLayout from './components/AppLayout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import PagePlaceholder from './components/PagePlaceholder.jsx';
 import Home from './pages/Home.jsx';
+import Login from './pages/Login.jsx';
+import Prosumers from './pages/Prosumers.jsx';
+import UserForm from './pages/UserForm.jsx';
+import Users from './pages/Users.jsx';
 import NotFound from './pages/NotFound.jsx';
+import PendingActivations from './pages/PendingActivations.jsx';
 
 const STAFF = ['Backoffice', 'GridOperator'];
 const BACKOFFICE = ['Backoffice'];
@@ -29,7 +34,7 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<main className="container py-5"><PagePlaceholder title="Login" phase={8} /></main>} />
+          <Route path="/login" element={<Login />} />
 
           {/* Staff pages (Backoffice + Grid Operator), inside the sidebar layout. */}
           <Route element={<ProtectedRoute roles={STAFF} />}>
@@ -47,13 +52,13 @@ export default function App() {
               <Route element={<ProtectedRoute roles={BACKOFFICE} />}>
                 <Route path="/stations/new" element={<PagePlaceholder title="New station" phase={9} />} />
                 <Route path="/stations/:id/edit" element={<PagePlaceholder title="Edit station" phase={9} />} />
-                <Route path="/users" element={<PagePlaceholder title="Web users" phase={8} />} />
-                <Route path="/users/new" element={<PagePlaceholder title="New web user" phase={8} />} />
-                <Route path="/users/:nic/edit" element={<PagePlaceholder title="Edit web user" phase={8} />} />
-                <Route path="/prosumers" element={<PagePlaceholder title="Prosumers" phase={8} />} />
-                <Route path="/prosumers/new" element={<PagePlaceholder title="New prosumer" phase={8} />} />
-                <Route path="/prosumers/:nic/edit" element={<PagePlaceholder title="Edit prosumer" phase={8} />} />
-                <Route path="/activations" element={<PagePlaceholder title="Pending activations" phase={8} />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/users/new" element={<UserForm kind="staff" />} />
+                <Route path="/users/:nic/edit" element={<UserForm kind="staff" />} />
+                <Route path="/prosumers" element={<Prosumers />} />
+                <Route path="/prosumers/new" element={<UserForm kind="prosumer" />} />
+                <Route path="/prosumers/:nic/edit" element={<UserForm kind="prosumer" />} />
+                <Route path="/activations" element={<PendingActivations />} />
               </Route>
             </Route>
           </Route>

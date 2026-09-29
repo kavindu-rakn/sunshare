@@ -11,7 +11,7 @@
  *                logged in. Any component can read it with useAuth().
  * ============================================================================
  */
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, startTransition, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { clearSession, loadSession, saveSession, setUnauthorizedHandler } from '../api/client.js';
 
@@ -28,11 +28,15 @@ export function AuthProvider({ children }) {
     setUser(session);
   }, []);
 
-  // Forget the session and go back to the login page.
+  // Forget the session and go back to the login page. React Router changes pages inside a React
+  // "transition", so we forget the user in the same transition: both happen in one step. Otherwise
+  // the protected page would redirect first and remember itself as the page to come back to.
   const logout = useCallback(() => {
     clearSession();
-    setUser(null);
-    navigate('/login');
+    startTransition(() => {
+      setUser(null);
+      navigate('/login');
+    });
   }, [navigate]);
 
   // If the API answers 401 later (token expired), log out automatically.

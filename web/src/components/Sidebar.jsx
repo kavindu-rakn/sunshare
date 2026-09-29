@@ -9,9 +9,13 @@
  *  Description : Dark navy side menu. Shows only the links for the logged-in
  *                user's role (Backoffice sees everything, Grid Operators see
  *                the operational pages), plus the user's name and Log out.
+ *                Backoffice also sees how many prosumers wait for activation
+ *                (count badge added with the Pending activations page, Part A).
  * ============================================================================
  */
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { ACTIVATIONS_CHANGED, getPendingActivations } from '../api/usersApi.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const BO = 'Backoffice';
@@ -34,6 +38,32 @@ const ROLE_NAMES = { Backoffice: 'Backoffice officer', GridOperator: 'Grid opera
 export default function Sidebar({ open, onToggle, onNavigate }) {
   const { user, logout } = useAuth();
   const links = MENU.filter((item) => item.roles.includes(user.role));
+  const [pendingCount, setPendingCount] = useState(0);
+
+  // Backoffice only: load how many prosumers are waiting for activation, and load it again
+  // whenever a page says an account's status changed (the ACTIVATIONS_CHANGED browser event).
+  useEffect(() => {
+    if (user.role !== BO) {
+      return undefined;
+    }
+    let cancelled = false;
+
+    // Asks the API for the waiting list and keeps only its length. If it fails, the badge just stays as it was.
+    function refreshCount() {
+      getPendingActivations()
+        .then((list) => {
+          if (!cancelled) setPendingCount(list.length);
+        })
+        .catch(() => {});
+    }
+
+    refreshCount();
+    window.addEventListener(ACTIVATIONS_CHANGED, refreshCount);
+    return () => {
+      cancelled = true;
+      window.removeEventListener(ACTIVATIONS_CHANGED, refreshCount);
+    };
+  }, [user.role]);
 
   return (
     <aside className={`app-sidebar ${open ? 'open' : ''}`}>
@@ -61,6 +91,11 @@ export default function Sidebar({ open, onToggle, onNavigate }) {
                 <NavLink to={item.to} className="nav-link" onClick={onNavigate}>
                   <i className={`bi ${item.icon}`} aria-hidden="true"></i>
                   {item.label}
+                  {item.to === '/activations' && pendingCount > 0 && (
+                    <span className="badge rounded-pill status-pending ms-auto">
+                      {pendingCount}<span className="visually-hidden"> waiting</span>
+                    </span>
+                  )}
                 </NavLink>
               </li>
             ))}
