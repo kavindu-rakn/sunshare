@@ -17,6 +17,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import PagePlaceholder from './components/PagePlaceholder.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
+import Prosumers from './pages/Prosumers.jsx';
 import UserForm from './pages/UserForm.jsx';
 import Users from './pages/Users.jsx';
 import NotFound from './pages/NotFound.jsx';
@@ -53,9 +54,9 @@ export default function App() {
                 <Route path="/users" element={<Users />} />
                 <Route path="/users/new" element={<UserForm kind="staff" />} />
                 <Route path="/users/:nic/edit" element={<UserForm kind="staff" />} />
-                <Route path="/prosumers" element={<PagePlaceholder title="Prosumers" phase={8} />} />
-                <Route path="/prosumers/new" element={<PagePlaceholder title="New prosumer" phase={8} />} />
-                <Route path="/prosumers/:nic/edit" element={<PagePlaceholder title="Edit prosumer" phase={8} />} />
+                <Route path="/prosumers" element={<Prosumers />} />
+                <Route path="/prosumers/new" element={<UserForm kind="prosumer" />} />
+                <Route path="/prosumers/:nic/edit" element={<UserForm kind="prosumer" />} />
                 <Route path="/activations" element={<PagePlaceholder title="Pending activations" phase={8} />} />
               </Route>
             </Route>
