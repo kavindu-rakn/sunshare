@@ -19,4 +19,17 @@
     </style>
 
     <style name="Theme.SunShare" parent="Base.Theme.SunShare" />
+
+    <!-- Navy top bar used on inner screens: white title, grey subtitle, white back arrow. -->
+    <style name="Widget.SunShare.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/ss_dark</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="subtitleTextColor">@color/ss_grey</item>
+        <item name="navigationIconTint">@color/white</item>
+    </style>
+
+    <!-- Red line under a form that shows the API's error message (hidden until needed). -->
+    <style name="TextAppearance.SunShare.Error" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/ss_danger</item>
+    </style>
 </resources>
