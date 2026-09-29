@@ -22,6 +22,10 @@ import UserForm from './pages/UserForm.jsx';
 import Users from './pages/Users.jsx';
 import NotFound from './pages/NotFound.jsx';
 import PendingActivations from './pages/PendingActivations.jsx';
+import SlotForm from './pages/SlotForm.jsx';
+import Slots from './pages/Slots.jsx';
+import StationForm from './pages/StationForm.jsx';
+import Stations from './pages/Stations.jsx';
 
 const STAFF = ['Backoffice', 'GridOperator'];
 const BACKOFFICE = ['Backoffice'];
@@ -43,15 +47,15 @@ export default function App() {
               <Route path="/reservations" element={<PagePlaceholder title="Reservations" phase={10} />} />
               <Route path="/reservations/new" element={<PagePlaceholder title="New reservation" phase={11} />} />
               <Route path="/reservations/:id/edit" element={<PagePlaceholder title="Edit reservation" phase={11} />} />
-              <Route path="/stations" element={<PagePlaceholder title="Stations" phase={9} />} />
-              <Route path="/stations/:id/slots" element={<PagePlaceholder title="Slots" phase={9} />} />
-              <Route path="/slots/new" element={<PagePlaceholder title="New slot" phase={9} />} />
-              <Route path="/slots/:id/edit" element={<PagePlaceholder title="Edit slot" phase={9} />} />
+              <Route path="/stations" element={<Stations />} />
+              <Route path="/stations/:id/slots" element={<Slots />} />
+              <Route path="/slots/new" element={<SlotForm />} />
+              <Route path="/slots/:id/edit" element={<SlotForm />} />
 
               {/* Backoffice-only pages. */}
               <Route element={<ProtectedRoute roles={BACKOFFICE} />}>
-                <Route path="/stations/new" element={<PagePlaceholder title="New station" phase={9} />} />
-                <Route path="/stations/:id/edit" element={<PagePlaceholder title="Edit station" phase={9} />} />
+                <Route path="/stations/new" element={<StationForm />} />
+                <Route path="/stations/:id/edit" element={<StationForm />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/users/new" element={<UserForm kind="staff" />} />
                 <Route path="/users/:nic/edit" element={<UserForm kind="staff" />} />

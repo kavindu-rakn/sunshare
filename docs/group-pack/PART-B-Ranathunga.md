@@ -47,7 +47,7 @@ Run `scripts/deploy-api.ps1` in an **admin** PowerShell → it publishes to `C:\
   - `Models/User.cs`, `SolarStation.cs`, `EnergyBookingSlot.cs`, `EnergyReservation.cs`, `Roles.cs`, `UserStatuses.cs`, `ReservationStatuses.cs`, `ReservationTypes.cs`
   - `Helpers/ApiException.cs`, `Middleware/ErrorHandlingMiddleware.cs`, `Controllers/HealthController.cs`
   - `scripts/deploy-api.ps1` — ✅ built in Phase 6 (IIS deploy)
-- Web: `pages/Home.jsx`, `Stations.jsx`, `StationForm.jsx`, `Slots.jsx`, `SlotForm.jsx`, `NotFound.jsx` · `api/client.js`, `stationsApi.js`, `slotsApi.js` · `components/*` · `context/AuthContext.jsx` · `styles/theme.css` · `App.jsx`, `main.jsx`
+- Web — ✅ Home (Phase 7), Stations / Slots (Phase 9): `pages/Home.jsx`, `Stations.jsx`, `StationForm.jsx`, `Slots.jsx`, `SlotForm.jsx`, `NotFound.jsx` · `api/client.js`, `stationsApi.js`, `slotsApi.js` · `components/*` · `context/AuthContext.jsx` · `styles/theme.css` · `App.jsx`, `main.jsx`
 - Android: `ui/map/StationMapActivity.java` · `db/SunShareDbHelper.java` · `api/ApiClient.java`, `ApiService.java`, `ApiConfig.java`, `ApiErrorParser.java`, `api/models/*` · `util/*` · `res/values/*`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`
 
 ## How it works
@@ -115,6 +115,15 @@ From SLIIT: Malabe 0.00 km → Kaduwela 2.42 → Battaramulla 6.23 → Kottawa 8
 - **Accessibility:** page regions (`header/nav/main/footer`), a "Skip to main content" link (first Tab), bold visible focus outline, `aria-expanded` on the menu button, screen-reader text for icon buttons and spinners.
 - **Home page (W1):** hero "Trade your sunshine", 3 steps (Register → Reserve → Scan), the 3 roles, a call-to-action band, and a footer with the team and a **live "Server and database online" light** from `GET /api/health` — proves web → API → MongoDB in one glance.
 - **Theme:** our colours are CSS variables over Bootstrap (`--ss-primary` teal, `--ss-accent` amber, `--ss-dark` navy); status badges: Pending amber (dark text), Approved teal, Completed/Active green, Cancelled grey, Deactivated red.
+
+### Stations & slots web pages (Phase 9)
+**Files** (in `web/src/`): `pages/Stations.jsx`, `StationForm.jsx`, `Slots.jsx`, `SlotForm.jsx` · `api/stationsApi.js`, `api/slotsApi.js` · helpers in `utils/format.js` (`googleMapsUrl`, `formatDate`, `toDateTimeInput`, `fromDateTimeInput`).
+
+- **Stations (W9):** one table with location (+ a **Map** link that opens Google Maps at the coordinates), capacity, battery slots, hours, **active bookings** (from the API's `activeReservationCount`) and status. Backoffice sees Edit / Deactivate / Activate / Delete; a Grid Operator sees only Map + Slots (and the API would refuse them anyway — R2).
+- **Deactivate / Delete:** the page just calls the API and shows its answer, e.g. Malabe → *"This station has 2 active reservations. Cancel or complete them first."* (R6) or *"…deactivate it instead."* (R7). The browser never counts bookings itself.
+- **Station form (W10):** number inputs for GPS/capacity/battery slots, time inputs for the hours, and an **Open in Google Maps** button to check the pin before saving. The API checks the ranges and "open before close".
+- **Slots (W11):** the station's windows for 14 days — total / booked / free, Open or Closed — with Add, Edit, Delete.
+- **Slot form (W12):** staff type times in their local time (`datetime-local`); the page converts to UTC (`new Date(value).toISOString()`) because the API works in UTC. For a booked slot the form shows *"1 already booked - the time can't change…"*, and the API enforces it (R8, D28).
 
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
