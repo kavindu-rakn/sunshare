@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+// Reference: Save data using SQLite (Android Developers) https://developer.android.com/training/data-storage/sqlite
 public class SunShareDbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "sunshare_local.db";

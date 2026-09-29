@@ -95,10 +95,10 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 > **Order change (29 Sep, D47):** the Google Maps key needs a card on a Google Cloud billing account, which Kvn can't use right now. Android is built **13 → 14 → 16 → 17 → 18 → 15** (map last). If no key arrives in time, Phase 15 uses the fallback in D47 (OpenStreetMap in-app map + "Open in Google Maps" per station).
 
 ## Phase 13 — Android shell · Owner: Kvn
-- [ ] Gradle deps (allowed list), Manifest permissions (INTERNET, CAMERA, ACCESS_FINE/COARSE_LOCATION), `network_security_config.xml` (allow HTTP for the LAN demo), Maps key from `local.properties` → manifest placeholder.
-- [ ] Brand `colors.xml`, `themes.xml`, `strings.xml`, app icon (sun).
-- [ ] `ApiConfig`, `ApiClient` (Retrofit + token interceptor + base URL from SQLite), `ApiService` (every endpoint in `04-API.md`), model classes, `ApiErrorParser`.
-- [ ] `SunShareDbHelper` with the 3 tables from `02-ARCHITECTURE.md §9`; `DateUtils`, `UiUtils`, `SessionGuard`.
+- [x] Gradle deps (allowed list), Manifest permissions (INTERNET, CAMERA, ACCESS_FINE/COARSE_LOCATION), `network_security_config.xml` (allow HTTP for the LAN demo), Maps key from `local.properties` → manifest placeholder.
+- [x] Brand `colors.xml`, `themes.xml`, `strings.xml`, app icon (sun).
+- [x] `ApiConfig`, `ApiClient` (Retrofit + token interceptor + base URL from SQLite), `ApiService` (every endpoint the Android screens M1–M11 call — D48), model classes, `ApiErrorParser`.
+- [x] `SunShareDbHelper` with the 3 tables from `02-ARCHITECTURE.md §9`; `DateUtils`, `UiUtils`, `SessionGuard`.
 - **Done when:** app builds; a temporary test call to `/api/health` from the emulator shows "connected".
 
 ## Phase 14 — Android Part A · Owner: Gimhan T P K

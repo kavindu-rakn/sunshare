@@ -42,6 +42,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 // A Retrofit interface has no method bodies: each line maps one Java method to one HTTP call.
+// Reference: Retrofit - A type-safe HTTP client for Android and Java https://square.github.io/retrofit/
 public interface ApiService {
 
     // ----- Health (shared) -----

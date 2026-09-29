@@ -53,6 +53,7 @@ public final class ApiClient {
     }
 
     // Creates OkHttp (the network engine, 15 s time limits, token added) and Retrofit on top of it.
+    // Reference: Retrofit - A type-safe HTTP client for Android and Java https://square.github.io/retrofit/
     private static ApiService build(Context app, String baseUrl) {
         OkHttpClient http = new OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
@@ -69,6 +70,7 @@ public final class ApiClient {
     }
 
     // Runs before every request: if someone is logged in, adds their JWT token so the API knows who is calling (R2).
+    // Reference: OkHttp Interceptors https://square.github.io/okhttp/features/interceptors/
     private static Response addToken(Context app, Interceptor.Chain chain) throws IOException {
         Request request = chain.request();
         Session session = SunShareDbHelper.get(app).getSession();
