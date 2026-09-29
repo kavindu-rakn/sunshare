@@ -10,13 +10,17 @@
  *                (all / current / pending / history), status, station, date
  *                range and search. The API does the filtering (rule R16 and
  *                the list definitions in docs/01-SPEC.md §5).
+ *                Row actions Edit / Cancel / Approve were added by Part C
+ *                (Malkith G W L, IT22630834); they appear only when the API
+ *                allows them (canModify, status Pending).
  * ============================================================================
  */
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { listReservations } from '../api/reservationsApi.js';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { approveReservation, cancelReservation, listReservations } from '../api/reservationsApi.js';
 import { listStations } from '../api/stationsApi.js';
 import AlertMessage from '../components/AlertMessage.jsx';
+import ConfirmButton from '../components/ConfirmButton.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import PageHeader from '../components/PageHeader.jsx';
@@ -33,6 +37,7 @@ const VIEWS = [
 // Staff list of bookings. A "view" can come from the address, e.g. /reservations?view=pending (dashboard cards).
 export default function Reservations() {
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const [view, setView] = useState(searchParams.get('view') ?? 'all');
   const [status, setStatus] = useState('');
   const [stationId, setStationId] = useState('');
@@ -44,6 +49,9 @@ export default function Reservations() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(location.state?.message ?? '');
+  const [reloadKey, setReloadKey] = useState(0);
+  const [busyId, setBusyId] = useState('');
 
   // Once: load the stations for the station filter.
   useEffect(() => {
@@ -78,7 +86,55 @@ export default function Reservations() {
     return () => {
       cancelled = true;
     };
-  }, [view, status, stationId, fromDate, toDate, search]);
+  }, [view, status, stationId, fromDate, toDate, search, reloadKey]);
+
+  // Runs one row action (cancel or approve) and shows the API's answer. The API checks the rules:
+  // R10 (12 hours' notice), R15 (finished bookings can't change), R13 (only Pending can be approved).
+  async function runAction(reservation, action, successText) {
+    setBusyId(reservation.id);
+    setError('');
+    try {
+      await action(reservation.id);
+      setSuccess(successText);
+      setReloadKey((key) => key + 1);
+    } catch (err) {
+      setSuccess('');
+      setError(err.message);
+    } finally {
+      setBusyId('');
+    }
+  }
+
+  // The buttons for one row. Edit / Cancel only if the API says canModify; Approve only for Pending.
+  function renderActions(reservation) {
+    const busy = busyId === reservation.id;
+    const who = `${reservation.prosumerName} at ${reservation.stationName}`;
+    return (
+      <>
+        {reservation.status === 'Pending' && (
+          <button type="button" className="btn btn-sm btn-primary me-1" disabled={busy}
+            onClick={() => runAction(reservation, approveReservation, `Approved ${reservation.prosumerName}'s booking - the QR code is ready in the app.`)}>
+            Approve<span className="visually-hidden"> {who}</span>
+          </button>
+        )}
+        {reservation.canModify && (
+          <>
+            <Link to={`/reservations/${reservation.id}/edit`} className="btn btn-sm btn-outline-primary me-1">
+              Edit<span className="visually-hidden"> {who}</span>
+            </Link>
+            <ConfirmButton
+              message={`Cancel ${reservation.prosumerName}'s booking at ${reservation.stationName}?`}
+              onConfirm={() => runAction(reservation, cancelReservation, 'The booking was cancelled and its place is free again.')}
+              className="btn btn-sm btn-outline-danger"
+              disabled={busy}
+            >
+              Cancel<span className="visually-hidden"> {who}</span>
+            </ConfirmButton>
+          </>
+        )}
+      </>
+    );
+  }
 
   // Applies the search box when the filter form is submitted.
   function handleSearch(event) {
@@ -99,8 +155,13 @@ export default function Reservations() {
 
   return (
     <>
-      <PageHeader title="Reservations" subtitle="Every energy booking. Current = approved and upcoming; History = completed, cancelled or past." />
+      <PageHeader title="Reservations" subtitle="Every energy booking. Current = approved and upcoming; History = completed, cancelled or past.">
+        <Link to="/reservations/new" className="btn btn-primary">
+          <i className="bi bi-plus-lg me-2" aria-hidden="true"></i>New reservation
+        </Link>
+      </PageHeader>
 
+      <AlertMessage type="success" message={success} onClose={() => setSuccess('')} />
       <AlertMessage message={error} onClose={() => setError('')} />
 
       <div className="card">
@@ -173,7 +234,7 @@ export default function Reservations() {
           <EmptyState icon="bi-calendar-x" title="No bookings found" text="Try another view or clear the filters." />
         )}
         {!loading && reservations.length > 0 && (
-          <ReservationTable caption="Reservations" reservations={reservations} />
+          <ReservationTable caption="Reservations" reservations={reservations} renderActions={renderActions} />
         )}
       </div>
     </>
