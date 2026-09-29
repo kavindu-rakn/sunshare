@@ -75,6 +75,8 @@ What it does:
 4. Emulator location: emulator ⋯ (Extended controls) → **Location** → search "SLIIT Malabe" → **Set location**.
 
 ## 6. Google Maps API key (YOU, ~10 min)
+> **Status 29 Sep:** blocked — Google Cloud needs a card for billing (Kvn's card can't cover the authorization hold). Anyone with a card can create the key for us: it is locked to package `com.sunshare.app` + Kvn's debug SHA-1 `95:23:58:43:F0:62:F5:F3:F1:97:09:60:0B:3B:D7:73:B9:FB:03:39`, Android map loads are free, and a $1 budget alert is a safety net. A Google **AI Studio** (Gemini) key does **not** work for maps. Fallback: D47.
+
 1. console.cloud.google.com → new project **SunShare**.
 2. **Billing** → link a billing account (card). Then **Budgets & alerts** → create a **$1** budget with email alerts (safety net).
 3. **APIs & Services → Library** → enable **Maps SDK for Android**.

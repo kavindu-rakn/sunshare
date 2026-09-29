@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- File: colors.xml | Part B (Android shell) | SunShare brand colours (same as the web, docs/05-SCREENS.md §1). -->
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Brand -->
+    <color name="ss_primary">#FF0F766E</color>        <!-- Deep Teal: buttons, links, Approved -->
+    <color name="ss_primary_dark">#FF0B5F58</color>
+    <color name="ss_primary_soft">#FFE6F4F2</color>
+    <color name="ss_accent">#FFF59E0B</color>         <!-- Solar Amber: sun, highlights, Pending (dark text on it) -->
+    <color name="ss_accent_soft">#FFFEF3C7</color>
+    <color name="ss_dark">#FF0B1F33</color>           <!-- Night Navy: toolbar, headings -->
+    <color name="ss_bg">#FFF8FAFC</color>             <!-- page background -->
+    <color name="ss_text">#FF1E293B</color>
+    <color name="ss_muted">#FF64748B</color>
+
+    <!-- Status colours (badges / chips) -->
+    <color name="ss_success">#FF16A34A</color>        <!-- Completed, Active -->
+    <color name="ss_danger">#FFDC2626</color>         <!-- Cancelled errors, Deactivated -->
+    <color name="ss_info">#FF0284C7</color>
+    <color name="ss_grey">#FF94A3B8</color>           <!-- Cancelled -->
 </resources>

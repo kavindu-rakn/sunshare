@@ -45,3 +45,5 @@ Add to this list whenever code follows a tutorial/sample (and put a `// Referenc
 [21] Bootstrap Team, "Bootstrap Icons." [Online]. Available: https://icons.getbootstrap.com/ [Accessed: 29-Sep-2026].
 
 [22] Google, "Get started with Maps URLs," *Google for Developers*. [Online]. Available: https://developers.google.com/maps/documentation/urls/get-started [Accessed: 29-Sep-2026].
+
+[23] Square, "Interceptors," *OkHttp*. [Online]. Available: https://square.github.io/okhttp/features/interceptors/ [Accessed: 29-Sep-2026].

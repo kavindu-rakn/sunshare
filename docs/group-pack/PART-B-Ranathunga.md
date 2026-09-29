@@ -48,7 +48,8 @@ Run `scripts/deploy-api.ps1` in an **admin** PowerShell → it publishes to `C:\
   - `Helpers/ApiException.cs`, `Middleware/ErrorHandlingMiddleware.cs`, `Controllers/HealthController.cs`
   - `scripts/deploy-api.ps1` — ✅ built in Phase 6 (IIS deploy)
 - Web — ✅ Home (Phase 7), Stations / Slots (Phase 9): `pages/Home.jsx`, `Stations.jsx`, `StationForm.jsx`, `Slots.jsx`, `SlotForm.jsx`, `NotFound.jsx` · `api/client.js`, `stationsApi.js`, `slotsApi.js` · `components/*` · `context/AuthContext.jsx` · `styles/theme.css` · `App.jsx`, `main.jsx`
-- Android: `ui/map/StationMapActivity.java` · `db/SunShareDbHelper.java` · `api/ApiClient.java`, `ApiService.java`, `ApiConfig.java`, `ApiErrorParser.java`, `api/models/*` · `util/*` · `res/values/*`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`
+- Android shell — ✅ **built in Phase 13** (in `android/app/src/main/java/com/sunshare/app/`): `api/ApiConfig.java`, `ApiClient.java`, `ApiService.java`, `ApiErrorParser.java`, `api/models/*` (15 classes) · `db/SunShareDbHelper.java`, `db/Session.java` · `util/DateUtils.java`, `UiUtils.java`, `SessionGuard.java` · `MainActivity.java` (temporary server check) · `res/values/*`, `res/layout/activity_main.xml`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`, `app/build.gradle.kts`
+- Android map (Phase 15, built last): `ui/map/StationMapActivity.java` · `db/SunShareDbHelper.java` · `api/ApiClient.java`, `ApiService.java`, `ApiConfig.java`, `ApiErrorParser.java`, `api/models/*` · `util/*` · `res/values/*`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`
 
 ## How it works
 _(Claude Code fills this in after Phases 1, 3, 6, 7, 9, 12, 13 and 15.)_
@@ -131,6 +132,18 @@ From SLIIT: Malabe 0.00 km → Kaduwela 2.42 → Battaramulla 6.23 → Kottawa 8
 - **Why no rewrite rules:** HashRouter keeps the page in the part after `#` (e.g. `/#/stations`), which never reaches IIS, so IIS always serves `index.html`.
 - **Two sites, two ports:** web 8081 → API 8080 → MongoDB. The browser allows the web page to call the API only because the API's CORS list contains `http://localhost:8081`.
 - **Tested:** Kvn logged in on `http://localhost:8081` (Dashboard with live counts); the icon font is served as `font/woff2`; the built JS contains `http://localhost:8080`.
+
+### Android shell (Phase 13)
+The "plumbing" every Android screen uses. No business rules live here — the phone only asks the API and shows the answer.
+- **Models (`api/models/`)** — one small Java class per JSON shape (e.g. `LoginResponse`, `ReservationResponse`). The field names are exactly the JSON names, so **Gson** (the JSON library) fills them in by itself.
+- **`ApiService`** — a Retrofit *interface*: each line says "this Java method = this HTTP call", e.g. `@GET("api/health") Call<HealthResponse> health();`. Retrofit writes the networking code. It lists the 20 endpoints the phone screens use (D48).
+- **`ApiClient`** — builds Retrofit once. Before **every** request an *interceptor* (a hook that runs before each call) reads the token from the SQLite `session` table and adds `Authorization: Bearer <token>`.
+- **`ApiConfig`** — the server address: default `http://10.0.2.2:8080/` (the emulator's name for "my laptop"), or the phone's saved value in SQLite `app_settings` (the ⚙ setting on Login). Changing it calls `ApiClient.reset()` so the next call uses the new address.
+- **`ApiErrorParser`** — the API always sends errors as `{ "message": "…" }`; this reads that text so the screen shows the API's own words. If the server can't be reached at all, it says so and names the address in use.
+- **`SunShareDbHelper`** — the phone's own SQLite file `sunshare_local.db` with 3 tables: `session` (who is logged in + token), `stations_cache` (map offline copy), `app_settings` (server address). `onCreate` makes the tables the first time the app runs.
+- **Helpers** — `DateUtils` shows the API's UTC times in the phone's local time; `UiUtils` = toast, "field not empty" check, "Please wait…" button; `SessionGuard` = kick logged-out users back to Login, logout, and handle an expired token (HTTP 401).
+- **Why 10.0.2.2?** Inside the emulator `localhost` means the emulator itself; `10.0.2.2` is Android's fixed address for the laptop running it.
+- **Tested:** emulator → `http://10.0.2.2:8080/api/health` (IIS) → green "API: ok · Database: connected" with the server time in local time; the phone's `sunshare_local.db` contained exactly the 3 tables.
 
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.

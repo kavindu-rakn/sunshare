@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File: network_security_config.xml | Part B (Android shell) | Allows plain HTTP to the SunShare API.
+     The demo API runs on IIS over HTTP on the local network (10.0.2.2 for the emulator, the laptop's
+     Wi-Fi IP for a phone), and that IP changes between networks, so HTTP is allowed for all hosts.
+     Production would use HTTPS instead (decision D15). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
