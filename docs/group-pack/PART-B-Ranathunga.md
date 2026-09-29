@@ -105,6 +105,17 @@ From SLIIT: Malabe 0.00 km → Kaduwela 2.42 → Battaramulla 6.23 → Kottawa 8
 - **Environment:** IIS runs the app as **Production** → Swagger still on (we turned it on for every environment), CORS only allows 5173 and 8081.
 - **Phone:** firewall rule on port 8080 + the laptop's Wi-Fi IPv4 (`ipconfig`). It changes with the network (hotspot `172.20.10.x`, home Wi-Fi `192.168.1.x`) — that's why the Android app has an editable server address.
 
+### Web shell + Home page (Phase 7)
+**Files** (in `web/src/`): `App.jsx` (all routes) · `main.jsx` · `styles/theme.css` · `api/client.js`, `api/healthApi.js` · `context/AuthContext.jsx` · `utils/format.js` · `components/AppLayout.jsx`, `Sidebar.jsx`, `ProtectedRoute.jsx`, `SkipLink.jsx`, `PageHeader.jsx`, `StatusBadge.jsx`, `AlertMessage.jsx`, `EmptyState.jsx`, `ConfirmButton.jsx`, `LoadingSpinner.jsx`, `PagePlaceholder.jsx` · `pages/Home.jsx`, `NotFound.jsx`.
+
+- **How a page calls the API (`api/client.js`):** every call goes through one `request()` function → URL = `VITE_API_BASE_URL` + path (`.env.development` = dev API :5080, `.env.production` = IIS :8080) → adds `Authorization: Bearer <token>` from the saved session → if the answer is not OK, throws an `ApiError` holding the API's `{ message }` so the page can show it in an `AlertMessage` → on **401** (token expired) it logs out automatically. No Axios — plain `fetch`.
+- **Who is logged in (`AuthContext`):** a React *context* = a value every component can read with `useAuth()`. The session (`token, nic, fullName, role, expiresAt`) is saved in `localStorage`, so a page refresh keeps you logged in; an expired one is dropped.
+- **Routes (`App.jsx`, HashRouter):** addresses look like `/#/stations`. The part after `#` never reaches IIS, so IIS always serves `index.html` and needs no rewrite rules. Public: `/` Home, `/login`. Staff pages sit inside `ProtectedRoute` (not logged in → Login) and `AppLayout` (sidebar). Backoffice-only pages have a second `ProtectedRoute` → a Grid Operator sees "You don't have access to this page". This is only for a nicer UI — the **API** still checks the role on every call (R2).
+- **Sidebar:** the menu list is filtered by role (Backoffice 6 links, Grid Operator 3). On phones it turns into a top bar; the menu button toggles a React state (`menuOpen`) — no Bootstrap JavaScript needed.
+- **Accessibility:** page regions (`header/nav/main/footer`), a "Skip to main content" link (first Tab), bold visible focus outline, `aria-expanded` on the menu button, screen-reader text for icon buttons and spinners.
+- **Home page (W1):** hero "Trade your sunshine", 3 steps (Register → Reserve → Scan), the 3 roles, a call-to-action band, and a footer with the team and a **live "Server and database online" light** from `GET /api/health` — proves web → API → MongoDB in one glance.
+- **Theme:** our colours are CSS variables over Bootstrap (`--ss-primary` teal, `--ss-accent` amber, `--ss-dark` navy); status badges: Pending amber (dark text), Approved teal, Completed/Active green, Cancelled grey, Deactivated red.
+
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
 2. Web as Backoffice: create "SLIIT Rooftop Hub" with lat/lng → add two slots.

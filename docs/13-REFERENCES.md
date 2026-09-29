@@ -39,3 +39,7 @@ Add to this list whenever code follows a tutorial/sample (and put a `// Referenc
 [18] Anthropic, "Claude Code overview." [Online]. Available: https://docs.claude.com/en/docs/claude-code/overview [Accessed: 27-Sep-2026]. *(AI tool disclosure)*
 
 [19] Vite, "Configuring Vite." [Online]. Available: https://vite.dev/config/ [Accessed: 27-Sep-2026].
+
+[20] R. Rasmussen, "Inter typeface," *Google Fonts*. [Online]. Available: https://fonts.google.com/specimen/Inter [Accessed: 29-Sep-2026].
+
+[21] Bootstrap Team, "Bootstrap Icons." [Online]. Available: https://icons.getbootstrap.com/ [Accessed: 29-Sep-2026].

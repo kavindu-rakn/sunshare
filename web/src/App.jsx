@@ -6,19 +6,61 @@
  *  Part        : B - Shared foundation (web shell)
  *  Author      : Ranathunga R A K N (IT22552860)
  *  Created     : 2026-09-27
- *  Description : Root component of the web app. Shows a simple placeholder
- *                screen until the page routes are added in the web shell phase.
+ *  Description : Root component: every page address (route) of the web app
+ *                and who may open it. Pages not built yet show a placeholder.
  * ============================================================================
  */
+import { HashRouter, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext.jsx';
+import AppLayout from './components/AppLayout.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import PagePlaceholder from './components/PagePlaceholder.jsx';
+import Home from './pages/Home.jsx';
+import NotFound from './pages/NotFound.jsx';
 
-// Root component: shows the SunShare name with a sun icon (proves Bootstrap + icons load).
+const STAFF = ['Backoffice', 'GridOperator'];
+const BACKOFFICE = ['Backoffice'];
+
+// HashRouter keeps the page in the part of the address after "#" (e.g. /#/stations), so IIS
+// always serves the same index.html and needs no URL-rewrite setup (docs/11-DECISIONS.md D7).
 export default function App() {
   return (
-    <main className="container py-5">
-      <h1 className="h3">
-        <i className="bi bi-sun-fill text-warning me-2"></i>SunShare
-      </h1>
-      <p className="text-muted">The web app is being set up.</p>
-    </main>
-  )
+    <HashRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<main className="container py-5"><PagePlaceholder title="Login" phase={8} /></main>} />
+
+          {/* Staff pages (Backoffice + Grid Operator), inside the sidebar layout. */}
+          <Route element={<ProtectedRoute roles={STAFF} />}>
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<PagePlaceholder title="Dashboard" phase={10} />} />
+              <Route path="/reservations" element={<PagePlaceholder title="Reservations" phase={10} />} />
+              <Route path="/reservations/new" element={<PagePlaceholder title="New reservation" phase={11} />} />
+              <Route path="/reservations/:id/edit" element={<PagePlaceholder title="Edit reservation" phase={11} />} />
+              <Route path="/stations" element={<PagePlaceholder title="Stations" phase={9} />} />
+              <Route path="/stations/:id/slots" element={<PagePlaceholder title="Slots" phase={9} />} />
+              <Route path="/slots/new" element={<PagePlaceholder title="New slot" phase={9} />} />
+              <Route path="/slots/:id/edit" element={<PagePlaceholder title="Edit slot" phase={9} />} />
+
+              {/* Backoffice-only pages. */}
+              <Route element={<ProtectedRoute roles={BACKOFFICE} />}>
+                <Route path="/stations/new" element={<PagePlaceholder title="New station" phase={9} />} />
+                <Route path="/stations/:id/edit" element={<PagePlaceholder title="Edit station" phase={9} />} />
+                <Route path="/users" element={<PagePlaceholder title="Web users" phase={8} />} />
+                <Route path="/users/new" element={<PagePlaceholder title="New web user" phase={8} />} />
+                <Route path="/users/:nic/edit" element={<PagePlaceholder title="Edit web user" phase={8} />} />
+                <Route path="/prosumers" element={<PagePlaceholder title="Prosumers" phase={8} />} />
+                <Route path="/prosumers/new" element={<PagePlaceholder title="New prosumer" phase={8} />} />
+                <Route path="/prosumers/:nic/edit" element={<PagePlaceholder title="Edit prosumer" phase={8} />} />
+                <Route path="/activations" element={<PagePlaceholder title="Pending activations" phase={8} />} />
+              </Route>
+            </Route>
+          </Route>
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AuthProvider>
+    </HashRouter>
+  );
 }
