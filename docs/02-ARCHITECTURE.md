@@ -36,8 +36,8 @@
 ### Allowed packages (do not add others without asking Kvn)
 - API: `MongoDB.Driver`, `Microsoft.AspNetCore.Authentication.JwtBearer`, `BCrypt.Net-Next`, `Swashbuckle.AspNetCore`
 - Web: `react`, `react-dom`, `react-router-dom`, `bootstrap`, `bootstrap-icons` (+ Vite's own dev deps)
-- Android: `retrofit2:retrofit`, `retrofit2:converter-gson`, `com.journeyapps:zxing-android-embedded`, `play-services-maps`, `play-services-location`, `androidx.recyclerview:recyclerview`, plus the template defaults (`appcompat`, `material`, `constraintlayout`, `activity`)
-- Android map key: **Maps Demo Key** (D51). If the native Maps SDK refuses it, the map screen uses the **Maps JavaScript API inside Android's built-in `WebView`** (no extra package; the key is injected at runtime from `local.properties`)
+- Android: `retrofit2:retrofit`, `retrofit2:converter-gson`, `com.journeyapps:zxing-android-embedded`, `play-services-location`, `androidx.recyclerview:recyclerview`, plus the template defaults (`appcompat`, `material`, `constraintlayout`, `activity`)
+- Android map: the **Google Maps JavaScript API inside Android's built-in `WebView`** with the **Maps Demo Key** (D51, D53) — no extra package; `play-services-maps` was removed. The key goes `local.properties` → manifest meta-data `com.sunshare.app.MAPS_API_KEY` → filled into `assets/map.html` at runtime
 - Android **last-resort fallback only** (D47, if no Google key works at all): `org.osmdroid:osmdroid-android` (OpenStreetMap map, no key)
 
 ### Banned (keeps it explainable)

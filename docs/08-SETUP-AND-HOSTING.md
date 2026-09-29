@@ -107,6 +107,8 @@ What it does:
 - Change it at runtime: Login screen ⚙ → Server address (saved in SQLite). **At the viva the Wi-Fi/IP will be different — just update it there, no rebuild.**
 - Phone: Settings → About phone → tap **Build number** 7 times → Developer options → **USB debugging** ON → plug in → Allow.
 - QR demo: prosumer booking open on the **emulator** (QR on the laptop screen) → operator logged in on the **phone** → Scan.
+- **Map on the emulator:** the emulator has no real GPS. Give it a position near SLIIT before opening *Nearby stations*: emulator **⋯ (Extended controls) → Location** → search "SLIIT Malabe" → **Set location** (or `adb -s emulator-5554 emu geo fix 79.9729 6.9147` — longitude first). Without a position the app waits 10 s and then uses SLIIT Malabe anyway.
+- **Emulator memory:** the `Medium_Phone` AVD has only **2 GB** — with Google Play + Chrome's WebView it can freeze ("isn't responding") or restart (C13). For demos give it more: Device Manager → ✏ Edit → Show Advanced Settings → **RAM 3072 MB** (or start it with `-memory 3072`), and close apps you don't need on the laptop.
 
 ## 8. Fresh data before the viva
 Seeded bookings are dated relative to the seeding day, so refresh the day before:
