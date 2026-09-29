@@ -45,6 +45,10 @@
     <string name="my_profile">My profile</string>
     <string name="operator_ready">Ready for today\'s energy transfers.</string>
 
+    <!-- M8 My bookings (Part D) -->
+    <string name="bookings_title">My bookings</string>
+    <string name="search_hint">Search station or booking ID</string>
+
     <!-- M9 Booking details (Part D) -->
     <string name="detail_title">Booking details</string>
     <string name="qr_title">Your QR code</string>

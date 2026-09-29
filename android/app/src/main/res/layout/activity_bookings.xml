@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File: activity_bookings.xml | Part D | M8 My bookings: Current / Pending / History tabs, search box, list. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ss_bg"
+    android:orientation="vertical"
+    tools:context=".ui.prosumer.BookingsActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.SunShare.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationContentDescription="@string/back"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/bookings_title" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/ss_dark"
+        app:tabIndicatorColor="@color/ss_accent"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/ss_grey" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/search_hint"
+        app:endIconMode="clear_text"
+        app:startIconContentDescription="@string/search_hint"
+        app:startIconDrawable="@android:drawable/ic_menu_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="16dp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="48dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="48dp"
+            android:gravity="center"
+            android:textColor="@color/ss_muted"
+            android:textSize="15sp"
+            android:visibility="gone"
+            tools:text="No bookings waiting for approval." />
+    </FrameLayout>
+</LinearLayout>
