@@ -19,6 +19,7 @@ package com.sunshare.app.util;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ import androidx.activity.SystemBarStyle;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 public final class UiUtils {
 
@@ -47,14 +50,48 @@ public final class UiUtils {
         return field.getText() == null ? "" : field.getText().toString().trim();
     }
 
-    // "Field not empty" check: marks the box with the message and returns false when nothing was typed.
+    // "Field not empty" check: shows the message on the box and returns false when nothing was typed.
     public static boolean requireFilled(EditText field, String message) {
         if (textOf(field).isEmpty()) {
-            field.setError(message);
-            field.requestFocus();
+            showFieldError(field, message);
             return false;
         }
+        clearFieldError(field);
         return true;
+    }
+
+    // Shows an error on one box: in red under the box when it sits in a Material TextInputLayout
+    // (so it never covers the box's icons), otherwise as Android's small popup.
+    public static void showFieldError(EditText field, String message) {
+        TextInputLayout layout = findInputLayout(field);
+        if (layout != null) {
+            layout.setError(message);
+        } else {
+            field.setError(message);
+        }
+        field.requestFocus();
+    }
+
+    // Removes the error from a box (called when the box is filled in on the next try).
+    public static void clearFieldError(EditText field) {
+        TextInputLayout layout = findInputLayout(field);
+        if (layout != null) {
+            layout.setError(null);
+        } else {
+            field.setError(null);
+        }
+    }
+
+    // Walks up from the text box to the TextInputLayout around it (null if there is none).
+    private static TextInputLayout findInputLayout(View view) {
+        ViewParent parent = view.getParent();
+        while (parent instanceof View) {
+            if (parent instanceof TextInputLayout) {
+                return (TextInputLayout) parent;
+            }
+            parent = parent.getParent();
+        }
+        return null;
     }
 
     // Shows a message in a TextView on the screen (e.g. the red error line under a form).
