@@ -10,11 +10,13 @@
  *                in: greeting, the actions they can take and Log out.
  *                Phase 14 builds the greeting and Log out so Login has a
  *                home to open; the count cards and next booking come from
- *                GET /api/dashboard/prosumer in Phase 16.
+ *                GET /api/dashboard/prosumer in Phase 16. (The My profile
+ *                button was added with M4 Profile, Part A.)
  * ============================================================================
  */
 package com.sunshare.app.ui.prosumer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -45,6 +47,7 @@ public class ProsumerHomeActivity extends AppCompatActivity {
         textGreeting = findViewById(R.id.textGreeting);
         textRole = findViewById(R.id.textRole);
         findViewById(R.id.buttonLogout).setOnClickListener(v -> SessionGuard.logout(this));
+        findViewById(R.id.buttonProfile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
     }
 
     // Called every time the screen comes to the front (also after returning from Profile,

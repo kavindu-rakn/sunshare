@@ -75,6 +75,14 @@
                 android:textColor="@color/ss_dark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <!-- M4 Profile (Part A) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonProfile"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/my_profile" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
