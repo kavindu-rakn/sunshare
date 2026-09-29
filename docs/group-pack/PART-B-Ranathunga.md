@@ -174,6 +174,20 @@ The "plumbing" every Android screen uses. No business rules live here — the ph
 4. **DFD level 1** — processes 1.0 accounts, 2.0 stations & slots, 3.0 bookings, 4.0 verify QR, 5.0 lists & dashboards, 6.0 nearby stations; stores D1–D4 = the MongoDB collections, D5 = the phone's SQLite.
 5. **Database design** — the 4 collections with fields; one station → many slots → many reservations; one prosumer → many reservations (ids stored as references).
 
+### Screenshots, report and README (Phase 21)
+**Files:** `screenshots/web/W01…W14 + MAIN-SCREEN-web.png` · `screenshots/mobile/M01…M11 (+ M05b, M07b, M08b) + MAIN-SCREEN-mobile.png` · `report/generate-report.js`, `report/update-toc.ps1`, `report/report.config.json`, `report/contributions/*.md`, `report/package.json` · `README.md`.
+
+- **Screenshots:** web pages from the IIS site (`:8081`) at 1440 px wide, logged in as Backoffice with the seeded data; Android screens from the emulator talking to the IIS API. One picture per screen/state, named as in `05-SCREENS.md`.
+- **The report is built by a program, not typed (D59).** `cd report; npm run build` runs `generate-report.js` (Node + the `docx` package), which:
+  1. reads the docs (`01-SPEC`, `02-ARCHITECTURE`, `03-DATABASE`, `04-API`, `08-SETUP`, `11-DECISIONS`, `12-CHALLENGES`, `13-REFERENCES`, `09-TEAM`, the group-pack sheets) and turns their Markdown (headings, lists, tables, **bold**, `code`) into Word paragraphs and tables;
+  2. puts in the 5 diagrams and all screenshots with numbered captions (the captions come from the `05-SCREENS.md` table);
+  3. adds each member's own AI statement from `report/contributions/<Part>-<name>.md` — if it still says `TODO`, a yellow "to be written by …" box shows instead (nobody's reflection is written for them);
+  4. pastes **every source file** as text in Appendix A (the list comes from `git ls-files`, so a new file is never forgotten);
+  5. saves `SunShare-Report.docx`. Then `update-toc.ps1` opens it in Word in the background, fills in the contents page and page numbers, and saves `SunShare-Report.pdf` (~1 minute; the file paths are passed to Word as plain `[string]`s — as PowerShell objects the PDF took 15+ minutes, C14).
+- **Why like this:** if a doc or the code changes at the last minute, one command rebuilds the report, so the report and the repo always say the same thing.
+- **README:** Git link, video link, team table, how to run (IIS scripts + dev), all 5 test accounts, what each folder holds.
+- **Zip:** `scripts/make-zip.ps1` → `IT22552860.zip` next to the repo folder, made with `git archive` from the last commit — only files Git tracks, so `node_modules`, `bin`, `obj`, `build`, `.gradle` and `local.properties` (Maps key) can't get in; the report and both main-screen pictures are copied to the top of the zip.
+
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
 2. Web as Backoffice: create "SLIIT Rooftop Hub" with lat/lng → add two slots.
@@ -196,3 +210,4 @@ The "plumbing" every Android screen uses. No business rules live here — the ph
 12. **Why a slot's `totalSlots` can't exceed `batterySlots`?** — R8: a time window can't offer more places than the hub physically has.
 13. **Is a map in a WebView still "Google Maps API"?** — Yes: it is Google's Maps JavaScript API with our key, drawing Google's map, markers and info windows. We used it because the no-card demo key works there but not in the native Android SDK (tested, D53). Location, the API call and SQLite are all native Java.
 14. **What if the phone has no location?** — After 10 seconds (or if permission is denied) the app searches around SLIIT Malabe and says so on the screen — it never waits for ever.
+15. **How was the report made, and is the code in it really ours?** — A Node script builds it from our own docs, diagrams, screenshots and the files Git tracks, so the code in Appendix A is exactly the code in the repository. Each member's AI statement is their own text from `report/contributions/`.

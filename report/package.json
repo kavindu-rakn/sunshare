@@ -1,0 +1,1 @@
+{"name":"sunshare-report","version":"1.0.0","private":true,"description":"Builds SunShare-Report.docx for the SE4040 assignment","scripts":{"build":"node generate-report.js"},"dependencies":{"docx":"^9.8.1"}}
