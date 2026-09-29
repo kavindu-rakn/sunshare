@@ -122,11 +122,11 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 ## Phase 19 — End-to-end test + polish · Owner: Kvn
 - [x] Walk every row of `10-RUBRIC-CHECKLIST.md` on the IIS-hosted build (web + emulator + phone). Fix bugs. *(29 Sep: web on :8081 as Backoffice / Grid Operator / Prosumer, rules R6, R7, R9, R10 on the :8080 API, all Android screens against :8080 in Phases 13–18 + the real phone. Fixed: phone backups could copy the login token.)*
 - [x] UI consistency pass (spacing, empty states, loading, messages). Check every file has the header + method comments (script it: search for methods without a comment above). *(A checker script found 2 uncommented helpers in 132 files / 498 methods — fixed; no TODO/debug logs left.)*
-- [ ] Re-seed fresh data. *(Kvn, by hand — setup doc §8. Do it again the day before the viva.)*
+- [x] Re-seed fresh data. *(Kvn, 29 Sep: dropped SunShareDb, recycled the app pool → 6 users, 5 stations, 84 slots, 5 bookings. Do it again the day before the viva.)*
 
 ## Phase 20 — Diagrams · Owner: Kvn (+ team review)
-- [ ] `diagrams/`: **high-level architecture**, **use case** (actors Backoffice, Grid Operator, Prosumer; system boundary SunShare), **DFD level 0 (context) + level 1**. Also an **ER-style collection diagram** for the database design section.
-- [ ] Sources in PlantUML/Mermaid + exported PNGs (PlantUML can run with Android Studio's bundled Java; fallback: mermaid.live / draw.io).
+- [x] `diagrams/`: **high-level architecture**, **use case** (actors Backoffice, Grid Operator, Prosumer; system boundary SunShare), **DFD level 0 (context) + level 1**. Also an **ER-style collection diagram** for the database design section.
+- [x] Sources in PlantUML/Mermaid + exported PNGs (PlantUML can run with Android Studio's bundled Java; fallback: mermaid.live / draw.io). *(PlantUML 1.2026.8, built-in smetana layout — no Graphviz; how to re-draw: `diagrams/README.md`.)*
 
 ## Phase 21 — Report, README, video, zip · Owner: Kvn
 - [ ] `report/` generator → **`SunShare-Report.docx`** with: cover (group, members, IT numbers), intro, high-level diagram, use case, DFD, database design, API summary, design decisions (`11`), screenshots of all UIs, **source code pasted as text** (all `.cs`, `.java`, `.js/.jsx`, key XML), hosting steps (`08`), references (`13`), individual contribution + **AI disclosure & reflection** per member (`09`), challenges (`12`), Git link.

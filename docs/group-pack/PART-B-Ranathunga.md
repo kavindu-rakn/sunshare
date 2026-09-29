@@ -166,6 +166,14 @@ The "plumbing" every Android screen uses. No business rules live here — the ph
 - **Rubric walk on IIS:** web on `:8081` — Backoffice (dashboard, stations, pending activations, users, reservations history), Grid Operator (only Dashboard / Reservations / Stations & slots; Users → "You don't have access"), Prosumer refused; the network log shows every call going to the IIS API on `:8080`. Rules straight against the IIS API: R6 deactivate with bookings → 409, R7 delete with history → 409, R9 8 days ahead → 400, R10 change/cancel < 12 h → 400 (`canModify = false`).
 - **Security fix:** the Android template's backup rules would have copied `sunshare_local.db` — which holds the **login token** — to Google Drive backups and to a new phone. Now excluded (D57).
 
+### Diagrams (Phase 20)
+`diagrams/` has five PlantUML text files and their PNGs (re-draw command in `diagrams/README.md`):
+1. **High-level architecture** — users → Android app (+ SQLite) and web app → SunShare.Api on IIS (Controllers → Services with all rules → MongoDbContext) → MongoDB; Android app → Google Maps.
+2. **Use case** — Prosumer on the left, *Staff* (Backoffice or Grid Operator) on the right, both staff roles inherit the Staff use cases; `Finalize` **includes** `Scan QR`; `Show booking QR` **extends** `View bookings` (only when Approved).
+3. **DFD level 0** — SunShare as one process with Prosumer, Grid Operator, Backoffice and Google Maps.
+4. **DFD level 1** — processes 1.0 accounts, 2.0 stations & slots, 3.0 bookings, 4.0 verify QR, 5.0 lists & dashboards, 6.0 nearby stations; stores D1–D4 = the MongoDB collections, D5 = the phone's SQLite.
+5. **Database design** — the 4 collections with fields; one station → many slots → many reservations; one prosumer → many reservations (ids stored as references).
+
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
 2. Web as Backoffice: create "SLIIT Rooftop Hub" with lat/lng → add two slots.
