@@ -33,3 +33,9 @@ export function formatTime(isoText) {
   }
   return new Date(isoText).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
 }
+
+// Link that opens Google Maps at a GPS point (used to check a station's pin).
+// Reference: Google, "Maps URLs" https://developers.google.com/maps/documentation/urls/get-started
+export function googleMapsUrl(latitude, longitude) {
+  return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+}
