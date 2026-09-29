@@ -6,4 +6,9 @@
     <string name="checking_server">Checking the SunShare server…</string>
     <string name="server_check_title">Server check</string>
     <string name="check_again">Check again</string>
+
+    <!-- Home screens -->
+    <string name="log_out">Log out</string>
+    <string name="home_prompt">What would you like to do?</string>
+    <string name="operator_ready">Ready for today\'s energy transfers.</string>
 </resources>
