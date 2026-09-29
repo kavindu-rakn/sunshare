@@ -80,7 +80,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] W2 Login (role redirect; Prosumer blocked with message), W4–W5 Users, W6–W7 Prosumers, W8 Pending Activations (+ count badge in sidebar).
 
 ## Phase 9 — Web Part B · Owner: Kvn
-- [ ] W9–W10 Stations (deactivate/activate/delete with API messages, "Open in Google Maps" link), W11–W12 Slots.
+- [x] W9–W10 Stations (deactivate/activate/delete with API messages, "Open in Google Maps" link), W11–W12 Slots.
 
 ## Phase 10 — Web Part D · Owner: Chamara R M L K
 - [ ] W3 Dashboard (count cards + pending table), W13 Reservations list with the **filter bar** (view/status/station/date/search).
