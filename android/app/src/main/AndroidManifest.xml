@@ -56,6 +56,10 @@
         <activity
             android:name=".ui.prosumer.ProsumerHomeActivity"
             android:exported="false" />
+        <!-- M9 Booking details (Part D) -->
+        <activity
+            android:name=".ui.prosumer.ReservationDetailActivity"
+            android:exported="false" />
         <!-- M10 Operator Home (Part D) -->
         <activity
             android:name=".ui.operator.OperatorHomeActivity"

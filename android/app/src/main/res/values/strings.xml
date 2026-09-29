@@ -44,4 +44,10 @@
     <string name="home_prompt">What would you like to do?</string>
     <string name="my_profile">My profile</string>
     <string name="operator_ready">Ready for today\'s energy transfers.</string>
+
+    <!-- M9 Booking details (Part D) -->
+    <string name="detail_title">Booking details</string>
+    <string name="qr_title">Your QR code</string>
+    <string name="qr_description">QR code for this booking</string>
+    <string name="qr_help">Show this at the station. The Grid Operator scans it to finish the energy transfer.</string>
 </resources>
