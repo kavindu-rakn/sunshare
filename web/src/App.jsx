@@ -16,6 +16,7 @@ import AppLayout from './components/AppLayout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import PagePlaceholder from './components/PagePlaceholder.jsx';
 import Home from './pages/Home.jsx';
+import Login from './pages/Login.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 const STAFF = ['Backoffice', 'GridOperator'];
@@ -29,7 +30,7 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<main className="container py-5"><PagePlaceholder title="Login" phase={8} /></main>} />
+          <Route path="/login" element={<Login />} />
 
           {/* Staff pages (Backoffice + Grid Operator), inside the sidebar layout. */}
           <Route element={<ProtectedRoute roles={STAFF} />}>

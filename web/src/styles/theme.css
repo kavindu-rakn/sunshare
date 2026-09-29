@@ -206,6 +206,13 @@ h1, h2, h3, h4, h5, h6,
 
 .page-subtitle { color: var(--ss-muted); }
 
+/* ---------- Login page (Login.jsx): same brand background as the Home hero ---------- */
+.login-page {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.35), transparent 40%),
+    linear-gradient(135deg, var(--ss-dark) 0%, #123a55 55%, var(--ss-primary) 100%);
+}
+
 /* ---------- Home page (Home.jsx) ---------- */
 .home-hero {
   background:
