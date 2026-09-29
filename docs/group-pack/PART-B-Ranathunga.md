@@ -37,7 +37,7 @@ Prosumers can only book if there are stations with battery places and open time 
 6. If the API can't be reached, the map loads stations from `stations_cache` and shows an "offline" note.
 
 ## Hosting in one breath
-`dotnet publish` → files in `C:\inetpub\sunshare\api` → IIS site **SunShareApi** on port 8080 (app pool "No Managed Code"; the **Hosting Bundle** lets IIS run .NET) → `web.config` removes **WebDAV** (otherwise PUT/DELETE/PATCH give 405) → firewall rule so the phone can reach `http://<laptop-IP>:8080`.
+Run `scripts/deploy-api.ps1` in an **admin** PowerShell → it publishes to `C:\inetpub\sunshare\api` → IIS site **SunShareApi** on port 8080 (app pool **No Managed Code**; the **Hosting Bundle's ASP.NET Core Module** starts our app inside IIS) → `web.config` removes the **WebDAV handler** (otherwise PUT/DELETE/PATCH could get 405) → firewall rule so the phone can reach `http://<laptop-IP>:8080`. Tested from an iPhone and an Android phone on the same Wi-Fi.
 
 ## Files (planned — updated after the build)
 - API (Part B) — ✅ **built in Phase 3**: `Controllers/StationsController.cs`, `SlotsController.cs` · `Services/StationService.cs`, `SlotService.cs` · `Helpers/GeoHelper.cs` · `Dtos/StationRequest.cs`, `StationResponse.cs`, `SlotRequest.cs`, `SlotUpdateRequest.cs`, `SlotResponse.cs`
@@ -46,7 +46,7 @@ Prosumers can only book if there are stations with battery places and open time 
   - `Data/MongoDbSettings.cs`, `Data/MongoDbContext.cs`, `Data/DataSeeder.cs`
   - `Models/User.cs`, `SolarStation.cs`, `EnergyBookingSlot.cs`, `EnergyReservation.cs`, `Roles.cs`, `UserStatuses.cs`, `ReservationStatuses.cs`, `ReservationTypes.cs`
   - `Helpers/ApiException.cs`, `Middleware/ErrorHandlingMiddleware.cs`, `Controllers/HealthController.cs`
-  - still to come: `scripts/deploy-api.ps1` (Phase 6)
+  - `scripts/deploy-api.ps1` — ✅ built in Phase 6 (IIS deploy)
 - Web: `pages/Home.jsx`, `Stations.jsx`, `StationForm.jsx`, `Slots.jsx`, `SlotForm.jsx`, `NotFound.jsx` · `api/client.js`, `stationsApi.js`, `slotsApi.js` · `components/*` · `context/AuthContext.jsx` · `styles/theme.css` · `App.jsx`, `main.jsx`
 - Android: `ui/map/StationMapActivity.java` · `db/SunShareDbHelper.java` · `api/ApiClient.java`, `ApiService.java`, `ApiConfig.java`, `ApiErrorParser.java`, `api/models/*` · `util/*` · `res/values/*`, `AndroidManifest.xml`, `res/xml/network_security_config.xml`
 
@@ -71,7 +71,7 @@ _(Claude Code fills this in after Phases 1, 3, 6, 7, 9, 12, 13 and 15.)_
 
 **`GET /api/health` flow:** browser → `HealthController.Get` → `MongoDbContext.PingAsync` sends MongoDB `{ ping: 1 }` → answer within 5 s? `200 "connected"` : `503 "unreachable"`.
 
-**`web.config`:** tells IIS to run the app through the ASP.NET Core Module (from the Hosting Bundle), and **removes WebDAV** — an IIS module that would otherwise grab PUT/DELETE/PATCH and answer 405.
+**`web.config`:** tells IIS to run the app through the ASP.NET Core Module (from the Hosting Bundle), and **removes the WebDAV handler** — WebDAV would otherwise grab PUT/DELETE/PATCH and answer 405. (We first also removed the WebDAV *module*, but IIS locks the `<modules>` section → error 500.19; see C4.)
 
 ### Stations, slots and nearby (Phase 3)
 **Stations** (`StationService`, `StationsController`, route `/api/stations`):
@@ -98,6 +98,13 @@ From SLIIT: Malabe 0.00 km → Kaduwela 2.42 → Battaramulla 6.23 → Kottawa 8
 - **Station's slot list** (`GET /api/stations/{id}/slots`, staff): default from the start of today (UTC) for 14 days, soonest first.
 - **Times:** everything is UTC; a time sent without a zone is taken as UTC (D30). The web converts its `datetime-local` input to UTC before sending.
 
+### IIS hosting (Phase 6)
+- **Deploy:** admin PowerShell → `powershell -ExecutionPolicy Bypass -File .\scripts\deploy-api.ps1` (safe to repeat after every change).
+- **What IIS does:** the site listens on port 8080; the **ASP.NET Core Module** (installed by the Hosting Bundle) starts our `SunShare.Api.dll` *inside* the IIS worker process ("in-process hosting") and hands it every request. The app pool uses **No Managed Code** because IIS must not load the old .NET Framework.
+- **Why stop the pool before publishing:** Windows locks files that a running program is using.
+- **Environment:** IIS runs the app as **Production** → Swagger still on (we turned it on for every environment), CORS only allows 5173 and 8081.
+- **Phone:** firewall rule on port 8080 + the laptop's Wi-Fi IPv4 (`ipconfig`). It changes with the network (hotspot `172.20.10.x`, home Wi-Fi `192.168.1.x`) — that's why the Android app has an editable server address.
+
 ## Your demo (≈ 60 s)
 1. Browser: `http://localhost:8080/api/health` → database connected; IIS Manager shows both sites.
 2. Web as Backoffice: create "SLIIT Rooftop Hub" with lat/lng → add two slots.
@@ -107,7 +114,7 @@ From SLIIT: Malabe 0.00 km → Kaduwela 2.42 → Battaramulla 6.23 → Kottawa 8
 
 ## Viva questions
 1. **How is the API hosted on IIS?** — Published to a folder, an IIS site on port 8080 points at it, and the ASP.NET Core Hosting Bundle's module starts our app inside IIS. The app pool uses "No Managed Code" because .NET Core runs its own runtime.
-2. **Why did PUT/DELETE fail on IIS at first / why is WebDAV removed?** — IIS's WebDAV module grabs those verbs and returns 405; our `web.config` removes it.
+2. **Why is WebDAV mentioned in `web.config`, and what went wrong at first?** — IIS's WebDAV feature can grab PUT/DELETE/PATCH and answer 405, so `web.config` removes the WebDAV *handler*. Our first version also removed the WebDAV *module*, but IIS locks the `<modules>` section for sites → every request gave **500.19 (0x80070021)**. WebDAV isn't installed here, so we dropped that part and proved PUT/PATCH/DELETE reach the API (our own 400/403/404 answers, no 405).
 3. **How does the phone reach the API?** — Same Wi-Fi, the laptop's LAN IP on port 8080, and a firewall rule. The emulator uses 10.0.2.2, which means "the host computer".
 4. **How does "nearby" work?** — Phone sends its location; API calculates Haversine distance to each active station, filters by radius, sorts nearest first; phone just plots them.
 5. **What is Haversine?** — A formula for the distance between two GPS points on a sphere, using their latitudes and longitudes.

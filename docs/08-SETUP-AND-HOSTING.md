@@ -7,9 +7,9 @@ Items marked **(YOU)** are manual — Claude Code can't click through Windows in
 | Tool | Status | What / why |
 |---|---|---|
 | **Visual Studio 2026 Community** | Optional | visualstudio.microsoft.com → Community → workload **"ASP.NET and web development"**. Nice for opening/debugging the API; not needed to build (the `dotnet` CLI does that). |
-| .NET 10 SDK | ✅ installed (10.0.401) | Installed on 27 Sep with Microsoft's `dotnet-install.ps1` into `C:\Users\User\.dotnet` (next to .NET 8). Check: `dotnet --list-sdks` shows `10.0.401`. See `12-CHALLENGES.md` C1. |
-| **IIS** (Windows web server) | ⏳ **(YOU) turn on** | See §3. |
-| **ASP.NET Core Hosting Bundle 10** | ⏳ **(YOU) install AFTER IIS** | dotnet.microsoft.com/download/dotnet/10.0 → "ASP.NET Core Runtime 10.x" → Windows → **Hosting Bundle**. Lets IIS run .NET apps. |
+| .NET 10 SDK | ✅ installed (10.0.401) | Installed on 27 Sep with Microsoft's `dotnet-install.ps1` into `C:\Users\User\.dotnet` (next to .NET 8). Check: `dotnet --list-sdks` shows `10.0.401`. See `12-CHALLENGES.md` C1. **PATH note:** the Hosting Bundle added a runtime-only `C:\Program Files\dotnet` to the *system* PATH, which comes before the user PATH, so new terminals say "No .NET SDKs were found". Fix once (admin PowerShell): `winget install --id Microsoft.DotNet.SDK.10 -e` (puts the SDK next to that runtime). See C4. |
+| **IIS** (Windows web server) | ✅ turned on (28 Sep) | See §3. |
+| **ASP.NET Core Hosting Bundle 10** | ✅ installed (runtime 10.0.12) | dotnet.microsoft.com/download/dotnet/10.0 → "ASP.NET Core Runtime 10.x" → Windows → **Hosting Bundle**. Lets IIS run .NET apps. |
 | MongoDB Community + Compass | ✅ installed | Check the Windows service is running: PowerShell `Get-Service MongoDB` → Running. Compass → connect `mongodb://localhost:27017`. |
 | Node.js | ✅ installed | Vite needs **Node 20.19+ or 22.12+**: `node -v`. If older → install Node 22 LTS. |
 | Android Studio | ✅ installed | Update SDK; create an emulator with a **Google Play** system image (needed for Maps) — §5. |
@@ -32,29 +32,24 @@ Items marked **(YOU)** are manual — Claude Code can't click through Windows in
 
 **3.2 Install the Hosting Bundle (YOU, once, after 3.1)** → then in an **admin** terminal: `net stop was /y` then `net start w3svc`.
 
-**3.3 Publish** (admin terminal, from `sunshare/`):
+**3.3 Deploy with the script (admin PowerShell, from `sunshare/`) — first time AND after every code change:**
 ```powershell
-dotnet publish api/SunShare.Api -c Release -o C:\inetpub\sunshare\api
+powershell -ExecutionPolicy Bypass -File .\scripts\deploy-api.ps1
 ```
-**3.4 Create the IIS site (YOU, once)** — Win+R → `inetmgr`:
-1. *Sites* → right-click → **Add Website** → Site name `SunShareApi` · Physical path `C:\inetpub\sunshare\api` · Port **8080** · Host name empty → OK.
-2. *Application Pools* → `SunShareApi` → Basic Settings → .NET CLR version **No Managed Code** → OK.
-3. Browse `http://localhost:8080/swagger` and `http://localhost:8080/api/health`.
+It is safe to run again and again. What it does (this is also how to explain IIS hosting at the viva):
+1. Checks it runs as **admin** and finds a `dotnet` that has an **SDK** (see the PATH note in §1).
+2. Creates the **application pool** `SunShareApi` with **No Managed Code** (only the first time). *Why:* IIS must not load the old .NET Framework — ASP.NET Core brings its own runtime; IIS only forwards requests to it through the **ASP.NET Core Module** (from the Hosting Bundle).
+3. **Stops** the app pool (a running app locks its own files), then `dotnet publish -c Release -o C:\inetpub\sunshare\api`.
+4. Creates the **site** `SunShareApi` → port **8080** → that folder → that app pool (only the first time), and starts it.
+5. Adds the **firewall rule** "SunShare API 8080" so the phone can connect (only the first time).
+6. Calls `http://localhost:8080/api/health` and prints the phone address (`http://<laptop IPv4>:8080/api/health`).
 
-**3.5 Let the phone reach it** (admin PowerShell, once):
-```powershell
-New-NetFirewallRule -DisplayName "SunShare API 8080" -Direction Inbound -Protocol TCP -LocalPort 8080 -Action Allow
-```
-Find the laptop's IP: `ipconfig` → *Wireless LAN adapter Wi-Fi* → **IPv4 Address** (e.g. `192.168.1.23`). Phone browser → `http://192.168.1.23:8080/api/health`.
-Tip: set the Wi-Fi network to **Private** in Windows settings.
+The same by hand (fallback, or to show in IIS Manager at the viva): Win+R → `inetmgr` → *Application Pools* → Add → `SunShareApi`, .NET CLR version **No Managed Code** · *Sites* → Add Website → `SunShareApi`, physical path `C:\inetpub\sunshare\api`, port **8080**, app pool `SunShareApi`.
 
-**3.6 Redeploy after code changes:** stop the app pool (files are locked while it runs), publish, start:
-```powershell
-& "$env:windir\system32\inetsrv\appcmd.exe" stop apppool /apppool.name:SunShareApi
-dotnet publish api/SunShare.Api -c Release -o C:\inetpub\sunshare\api
-& "$env:windir\system32\inetsrv\appcmd.exe" start apppool /apppool.name:SunShareApi
-```
-(Phase 6 saves this as `scripts/deploy-api.ps1`.)
+**3.4 Check it:** `http://localhost:8080/swagger` and `http://localhost:8080/api/health` → `"database": "connected"`.
+
+**3.5 Let the phone reach it:** the script adds the firewall rule. Find the laptop's IP: `ipconfig` → *Wireless LAN adapter Wi-Fi* → **IPv4 Address** (e.g. `192.168.1.23`) — the script prints it too. Phone browser → `http://192.168.1.23:8080/api/health`.
+Tip: set the Wi-Fi network to **Private** in Windows settings (Settings → Network & internet → Wi-Fi → your network → Network profile type).
 
 ## 4. Host the web app on IIS (Phase 12)
 1. `web/.env.production` → `VITE_API_BASE_URL=http://localhost:8080`
@@ -108,4 +103,5 @@ Seeded bookings are dated relative to the seeding day, so refresh the day before
 | Phone can't reach the API | Not same Wi-Fi · firewall rule missing · wrong IP · Wi-Fi network set to Public |
 | Android "CLEARTEXT communication not permitted" | `network_security_config.xml` not applied in the manifest |
 | Map is grey/blank | Key not in `local.properties`, wrong SHA-1/package restriction, billing not linked, or emulator image without Google Play |
+| `dotnet build` / `dotnet run`: **"No .NET SDKs were found"** | The runtime-only `C:\Program Files\dotnet` (from the Hosting Bundle) comes first on the PATH → install the SDK there: `winget install --id Microsoft.DotNet.SDK.10 -e` (admin), then open a new terminal. The deploy script works either way |
 | Login works on web, 401 on mobile later | Token expired (8 h) → app should clear the session and return to Login |

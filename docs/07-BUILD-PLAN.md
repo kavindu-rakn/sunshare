@@ -64,9 +64,9 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Done when:** PR sees only own bookings · `view=history` includes Completed/Cancelled/past · search "malabe" works · wrong token → 400 · complete → Completed · counts match Compass.
 
 ## Phase 6 — Host the API on IIS · Owner: Kvn
-- [ ] Follow `08-SETUP-AND-HOSTING.md §3`: publish → IIS site **SunShareApi** on port 8080 → firewall rule.
-- [ ] Test: `http://localhost:8080/swagger`, and **from the phone's browser** `http://<LAN-IP>:8080/api/health`.
-- [ ] Write any problems + fixes into `12-CHALLENGES.md`.
+- [x] Follow `08-SETUP-AND-HOSTING.md §3`: publish → IIS site **SunShareApi** on port 8080 → firewall rule.
+- [x] Test: `http://localhost:8080/swagger`, and **from the phone's browser** `http://<LAN-IP>:8080/api/health`.
+- [x] Write any problems + fixes into `12-CHALLENGES.md`.
 - **Commit:** `chore(api): add IIS publish profile and hosting notes`.
 
 ## Phase 7 — Web shell + Home page · Owner: Kvn
