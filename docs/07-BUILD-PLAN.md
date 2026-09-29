@@ -86,7 +86,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] W3 Dashboard (count cards + pending table), W13 Reservations list with the **filter bar** (view/status/station/date/search).
 
 ## Phase 11 — Web Part C · Owner: Malkith G W L
-- [ ] W14 Reservation form (create/edit on behalf of a prosumer) + W13 row actions Edit / Cancel / Approve (shown only when `canModify` / Pending).
+- [x] W14 Reservation form (create/edit on behalf of a prosumer) + W13 row actions Edit / Cancel / Approve (shown only when `canModify` / Pending).
 
 ## Phase 12 — Host the web app on IIS · Owner: Kvn
 - [ ] `npm run build` with `.env.production` → copy `dist/` → IIS site **SunShareWeb** on port 8081 (`08 §4`).
