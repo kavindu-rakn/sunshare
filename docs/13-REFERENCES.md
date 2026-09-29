@@ -47,3 +47,7 @@ Add to this list whenever code follows a tutorial/sample (and put a `// Referenc
 [22] Google, "Get started with Maps URLs," *Google for Developers*. [Online]. Available: https://developers.google.com/maps/documentation/urls/get-started [Accessed: 29-Sep-2026].
 
 [23] Square, "Interceptors," *OkHttp*. [Online]. Available: https://square.github.io/okhttp/features/interceptors/ [Accessed: 29-Sep-2026].
+
+[24] Google, "Get a Maps Demo Key and use it with Google Maps Platform," *Google for Developers*. [Online]. Available: https://developers.google.com/maps/demo-key [Accessed: 29-Sep-2026].
+
+[25] Google, "Maps SDK for Android Usage and Billing," *Google for Developers*. [Online]. Available: https://developers.google.com/maps/documentation/android-sdk/usage-and-billing [Accessed: 29-Sep-2026].

@@ -37,7 +37,8 @@
 - API: `MongoDB.Driver`, `Microsoft.AspNetCore.Authentication.JwtBearer`, `BCrypt.Net-Next`, `Swashbuckle.AspNetCore`
 - Web: `react`, `react-dom`, `react-router-dom`, `bootstrap`, `bootstrap-icons` (+ Vite's own dev deps)
 - Android: `retrofit2:retrofit`, `retrofit2:converter-gson`, `com.journeyapps:zxing-android-embedded`, `play-services-maps`, `play-services-location`, `androidx.recyclerview:recyclerview`, plus the template defaults (`appcompat`, `material`, `constraintlayout`, `activity`)
-- Android **fallback only** (D47, if no Google Maps key is available): `org.osmdroid:osmdroid-android` (OpenStreetMap map, no key)
+- Android map key: **Maps Demo Key** (D51). If the native Maps SDK refuses it, the map screen uses the **Maps JavaScript API inside Android's built-in `WebView`** (no extra package; the key is injected at runtime from `local.properties`)
+- Android **last-resort fallback only** (D47, if no Google key works at all): `org.osmdroid:osmdroid-android` (OpenStreetMap map, no key)
 
 ### Banned (keeps it explainable)
 TypeScript, Redux/Zustand, Axios (use `fetch`), react-bootstrap, Tailwind, AutoMapper, MediatR, CQRS, generic repository / unit-of-work, Entity Framework, Kotlin source files, Jetpack Compose, Room, Hilt/Dagger, RxJava, Flutter/React Native/Xamarin/MAUI, any cloud DB.
