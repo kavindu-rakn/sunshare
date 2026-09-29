@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File: activity_reservation_summary.xml | Part C | M7 Summary shown after every booking action. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ss_bg"
+    android:orientation="vertical"
+    tools:context=".ui.prosumer.ReservationSummaryActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.SunShare.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/summary_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Big round icon: ✓ or ✕ in the action's colour -->
+            <TextView
+                android:id="@+id/textIcon"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_status_badge"
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:textColor="@color/white"
+                android:textSize="44sp"
+                android:textStyle="bold"
+                tools:text="✓" />
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textColor="@color/ss_dark"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:text="Booking created" />
+
+            <TextView
+                android:id="@+id/textNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:textColor="@color/ss_muted"
+                android:textSize="15sp"
+                tools:text="Your booking is Pending until it is approved." />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="@color/ss_primary_soft">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textStation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/ss_dark"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="Malabe Solar Hub" />
+
+                        <TextView
+                            android:id="@+id/textStatus"
+                            style="@style/Widget.SunShare.StatusBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            tools:text="Pending" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textProsumer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/ss_text"
+                        android:textSize="15sp"
+                        android:visibility="gone"
+                        tools:text="Nimal Perera (199712345678)" />
+
+                    <TextView
+                        android:id="@+id/textTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/ss_text"
+                        android:textSize="15sp"
+                        tools:text="Thu, 1 Oct, 08:00 - 10:00" />
+
+                    <TextView
+                        android:id="@+id/textEnergy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/ss_text"
+                        android:textSize="15sp"
+                        tools:text="10 kWh · Sell" />
+
+                    <TextView
+                        android:id="@+id/textBookingId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/ss_muted"
+                        android:textIsSelectable="true"
+                        android:textSize="13sp"
+                        tools:text="Booking ID 6abb6457eb5429ade68d6395" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonBookings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/view_my_bookings" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonHome"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/back_to_home" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

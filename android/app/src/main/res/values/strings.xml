@@ -63,4 +63,9 @@
     <string name="qr_title">Your QR code</string>
     <string name="qr_description">QR code for this booking</string>
     <string name="qr_help">Show this at the station. The Grid Operator scans it to finish the energy transfer.</string>
+
+    <!-- M7 Summary (Part C) -->
+    <string name="summary_title">Summary</string>
+    <string name="view_my_bookings">View my bookings</string>
+    <string name="back_to_home">Back to home</string>
 </resources>
