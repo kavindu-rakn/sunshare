@@ -83,7 +83,7 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - [x] W9–W10 Stations (deactivate/activate/delete with API messages, "Open in Google Maps" link), W11–W12 Slots.
 
 ## Phase 10 — Web Part D · Owner: Chamara R M L K
-- [ ] W3 Dashboard (count cards + pending table), W13 Reservations list with the **filter bar** (view/status/station/date/search).
+- [x] W3 Dashboard (count cards + pending table), W13 Reservations list with the **filter bar** (view/status/station/date/search).
 
 ## Phase 11 — Web Part C · Owner: Malkith G W L
 - [ ] W14 Reservation form (create/edit on behalf of a prosumer) + W13 row actions Edit / Cancel / Approve (shown only when `canModify` / Pending).

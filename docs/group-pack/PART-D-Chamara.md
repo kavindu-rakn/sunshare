@@ -71,6 +71,13 @@ Reads `EnergyReservations` (status, startTime, stationName, prosumerNic…), `So
 
 _(Claude Code fills this in after Phases 5, 10, 16 and 18.)_
 
+### Web pages (Phase 10) — ✅ built
+**Files** (in `web/src/`): `pages/Dashboard.jsx`, `pages/Reservations.jsx` · `components/ReservationTable.jsx` · `api/dashboardApi.js`, `api/reservationsApi.js` · `utils/format.js` (`fromDateInput`).
+
+- **Dashboard (W3):** one call `GET /api/dashboard/summary` → count cards (Pending, Approved upcoming, Today, Active stations, and Pending activations for Backoffice only). Each card is a link to the matching list (e.g. `/reservations?view=pending`). The table "Waiting for approval" shows the API's next 5 upcoming Pending bookings with an **Approve** button → `PATCH /api/reservations/{id}/approve` → the cards reload (pending −1, approved +1). The browser never counts anything — web and mobile show the same numbers because the API counts.
+- **Reservations (W13):** view buttons (All / Current / Pending / History) + status + station + date range + search → `GET /api/reservations?view=&status=&stationId=&from=&to=&search=`. The API applies the definitions (Current = Approved & future; History = Completed, Cancelled or already started). The date boxes pick *local* days; the page turns them into UTC (`from` = that day's midnight, `to` = the next day's midnight so the whole day counts).
+- **ReservationTable:** When · Station (+ id) · Prosumer (+ NIC) · Energy (kWh, Sell/Buy) · Status badge. Pages add buttons with `renderActions` (dashboard: Approve; Malkith's Phase 11: Edit / Cancel / Approve).
+
 ## Your demo (≈ 75 s)
 1. Phone (prosumer): Home → counts. **My Bookings** → Current / Pending / History tabs → search "Kaduwela".
 2. Open the Approved booking → **QR code** on screen (emulator).
