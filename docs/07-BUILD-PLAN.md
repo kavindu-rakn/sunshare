@@ -70,10 +70,10 @@ Legend: **Owner** = whose Part it is (header `Author` + `Co-authored-by` trailer
 - **Commit:** `chore(api): add IIS publish profile and hosting notes`.
 
 ## Phase 7 — Web shell + Home page · Owner: Kvn
-- [ ] `styles/theme.css` (brand tokens from `05-SCREENS.md §1` over Bootstrap), Inter font.
-- [ ] `api/client.js` (fetch wrapper: base URL from `VITE_API_BASE_URL`, token header, `{message}` errors, 401 → logout).
-- [ ] `AuthContext`, `ProtectedRoute` (role check), `AppLayout` + `Sidebar` (role-based menu, responsive), `StatusBadge`, `AlertMessage`, `EmptyState`, `ConfirmButton`.
-- [ ] **W1 Home** (make it polished) + W15 NotFound + HashRouter routes (placeholders for others).
+- [x] `styles/theme.css` (brand tokens from `05-SCREENS.md §1` over Bootstrap), Inter font.
+- [x] `api/client.js` (fetch wrapper: base URL from `VITE_API_BASE_URL`, token header, `{message}` errors, 401 → logout).
+- [x] `AuthContext`, `ProtectedRoute` (role check), `AppLayout` + `Sidebar` (role-based menu, responsive), `StatusBadge`, `AlertMessage`, `EmptyState`, `ConfirmButton`.
+- [x] **W1 Home** (make it polished) + W15 NotFound + HashRouter routes (placeholders for others).
 - **Done when:** Home looks great on desktop + phone width; routes work.
 
 ## Phase 8 — Web Part A · Owner: Gimhan T P K
