@@ -15,6 +15,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import AppLayout from './components/AppLayout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import PagePlaceholder from './components/PagePlaceholder.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Prosumers from './pages/Prosumers.jsx';
@@ -43,7 +44,7 @@ export default function App() {
           {/* Staff pages (Backoffice + Grid Operator), inside the sidebar layout. */}
           <Route element={<ProtectedRoute roles={STAFF} />}>
             <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<PagePlaceholder title="Dashboard" phase={10} />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/reservations" element={<PagePlaceholder title="Reservations" phase={10} />} />
               <Route path="/reservations/new" element={<PagePlaceholder title="New reservation" phase={11} />} />
               <Route path="/reservations/:id/edit" element={<PagePlaceholder title="Edit reservation" phase={11} />} />
