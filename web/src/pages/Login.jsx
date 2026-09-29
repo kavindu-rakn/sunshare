@@ -12,7 +12,7 @@
  * ============================================================================
  */
 import { useState } from 'react';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { login as loginRequest } from '../api/authApi.js';
 import AlertMessage from '../components/AlertMessage.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -20,16 +20,16 @@ import { useAuth } from '../context/AuthContext.jsx';
 // The staff login page (public).
 export default function Login() {
   const { user, login } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
   const [nic, setNic] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
-  // Already logged in? Go straight to the dashboard.
+  // Logged in (already, or just now after login() below)? Go to the page the user first tried to
+  // open, or to the dashboard. This is the only redirect, so the two can't race each other.
   if (user) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={location.state?.from ?? '/dashboard'} replace />;
   }
 
   // Sends the login request. The API checks the NIC, password and account status (R3, R4);
@@ -51,7 +51,6 @@ export default function Login() {
         return;
       }
       login(session);
-      navigate(location.state?.from ?? '/dashboard', { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {
